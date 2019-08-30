@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "dependencies": {
 
+  },
+  "devDependencies": {
+    "webpack-extension-manifest-plugin": "^0.5.0"
   }
 }
