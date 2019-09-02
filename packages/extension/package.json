@@ -1,8 +1,8 @@
 {
-  "name": "extension",
+  "name": "@chainx/extension",
   "version": "1.0.0",
   "dependencies": {
-
+    "@chainx/extension-ui": "1.0.0"
   },
   "devDependencies": {
     "extensionizer": "^1.0.1",

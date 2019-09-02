@@ -13,8 +13,6 @@ const pkgJson = require('./package.json');
 const manifest = require('./manifest.json');
 
 const packages = [
-  'extension',
-  'extension-inject',
   'extension-ui'
 ];
 
@@ -105,7 +103,7 @@ function createWebpack ({ alias = {}, context }) {
 module.exports = createWebpack({
   context: __dirname,
   alias: packages.reduce((alias, pkg) => {
-    alias[`@polkadot/${pkg}`] = path.resolve(__dirname, `../${pkg}/src`);
+    alias[`@chainx/${pkg}`] = path.resolve(__dirname, `../${pkg}/src`);
 
     return alias;
   }, {})

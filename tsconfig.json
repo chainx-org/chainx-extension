@@ -1,0 +1,18 @@
+{
+  "extends": "./node_modules/@polkadot/dev/config/tsconfig",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@chainx/extension": ["packages/extension/src"],
+      "@chainx/extension-ui": ["packages/extension-ui/src"],
+      "@chainx/extension-ui/*": ["packages/extension-ui/src/*"]
+    },
+    "typeRoots": [
+      "./node_modules/@polkadot/ts",
+      "./node_modules/@types"
+    ]
+  },
+  "exclude": [
+    "**/build/*"
+  ]
+}
