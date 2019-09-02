@@ -12,4 +12,5 @@ script.onload = (): void => {
   // remove the injecting tag when loaded
 };
 
+// @ts-ignore
 (document.head || document.documentElement).appendChild(script);
