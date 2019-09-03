@@ -8,6 +8,10 @@
     "default_title": "ChainX",
     "default_popup": "popup.html"
   },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  },
   "icons": {
     "16": "images/dog.png",
     "32": "images/dog.png",
@@ -20,6 +24,6 @@
     "matches": ["http://*/*", "https://*/*"],
     "run_at": "document_start"
   }],
-  "web_accessible_resources": ["hello.js"],
+  "web_accessible_resources": ["page.js"],
   "content_security_policy": "script-src 'self' 'unsafe-eval' 'wasm-eval'; object-src 'self'"
 }

@@ -4,13 +4,39 @@
 
 import extension from 'extensionizer';
 
+import { PORT_CONTENT } from './defaults';
+
+// connect to the extension
+const port = extension.runtime.connect({ name: PORT_CONTENT });
+
+// send any messages from the extension back to the page
+port.onMessage.addListener((data): void => {
+  window.postMessage({ ...data, origin: 'content' }, '*');
+});
+
+// all messages from the page, pass them to the extension
+window.addEventListener('message', ({ data, source }): void => {
+  // only allow messages from our window, by the inject
+  if (source !== window || data.origin !== 'page') {
+    return;
+  }
+
+  port.postMessage(data);
+});
+
 // inject our data injector
 const script = document.createElement('script');
 
-script.src = extension.extension.getURL('hello.js');
+script.src = extension.extension.getURL('page.js');
 script.onload = (): void => {
   // remove the injecting tag when loaded
 };
 
 // @ts-ignore
 (document.head || document.documentElement).appendChild(script);
+
+setTimeout(() => {
+  port.postMessage({
+    msg: "from content"
+  });
+}, 1000)

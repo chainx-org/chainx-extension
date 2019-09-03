@@ -24,9 +24,10 @@ function createWebpack ({ alias = {}, context }) {
     context,
     devtool: false,
     entry: {
-      hello: `./src/hello.ts`,
+      page: `./src/page.ts`,
       content: './src/content.ts',
-      popup: `./src/popup.ts`
+      popup: `./src/popup.ts`,
+      background: `./src/background.ts`
     },
     mode: ENV,
     output: {
