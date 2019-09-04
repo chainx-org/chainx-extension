@@ -4,7 +4,8 @@
 
 import extension from 'extensionizer';
 
-import { PORT_CONTENT } from './defaults';
+// @ts-ignore
+import { PORT_CONTENT } from '@chainx/extension-defaults';
 
 // connect to the extension
 const port = extension.runtime.connect({ name: PORT_CONTENT });
@@ -21,6 +22,7 @@ window.addEventListener('message', ({ data, source }): void => {
     return;
   }
 
+  console.log('data', data);
   port.postMessage(data);
 });
 
@@ -30,6 +32,9 @@ const script = document.createElement('script');
 script.src = extension.extension.getURL('page.js');
 script.onload = (): void => {
   // remove the injecting tag when loaded
+  if (script.parentNode) {
+    script.parentNode.removeChild(script);
+  }
 };
 
 // @ts-ignore

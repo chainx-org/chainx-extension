@@ -12,7 +12,7 @@ let idCounter = 0;
 
 function sendMessage(message: any, request: any = null): Promise<any> {
   return new Promise((resolve, reject): void => {
-    const id = `${Date.now()}.${++idCounter}`;
+    const id = `chainx.${Date.now()}.${++idCounter}`;
 
     handlers[id] = { resolve, reject };
 
@@ -21,10 +21,12 @@ function sendMessage(message: any, request: any = null): Promise<any> {
 }
 
 async function enable (origin: string): Promise<any> {
-  await sendMessage('authorize.tab', { origin });
+  await sendMessage('chainx.accounts.create', { origin });
 
   return "ok";
 }
+
+console.log('abcd');
 
 console.log("hello world from ChainX extension");
 

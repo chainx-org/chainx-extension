@@ -3,16 +3,23 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import extension from 'extensionizer';
+import handle from './handler';
 
 // listen to all messages and handle appropriately
 extension.runtime.onConnect.addListener((port): void => {
   // message and disconnect handlers
-  console.log('background: on connect');
-  console.log(port);
   port.onMessage.addListener((data): void => {
     console.log('msg in background:', data);
 
-    port.postMessage({ hello: "hello from background", data });
+    const promise = handle(data, port);
+
+    promise.then(response => {
+      console.log('resolve');
+      port.postMessage({ id: data.id, response });
+    }).catch((error): void => {
+      port.postMessage({ id: data.id, error: error.message });
+    })
   });
-  // port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
+
+  port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
 });

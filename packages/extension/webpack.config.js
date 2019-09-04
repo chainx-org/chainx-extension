@@ -13,7 +13,8 @@ const pkgJson = require('./package.json');
 const manifest = require('./manifest.json');
 
 const packages = [
-  'extension-ui'
+  'extension-ui',
+  'extension-defaults'
 ];
 
 function createWebpack ({ alias = {}, context }) {

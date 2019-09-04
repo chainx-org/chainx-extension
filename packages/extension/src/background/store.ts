@@ -1,6 +1,6 @@
 import extension from 'extensionizer';
 
-export default class ExtensionStore {
+class Store {
   public all (cb: (key: string, value: any) => void): void {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     extension.storage.local.get(null, (result: any): void => {
@@ -35,3 +35,5 @@ export default class ExtensionStore {
     });
   }
 }
+
+export default new Store();

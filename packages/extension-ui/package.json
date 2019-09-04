@@ -2,6 +2,7 @@
   "name": "@chainx/extension-ui",
   "version": "1.0.0",
   "dependencies": {
+    "@chainx/extenstion-defaults": "1.0.0",
     "@babel/runtime": "^7.5.5",
     "@polkadot/react-identicon": "^0.42.0-beta.34",
     "@types/react-router": "^5.0.3",
