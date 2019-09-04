@@ -2,7 +2,7 @@
 import Account from '@chainx/account';
 
 // @ts-ignore
-import stroe from './store';
+import store from './store';
 
 interface KeyStore {
   address: string,
@@ -26,6 +26,7 @@ class Keyring {
 
       const account = Account.from(mnemonic);
       const keyStore = account.encrypt(password);
+      console.log(store);
 
       // @ts-ignore
       store.set(name, keyStore, (): void => {

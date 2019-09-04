@@ -19,6 +19,7 @@ const handlers: Handlers = {};
 
 // setup a listener for messages, any incoming resolves the promise
 port.onMessage.addListener((data): void => {
+  console.log('handle in popup');
   const handler = handlers[data.id];
 
   if (!handler) {
@@ -26,15 +27,13 @@ port.onMessage.addListener((data): void => {
     return;
   }
 
-  if (!handler.subscriber) {
-    delete handlers[data.id];
-  }
+  console.log('handler', handler);
+  console.log('data', data);
 
-  if (data.subscription) {
-    (handler.subscriber as Function)(data.subscription);
-  } else if (data.error) {
+  if (data.error) {
     handler.reject(new Error(data.error));
   } else {
+    console.log('resolve in popup');
     handler.resolve(data.response);
   }
 });
