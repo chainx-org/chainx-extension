@@ -48,6 +48,16 @@ class Keyring {
       this.accounts.push({ name, ...item });
     })
   }
+
+  signMessage(address: string, message: string, password: string) {
+    const account = this.accounts.find(account => account.address === address);
+    if (!account) {
+      throw 'invalid account';
+    }
+
+    const signer = Account.fromKeyStore(account.keyStore, password);
+    return signer.sign(message);
+  }
 }
 
 const keyring = new Keyring();

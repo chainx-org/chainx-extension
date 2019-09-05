@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createAccount, getAllAccounts } from '../messaging';
+import { createAccount, getAllAccounts, signMessage } from '../messaging';
 import { useState } from "react";
 import { AccountInfo } from "@chainx/extension-ui/types";
 
@@ -7,6 +7,7 @@ export default function Popup() {
   const [text, setText] = useState("test");
   const [accounts, setAccounts] = useState<AccountInfo[]>([]);
   const mnemonic = 'bird ensure file media winner flock vague hand village decrease stuff design';
+  const [sig, setSig] = useState('');
 
   async function test() {
     await createAccount('hello', 'password', mnemonic);
@@ -16,6 +17,14 @@ export default function Popup() {
   async function getAccounts() {
     const result = await getAllAccounts();
     setAccounts(result);
+  }
+
+  async function testSign() {
+    if (accounts.length > 0) {
+      const sig = await signMessage(accounts[0].address, 'message', 'password');
+      console.log('sig', sig);
+      setSig(sig);
+    }
   }
 
   return (
@@ -42,6 +51,11 @@ export default function Popup() {
           )
         })
       }
+
+      <hr />
+
+      <button onClick={testSign}>test sign</button>
+      <span>{sig}</span>
 
     </>
   )

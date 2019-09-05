@@ -36,7 +36,7 @@ port.onMessage.addListener((data): void => {
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function sendMessage (message: string, request: any = {}, subscriber?: (data: any) => void): Promise<any> {
+function sendMessage(message: string, request: any = {}, subscriber?: (data: any) => void): Promise<any> {
   return new Promise((resolve, reject): void => {
     const id = `chainx.${Date.now()}.${++idCounter}`;
 
@@ -46,10 +46,14 @@ function sendMessage (message: string, request: any = {}, subscriber?: (data: an
   });
 }
 
-export async function createAccount (name: string, password: string, mnemonic: string): Promise<boolean> {
+export async function createAccount(name: string, password: string, mnemonic: string): Promise<boolean> {
   return sendMessage('chainx.accounts.create', { name, password, mnemonic });
 }
 
 export async function getAllAccounts(): Promise<AccountInfo[]> {
-  return sendMessage('chainx.accounts.all')
+  return sendMessage('chainx.accounts.all');
+}
+
+export async function signMessage(address: string, message: string, password: string) {
+  return sendMessage('chainx.accounts.sign.message', { address, message, password });
 }

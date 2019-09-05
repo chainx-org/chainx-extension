@@ -921,6 +921,18 @@
     tweetnacl "^1.0.1"
     xxhashjs "^0.2.2"
 
+"@chainx/util@2.21.0":
+  version "2.21.0"
+  resolved "https://registry.yarnpkg.com/@chainx/util/-/util-2.21.0.tgz#fc57eec30e0a64df9f55fc2e3fec98efa7a72b85"
+  integrity sha512-sm/Zv6AX23pQrTQ6+w3p3+NJ8EKiZ2kfHtNf6Gw9fMrmiWc0xWyHGKrSrbf85UQvBz3o8TFjSF70RbzShQHkTw==
+  dependencies:
+    "@babel/runtime" "^7.4.5"
+    bn.js "^4.11.8"
+    camelcase "^5.3.1"
+    chalk "^2.4.2"
+    ip-regex "^4.1.0"
+    moment "^2.24.0"
+
 "@chainx/util@^2.21.0-y.5":
   version "2.21.0-y.5"
   resolved "https://registry.yarnpkg.com/@chainx/util/-/util-2.21.0-y.5.tgz#5a2bd822f5da71f83b3432f9b3cca8139e331561"

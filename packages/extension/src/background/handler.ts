@@ -1,6 +1,8 @@
-import { CHAINX_ACCOUNT_CREATE, CHAINX_ACCOUNT_ALL } from "./constants";
-import { ChainxAccountCreateRequest, AccountInfo } from './types';
+import { CHAINX_ACCOUNT_CREATE, CHAINX_ACCOUNT_ALL, CHAINX_ACCOUNT_SIGN_MESSAGE } from "./constants";
+import { ChainxAccountCreateRequest, AccountInfo, ChainxSignMessageRequest } from './types';
 import keyring from './keyring';
+// @ts-ignore
+import { u8aToHex } from '@chainx/util';
 
 // @ts-ignore
 import { PORT_POPUP } from '@chainx/extension-defaults';
@@ -26,12 +28,18 @@ async function getAllChainxAccount(): Promise<AccountInfo[]> {
   }));
 }
 
+async function signChainxMessage({ address, message, password }: ChainxSignMessageRequest) {
+  return u8aToHex(keyring.signMessage(address, message, password));
+}
+
 function handlePopup({ id, message, request }: MessageRequest): Promise<any> {
   switch (message) {
     case CHAINX_ACCOUNT_CREATE:
       return createChainxAccount(request);
     case CHAINX_ACCOUNT_ALL:
       return getAllChainxAccount();
+    case CHAINX_ACCOUNT_SIGN_MESSAGE:
+      return signChainxMessage(request);
   }
 
   return Promise.resolve()
