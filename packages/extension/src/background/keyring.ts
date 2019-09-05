@@ -26,7 +26,6 @@ class Keyring {
 
       const account = Account.from(mnemonic);
       const keyStore = account.encrypt(password);
-      console.log(store);
 
       // @ts-ignore
       store.set(name, keyStore, (): void => {

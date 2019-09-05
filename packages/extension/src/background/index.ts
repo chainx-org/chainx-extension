@@ -14,7 +14,6 @@ extension.runtime.onConnect.addListener((port): void => {
     const promise = handle(data, port);
 
     promise.then(response => {
-      console.log('resolve');
       port.postMessage({ id: data.id, response });
     }).catch((error): void => {
       port.postMessage({ id: data.id, error: error.message });

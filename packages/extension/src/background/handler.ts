@@ -14,7 +14,6 @@ export interface MessageRequest {
 
 // @ts-ignore
 async function createChainxAccount({ name, mnemonic, password }: ChainxAccountCreateRequest) {
-  console.log(name, mnemonic, password);
   await keyring.addFromMnemonic(name, mnemonic, password);
 
   return true;
@@ -36,9 +35,6 @@ async function handleContent({ id, message, request }: MessageRequest) {
 }
 
 export default function (request: MessageRequest, port: chrome.runtime.Port): Promise<any> {
-  console.log('handle in background', port.name);
-  console.log(port.name === PORT_POPUP);
-
   if (port.name === PORT_POPUP) {
     return handlePopup(request);
   } else {

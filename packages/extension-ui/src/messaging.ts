@@ -19,16 +19,12 @@ const handlers: Handlers = {};
 
 // setup a listener for messages, any incoming resolves the promise
 port.onMessage.addListener((data): void => {
-  console.log('handle in popup');
   const handler = handlers[data.id];
 
   if (!handler) {
     console.error(`Uknown response: ${JSON.stringify(data)}`);
     return;
   }
-
-  console.log('handler', handler);
-  console.log('data', data);
 
   if (data.error) {
     handler.reject(new Error(data.error));

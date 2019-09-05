@@ -7,7 +7,6 @@ export default function Popup() {
   const mnemonic = 'bird ensure file media winner flock vague hand village decrease stuff design';
 
   async function test() {
-    console.log('in popup component');
     const result = await createAccount('hello', 'password', mnemonic);
     setText("success")
     console.log(result);
