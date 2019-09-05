@@ -4,6 +4,7 @@
 
 import extension from 'extensionizer';
 import handle from './handler';
+import keyring from './keyring';
 
 // listen to all messages and handle appropriately
 extension.runtime.onConnect.addListener((port): void => {
@@ -22,3 +23,9 @@ extension.runtime.onConnect.addListener((port): void => {
 
   port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
 });
+
+keyring.loadAll().then((): void => {
+  console.log('initialization completed');
+}).catch((error): void => {
+  console.error('initialization failed', error);
+})

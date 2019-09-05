@@ -5,6 +5,12 @@ import Account from '@chainx/account';
 import store from './store';
 
 interface KeyStore {
+  name: string,
+  address: string,
+  keyStore: object
+}
+
+interface StoreItem {
   address: string,
   keyStore: object
 }
@@ -27,13 +33,25 @@ class Keyring {
       const account = Account.from(mnemonic);
       const keyStore = account.encrypt(password);
 
-      // @ts-ignore
-      store.set(name, keyStore, (): void => {
-        this.accounts.push({ address: name, keyStore });
+      const item: StoreItem = {
+        address: account.address(),
+        keyStore
+      };
+
+      store.set(name, item, (): void => {
+        this.accounts.push({ name, ...item });
         resolve()
       })
     }))
   }
+
+  loadAll(): Promise<any> {
+    return store.all((name, item) => {
+      this.accounts.push({ name, ...item });
+    })
+  }
 }
 
-export default new Keyring();
+const keyring = new Keyring();
+
+export default keyring;

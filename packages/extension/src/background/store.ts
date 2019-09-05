@@ -1,13 +1,21 @@
 import extension from 'extensionizer';
 
 class Store {
-  public all (cb: (key: string, value: any) => void): void {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    extension.storage.local.get(null, (result: any): void => {
-      Object.entries(result).forEach(([key, value]): void => {
-        cb(key, value);
+  public all (cb: (key: string, value: any) => void): Promise<any> {
+    return new Promise((resolve, reject) => {
+      extension.storage.local.get(null, (result: any): void => {
+        if (extension.runtime.lastError) {
+          reject()
+          return;
+        }
+
+        Object.entries(result).forEach(([key, value]): void => {
+          cb(key, value);
+        });
+
+        resolve()
       });
-    });
+    })
   }
 
   public get (key: string, cb: (value: any) => void): void {
