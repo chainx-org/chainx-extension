@@ -23,12 +23,18 @@ class Keyring {
   }
 
   async addFromMnemonic(name: string, mnemonic: string, password: string): Promise<any> {
-    const exist = this.accounts.findIndex(account => account.address === name) >= 0;
-    if (exist) {
-      return Promise.reject("already exist");
+    const account = Account.from(mnemonic);
+
+    const nameExist = this.accounts.findIndex(item => item.name === name) >= 0;
+    if (nameExist) {
+      return Promise.reject({ message: "name already exist" });
     }
 
-    const account = Account.from(mnemonic);
+    const addressExist = this.accounts.findIndex(item => item.address === account.address) >= 0;
+    if (addressExist) {
+      return Promise.reject({ message: "address already exist" });
+    }
+
     const keyStore = account.encrypt(password);
 
     const item: StoreItem = {

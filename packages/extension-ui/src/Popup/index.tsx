@@ -10,8 +10,12 @@ export default function Popup() {
   const [sig, setSig] = useState('');
 
   async function test() {
-    await createAccount('hello', 'password', mnemonic);
-    setText("success")
+    try {
+      await createAccount('hello', 'password', mnemonic);
+      setText("success");
+    } catch (e) {
+      setText("fail");
+    }
   }
 
   async function getAccounts() {
@@ -22,7 +26,6 @@ export default function Popup() {
   async function testSign() {
     if (accounts.length > 0) {
       const sig = await signMessage(accounts[0].address, 'message', 'password');
-      console.log('sig', sig);
       setSig(sig);
     }
   }

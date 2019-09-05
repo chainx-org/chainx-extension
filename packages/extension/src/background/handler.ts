@@ -14,11 +14,8 @@ export interface MessageRequest {
   request: any;
 }
 
-// @ts-ignore
 async function createChainxAccount({ name, mnemonic, password }: ChainxAccountCreateRequest) {
-  await keyring.addFromMnemonic(name, mnemonic, password);
-
-  return true;
+  return await keyring.addFromMnemonic(name, mnemonic, password);
 }
 
 async function getAllChainxAccount(): Promise<AccountInfo[]> {

@@ -30,7 +30,6 @@ port.onMessage.addListener((data): void => {
   if (data.error) {
     handler.reject(new Error(data.error));
   } else {
-    console.log('resolve in popup');
     handler.resolve(data.response);
   }
 });
