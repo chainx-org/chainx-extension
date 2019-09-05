@@ -10,8 +10,6 @@ import keyring from './keyring';
 extension.runtime.onConnect.addListener((port): void => {
   // message and disconnect handlers
   port.onMessage.addListener((data): void => {
-    console.log('msg in background:', data);
-
     const promise = handle(data, port);
 
     promise.then(response => {

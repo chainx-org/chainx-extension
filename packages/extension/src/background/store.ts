@@ -5,7 +5,7 @@ class Store {
     return new Promise((resolve, reject) => {
       extension.storage.local.get(null, (result: any): void => {
         if (extension.runtime.lastError) {
-          reject()
+          reject(extension.runtime.lastError);
           return;
         }
 
@@ -30,16 +30,18 @@ class Store {
     });
   }
 
-  public set (key: string, value: any, cb?: () => void): void {
-    // shortcut, don't save testing accounts in extension storage
-    if (key.startsWith('account:') && value.meta && value.meta.isTesting) {
-      cb && cb();
+  public set (key: string, value: any, cb?: () => void): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      // shortcut, don't save testing accounts in extension storage
+      extension.storage.local.set({ [key]: value }, (): void => {
+        if (extension.runtime.lastError) {
+          reject(extension.runtime.lastError);
+          return;
+        }
 
-      return;
-    }
-
-    extension.storage.local.set({ [key]: value }, (): void => {
-      cb && cb();
+        cb && cb();
+        resolve();
+      });
     });
   }
 }
