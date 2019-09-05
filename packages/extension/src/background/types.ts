@@ -3,3 +3,8 @@ export interface ChainxAccountCreateRequest {
   password: string,
   mnemonic: string
 }
+
+export interface AccountInfo {
+  name: string,
+  address: string
+}

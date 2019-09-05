@@ -1,5 +1,5 @@
-import { CHAINX_ACCOUNT_CREATE } from "./constants";
-import { ChainxAccountCreateRequest } from './types';
+import { CHAINX_ACCOUNT_CREATE, CHAINX_ACCOUNT_ALL } from "./constants";
+import { ChainxAccountCreateRequest, AccountInfo } from './types';
 import keyring from './keyring';
 
 // @ts-ignore
@@ -19,10 +19,19 @@ async function createChainxAccount({ name, mnemonic, password }: ChainxAccountCr
   return true;
 }
 
+async function getAllChainxAccount(): Promise<AccountInfo[]> {
+  return keyring.accounts.map(account => ({
+    name: account.name,
+    address: account.address
+  }));
+}
+
 function handlePopup({ id, message, request }: MessageRequest): Promise<any> {
   switch (message) {
     case CHAINX_ACCOUNT_CREATE:
       return createChainxAccount(request);
+    case CHAINX_ACCOUNT_ALL:
+      return getAllChainxAccount();
   }
 
   return Promise.resolve()

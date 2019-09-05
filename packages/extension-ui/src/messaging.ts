@@ -2,6 +2,7 @@ import extension from "extensionizer";
 
 // @ts-ignore
 import { PORT_POPUP } from '@chainx/extension-defaults';
+import { AccountInfo } from "@chainx/extension-ui/types";
 
 interface Handler {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,4 +48,8 @@ function sendMessage (message: string, request: any = {}, subscriber?: (data: an
 
 export async function createAccount (name: string, password: string, mnemonic: string): Promise<boolean> {
   return sendMessage('chainx.accounts.create', { name, password, mnemonic });
+}
+
+export async function getAllAccounts(): Promise<AccountInfo[]> {
+  return sendMessage('chainx.accounts.all')
 }
