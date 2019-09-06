@@ -3,6 +3,7 @@ import * as React from "react";
 import { createAccount, getAllAccounts, signMessage } from '../messaging';
 import { useState } from "react";
 import { AccountInfo } from "@chainx/extension-ui/types";
+// @ts-ignore
 import logo from "../assets/logo.jpg";
 import "./index.scss";
 
