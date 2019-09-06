@@ -1,0 +1,82 @@
+#root {
+  width: 358px;
+  height: 580px;
+  line-height: 1.25;
+  display: flex;
+  flex-direction: column;  
+}
+
+.container {
+  width: 318px;
+  display: flex;
+}
+
+.header {
+  height: 70px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #DCE0E2;
+  .container-header {
+    justify-content: space-between;
+    .logo {
+      width: 32px;
+      height: 32px;
+    }
+    .right {
+      display: flex;
+      .current-node {
+        height: 32px;
+        width: 103px;
+        border-radius: 16px;
+        border: 1px solid #DCE0E2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .setting {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+    }
+    
+  }
+  .node-list-area {
+    position: absolute;
+    top: 70px;
+    background-color: red;
+    width: 226px;
+    height: 425px;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.85);
+    border: 1px solid #DCE0E2;
+    box-shadow: 0 0 8px 0 rgba(0,0,0,0.08), 0 8px 8px 0 rgba(0,0,0,0.16);
+  }
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .container-content {
+    flex-direction: column;
+    align-items: center;
+    .new-account {
+      margin-top: 56px;
+    }
+    .import-account {
+      margin-top: 16px;
+    }
+  }
+}
+
+button {
+  height: 40px;
+  width: 318px;
+  border: 1px solid #DCE0E2;
+  border-radius: 20px;
+  cursor: pointer;
+}
