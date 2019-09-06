@@ -21,11 +21,14 @@ function View ({ children, className }: Props): React.ReactElement<Props> {
 }
 
 export default styled(View)`
+  width: 358px;
+  height: 580px;
   color: ${defaults.color};
   font-family: ${defaults.fontFamily};
   font-size: ${defaults.fontSize};
   line-height: ${defaults.lineHeight};
-
+  display: flex;
+  flex-direction: column;  
   h3 {
     margin: 0 0 0.75rem;
     text-transform: uppercase;

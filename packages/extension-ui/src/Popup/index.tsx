@@ -1,9 +1,12 @@
 import * as React from "react";
+
 import { createAccount, getAllAccounts, signMessage } from '../messaging';
 import { useState } from "react";
 import { AccountInfo } from "@chainx/extension-ui/types";
+import logo from "../assets/logo.jpg";
+import "./index.scss";
 
-export default function Popup() {
+function Popup() {
   const [text, setText] = useState("test");
   const [accounts, setAccounts] = useState<AccountInfo[]>([]);
   const mnemonic = 'bird ensure file media winner flock vague hand village decrease stuff design';
@@ -32,34 +35,42 @@ export default function Popup() {
 
   return (
     <>
-      <button onClick={test}>{text}</button>
-      <div>hello world</div>
+      <div className="header">
+        <div className="container container-header">
+          <img className="logo" src={logo} alt="logo" />
+          <div className="setting"><span>设置</span></div>
+        </div>
+      </div>
+      <div className="content">
+        <div className="container container-content">
+          <button className="new-account">新增账户</button>
+          <button className="import-account">导入账户</button>
+          <button onClick={test}>{text}</button>
+          <div>hello world</div>
+          <button onClick={getAccounts}>get accounts</button>
+          {
+            accounts.map(account => {
+              return (
+                <div key={account.address}>
+                  <div>
+                    <span>name:</span>
+                    <span>{account.name}</span>
+                  </div>
+                  <div>
+                    <span>address:</span>
+                    <span>{account.address}</span>
+                  </div>
+                </div>
+              )
+            })
+          }
 
-      <hr />
-
-      <button onClick={getAccounts}>get accounts</button>
-      {
-        accounts.map(account => {
-          return (
-            <div key={account.address}>
-              <div>
-                <span>name:</span>
-                <span>{account.name}</span>
-              </div>
-              <div>
-                <span>address:</span>
-                <span>{account.address}</span>
-              </div>
-            </div>
-          )
-        })
-      }
-
-      <hr />
-
-      <button onClick={testSign}>test sign</button>
-      <span>{sig}</span>
-
+          <button onClick={testSign}>test sign</button>
+          <span>{sig}</span>
+        </div>
+      </div>
     </>
   )
 }
+
+export default Popup
