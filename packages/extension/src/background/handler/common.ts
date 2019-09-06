@@ -19,6 +19,11 @@ export async function signChainxMessage({ address, message, password }: ChainxSi
 }
 
 export async function signTransaction(request: SignTransactionRequest): Promise<any> {
+  const targetAccount = keyring.accounts.find(account => account.address === request.address)
+  if (!targetAccount) {
+    return Promise.reject({ message: 'Account not exist' });
+  }
+
   // TODO: sign transaction and return the signed raw tx
   return Promise.resolve(request);
 }

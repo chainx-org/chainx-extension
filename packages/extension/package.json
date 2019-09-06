@@ -2,6 +2,7 @@
   "name": "@chainx/extension",
   "version": "1.0.0",
   "dependencies": {
+    "chainx.js": "2.21.0",
     "@chainx/util": "2.21.0",
     "@chainx/extension-defaults": "1.0.0",
     "@chainx/account": "^2.21.0-y.5",
