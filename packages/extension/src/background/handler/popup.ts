@@ -7,7 +7,7 @@ import {
 import { MessageRequest } from "./types";
 import { createChainxAccount, getAllChainxAccount, signChainxMessage, signTransaction } from './common';
 
-export default function handlePopup({ id, message, request }: MessageRequest): Promise<any> {
+export default function handlePopup({ message, request }: MessageRequest): Promise<any> {
   switch (message) {
     case CHAINX_ACCOUNT_CREATE:
       return createChainxAccount(request);
@@ -16,7 +16,7 @@ export default function handlePopup({ id, message, request }: MessageRequest): P
     case CHAINX_ACCOUNT_SIGN_MESSAGE:
       return signChainxMessage(request);
     case CHAINX_TRANSACTION_SIGN:
-      return signTransaction();
+      return signTransaction(request);
   }
 
   return Promise.resolve()

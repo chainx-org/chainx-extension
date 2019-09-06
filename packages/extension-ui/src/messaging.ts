@@ -1,5 +1,4 @@
 import extension from "extensionizer";
-
 // @ts-ignore
 import { PORT_POPUP } from '@chainx/extension-defaults';
 import { AccountInfo, SignTransactionRequest } from "@chainx/extension-ui/types";
