@@ -2,7 +2,7 @@ import extension from "extensionizer";
 
 // @ts-ignore
 import { PORT_POPUP } from '@chainx/extension-defaults';
-import { AccountInfo } from "@chainx/extension-ui/types";
+import { AccountInfo, SignTransactionRequest } from "@chainx/extension-ui/types";
 
 interface Handler {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -55,4 +55,8 @@ export async function getAllAccounts(): Promise<AccountInfo[]> {
 
 export async function signMessage(address: string, message: string, password: string) {
   return sendMessage('chainx.accounts.sign.message', { address, message, password });
+}
+
+export async function signTransaction(request: SignTransactionRequest) {
+  return sendMessage('chainx.transaction.sign', request);
 }

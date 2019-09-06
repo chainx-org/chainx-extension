@@ -1,11 +1,16 @@
-import { CHAINX_ACCOUNT_CREATE, CHAINX_ACCOUNT_ALL, CHAINX_ACCOUNT_SIGN_MESSAGE } from "./constants";
-import { ChainxAccountCreateRequest, AccountInfo, ChainxSignMessageRequest } from './types';
-import keyring from './keyring';
+import {
+  CHAINX_ACCOUNT_CREATE,
+  CHAINX_ACCOUNT_ALL,
+  CHAINX_ACCOUNT_SIGN_MESSAGE,
+  CHAINX_TRANSACTION_SIGN
+} from "../constants";
+import {ChainxAccountCreateRequest, AccountInfo, ChainxSignMessageRequest} from '../types';
+import keyring from '../keyring';
 // @ts-ignore
-import { u8aToHex } from '@chainx/util';
+import {u8aToHex} from '@chainx/util';
 
 // @ts-ignore
-import { PORT_POPUP } from '@chainx/extension-defaults';
+import {PORT_POPUP} from '@chainx/extension-defaults';
 
 export interface MessageRequest {
   id: string;
@@ -14,7 +19,7 @@ export interface MessageRequest {
   request: any;
 }
 
-async function createChainxAccount({ name, mnemonic, password }: ChainxAccountCreateRequest) {
+async function createChainxAccount({name, mnemonic, password}: ChainxAccountCreateRequest) {
   return await keyring.addFromMnemonic(name, mnemonic, password);
 }
 
@@ -25,11 +30,16 @@ async function getAllChainxAccount(): Promise<AccountInfo[]> {
   }));
 }
 
-async function signChainxMessage({ address, message, password }: ChainxSignMessageRequest) {
+async function signChainxMessage({address, message, password}: ChainxSignMessageRequest) {
   return u8aToHex(keyring.signMessage(address, message, password));
 }
 
-function handlePopup({ id, message, request }: MessageRequest): Promise<any> {
+async function signTransaction(): Promise<any> {
+  // TODO: sign transaction and return the signed raw tx
+  return Promise.resolve(true);
+}
+
+function handlePopup({id, message, request}: MessageRequest): Promise<any> {
   switch (message) {
     case CHAINX_ACCOUNT_CREATE:
       return createChainxAccount(request);
@@ -37,12 +47,14 @@ function handlePopup({ id, message, request }: MessageRequest): Promise<any> {
       return getAllChainxAccount();
     case CHAINX_ACCOUNT_SIGN_MESSAGE:
       return signChainxMessage(request);
+    case CHAINX_TRANSACTION_SIGN:
+      return signTransaction();
   }
 
   return Promise.resolve()
 }
 
-async function handleContent({ id, message, request }: MessageRequest) {
+async function handleContent({id, message, request}: MessageRequest) {
   console.log(`id: ${id}, message: ${message}, request: ${request}`);
 
   return true;
