@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import extension from 'extensionizer';
-
 // @ts-ignore
 import { PORT_CONTENT } from '@chainx/extension-defaults';
 
