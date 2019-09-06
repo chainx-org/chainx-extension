@@ -1,64 +1,8 @@
-import {
-  CHAINX_ACCOUNT_CREATE,
-  CHAINX_ACCOUNT_ALL,
-  CHAINX_ACCOUNT_SIGN_MESSAGE,
-  CHAINX_TRANSACTION_SIGN
-} from "../constants";
-import {ChainxAccountCreateRequest, AccountInfo, ChainxSignMessageRequest} from '../types';
-import keyring from '../keyring';
+import handleContent from "./content";
+import handlePopup from "./popup";
+import { MessageRequest } from './types';
 // @ts-ignore
-import {u8aToHex} from '@chainx/util';
-
-// @ts-ignore
-import {PORT_POPUP} from '@chainx/extension-defaults';
-
-export interface MessageRequest {
-  id: string;
-  message: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  request: any;
-}
-
-async function createChainxAccount({name, mnemonic, password}: ChainxAccountCreateRequest) {
-  return await keyring.addFromMnemonic(name, mnemonic, password);
-}
-
-async function getAllChainxAccount(): Promise<AccountInfo[]> {
-  return keyring.accounts.map(account => ({
-    name: account.name,
-    address: account.address
-  }));
-}
-
-async function signChainxMessage({address, message, password}: ChainxSignMessageRequest) {
-  return u8aToHex(keyring.signMessage(address, message, password));
-}
-
-async function signTransaction(): Promise<any> {
-  // TODO: sign transaction and return the signed raw tx
-  return Promise.resolve(true);
-}
-
-function handlePopup({id, message, request}: MessageRequest): Promise<any> {
-  switch (message) {
-    case CHAINX_ACCOUNT_CREATE:
-      return createChainxAccount(request);
-    case CHAINX_ACCOUNT_ALL:
-      return getAllChainxAccount();
-    case CHAINX_ACCOUNT_SIGN_MESSAGE:
-      return signChainxMessage(request);
-    case CHAINX_TRANSACTION_SIGN:
-      return signTransaction();
-  }
-
-  return Promise.resolve()
-}
-
-async function handleContent({id, message, request}: MessageRequest) {
-  console.log(`id: ${id}, message: ${message}, request: ${request}`);
-
-  return true;
-}
+import { PORT_POPUP } from '@chainx/extension-defaults';
 
 export default function (request: MessageRequest, port: chrome.runtime.Port): Promise<any> {
   if (port.name === PORT_POPUP) {
