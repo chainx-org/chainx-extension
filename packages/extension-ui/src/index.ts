@@ -3,4 +3,4 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 export { default as createView } from './createView';
-export { default as Popup } from './Popup';
+export { default as Popup } from './pages/App';

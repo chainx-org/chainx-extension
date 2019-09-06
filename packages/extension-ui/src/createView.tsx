@@ -2,11 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React, { Suspense } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter } from 'react-router-dom';
 
-import { View } from './components';
+import App from './pages/App';
 
 export default function createView (Entry: React.ComponentType, rootId: string = 'root'): void {
   const rootElement = document.getElementById(rootId);
@@ -16,13 +15,7 @@ export default function createView (Entry: React.ComponentType, rootId: string =
   }
 
   ReactDOM.render(
-    <Suspense fallback='...'>
-      <View>
-        <HashRouter>
-          <Entry />
-        </HashRouter>
-      </View>
-    </Suspense>,
+    <App />,
     rootElement
   );
 }
