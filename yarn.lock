@@ -4179,7 +4179,7 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-chainx.js@2.21.0:
+chainx.js@2.21.0, chainx.js@^2.21.0:
   version "2.21.0"
   resolved "https://registry.yarnpkg.com/chainx.js/-/chainx.js-2.21.0.tgz#87637fea42ac7c81b9c1d80840c508e035597705"
   integrity sha512-JqCZboj0TlY5MC++Z0+ZKLu4AkcMEBaxjzzREZbptu6MqpgtfqVYo+7FDj0+2tavbB9sP9bGCEj6QV1c1aciPg==
