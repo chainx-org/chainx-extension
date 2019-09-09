@@ -60,7 +60,7 @@ function Header(props: any) {
               </Link>
             </div>
             <div>
-              <Link to="newAccount">
+              <Link to="createAccount">
                 <Icon name="Add" className="account-area-icon" />
                 <span>
                   新建账户
