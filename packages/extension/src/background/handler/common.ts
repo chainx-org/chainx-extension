@@ -14,6 +14,10 @@ export async function createChainxAccount({ name, mnemonic, password }: ChainxAc
   return await keyring.addFromMnemonic(name, mnemonic, password);
 }
 
+export async function setChainxCurrentAccount({ address }: { address: string }) {
+  return await keyring.setCurrentAccount(address);
+}
+
 export async function getAllChainxAccount(): Promise<AccountInfo[]> {
   return keyring.accounts.map(account => ({
     name: account.name,

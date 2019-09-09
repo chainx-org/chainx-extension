@@ -15,12 +15,15 @@ interface StoreItem {
 }
 
 export const ACCOUNT_PREFIX = 'account_';
+export const CURRENT_ACCOUNT_KEY = 'current_account_key';
 
 class Keyring {
   accounts: KeyStore[];
+  currentAccount: KeyStore | null;
 
   constructor() {
     this.accounts = [];
+    this.currentAccount = null;
   }
 
   async addFromMnemonic(name: string, mnemonic: string, password: string): Promise<any> {
@@ -50,10 +53,34 @@ class Keyring {
     return result;
   }
 
-  loadAll(): Promise<any> {
-    return store.all((key, item) => {
+  async setCurrentAccount(address: string): Promise<any> {
+    const account = this.accounts.find(item => item.address === address);
+    if (!account) {
+      return Promise.reject({ message: "address not exist" });
+    }
+
+    return await store.set(CURRENT_ACCOUNT_KEY, address, () => {
+      this.currentAccount = account;
+    });
+  }
+
+  async loadAll(): Promise<any> {
+    await store.all((key, item) => {
       if (key.startsWith(ACCOUNT_PREFIX)) {
         this.accounts.push({ name: key.slice(ACCOUNT_PREFIX.length), ...item });
+      }
+    })
+
+    if (this.accounts.length <= 0) {
+      return
+    }
+
+    await store.get(CURRENT_ACCOUNT_KEY, account => {
+      const target = this.accounts.find(item => item.address === account.address);
+      if (!target) {
+        this.currentAccount = this.accounts[0];
+      } else {
+        this.currentAccount = target;
       }
     })
   }

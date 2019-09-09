@@ -3,13 +3,13 @@ import {
   CHAINX_ACCOUNT_CREATE,
   CHAINX_ACCOUNT_SIGN_MESSAGE,
   CHAINX_TRANSACTION_SIGN,
-  CHAINX_NODE_CREATE, CHAINX_NODE_ALL
+  CHAINX_NODE_CREATE, CHAINX_NODE_ALL, CHAINX_ACCOUNT_SELECT
 } from "../constants";
 import { MessageRequest } from "./types";
 import {
   createChainxAccount,
   createChainxNode,
-  getAllChainxAccount, getAllChainxNodes,
+  getAllChainxAccount, getAllChainxNodes, setChainxCurrentAccount,
   signChainxMessage,
   signTransaction
 } from './common';
@@ -28,6 +28,8 @@ export default function handlePopup({ message, request }: MessageRequest): Promi
       return createChainxNode(request);
     case CHAINX_NODE_ALL:
       return getAllChainxNodes();
+    case CHAINX_ACCOUNT_SELECT:
+      return setChainxCurrentAccount(request);
   }
 
   return Promise.resolve()

@@ -18,10 +18,18 @@ class Store {
     })
   }
 
-  public get (key: string, cb: (value: any) => void): void {
-    extension.storage.local.get([key], (result: any): void => {
-      cb(result[key]);
-    });
+  public get (key: string, cb: (value: any) => void): Promise<any> {
+    return new Promise(((resolve, reject) => {
+      extension.storage.local.get([key], (result: any): void => {
+        if (extension.runtime.lastError) {
+          reject(extension.runtime.lastError);
+          return;
+        }
+
+        cb(result[key]);
+        resolve();
+      });
+    }));
   }
 
   public remove (key: string, cb?: () => void): void {
