@@ -4,7 +4,7 @@ import { PORT_POPUP } from '@chainx/extension-defaults';
 import { AccountInfo, SignTransactionRequest } from "@chainx/extension-ui/types";
 import {
   CHAINX_ACCOUNT_ALL,
-  CHAINX_ACCOUNT_CREATE, CHAINX_ACCOUNT_SELECT,
+  CHAINX_ACCOUNT_CREATE, CHAINX_ACCOUNT_CURRENT, CHAINX_ACCOUNT_SELECT,
   CHAINX_ACCOUNT_SIGN_MESSAGE, CHAINX_NODE_ALL, CHAINX_NODE_CREATE,
   CHAINX_TRANSACTION_SIGN
 } from "@chainx/extension-ui/constants";
@@ -76,4 +76,8 @@ export async function getAllChainxNodes() {
 
 export async function setChainxCurrentAccount(address: string) {
   return sendMessage(CHAINX_ACCOUNT_SELECT, { address });
+}
+
+export async function getCurrentChainxAccount() {
+  return sendMessage(CHAINX_ACCOUNT_CURRENT);
 }

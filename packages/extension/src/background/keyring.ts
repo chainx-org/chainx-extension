@@ -3,7 +3,7 @@ import Account from '@chainx/account';
 // @ts-ignore
 import store from './store';
 
-interface KeyStore {
+export interface KeyStore {
   name: string,
   address: string,
   keyStore: object
@@ -51,6 +51,10 @@ class Keyring {
     })
 
     return result;
+  }
+
+  getCurrentAccount() {
+    return this.currentAccount;
   }
 
   async setCurrentAccount(address: string): Promise<any> {
