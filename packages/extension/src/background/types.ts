@@ -21,3 +21,8 @@ export interface SignTransactionRequest {
   method: string,
   args: Array<any>
 }
+
+export interface ChainxNode {
+  name: string,
+  url: string,
+}

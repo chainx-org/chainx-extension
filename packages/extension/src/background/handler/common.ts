@@ -1,4 +1,10 @@
-import { AccountInfo, ChainxAccountCreateRequest, ChainxSignMessageRequest, SignTransactionRequest } from "../types";
+import {
+  AccountInfo,
+  ChainxAccountCreateRequest,
+  ChainxSignMessageRequest,
+  SignTransactionRequest,
+  ChainxNode
+} from "../types";
 import keyring from "../keyring";
 // @ts-ignore
 import { u8aToHex } from '@chainx/util';
@@ -26,4 +32,8 @@ export async function signTransaction(request: SignTransactionRequest): Promise<
 
   // TODO: sign transaction and return the signed raw tx
   return Promise.resolve(request);
+}
+
+export async function crateChainxNode({ name, url }: ChainxNode) {
+
 }
