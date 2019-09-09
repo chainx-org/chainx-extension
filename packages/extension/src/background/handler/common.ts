@@ -8,6 +8,7 @@ import {
 import keyring from "../keyring";
 // @ts-ignore
 import { u8aToHex } from '@chainx/util';
+import nodes from '../nodes';
 
 export async function createChainxAccount({ name, mnemonic, password }: ChainxAccountCreateRequest) {
   return await keyring.addFromMnemonic(name, mnemonic, password);
@@ -34,6 +35,10 @@ export async function signTransaction(request: SignTransactionRequest): Promise<
   return Promise.resolve(request);
 }
 
-export async function crateChainxNode({ name, url }: ChainxNode) {
+export async function createChainxNode({ name, url }: ChainxNode): Promise<any> {
+  return await nodes.addNode(name, url);
+}
 
+export async function getAllChainxNodes(): Promise<ChainxNode[]> {
+  return nodes.nodes;
 }
