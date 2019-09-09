@@ -35,9 +35,24 @@ function Home(props: any) {
     }
   }
 
+  getAccounts()
+
   return (
     <>
-      <div className="content">
+      {
+        accounts[0] ? 
+        <div className="container-account">
+          <div className="account-title">
+            {accounts[0].name}
+          </div>
+          <div className="account-address">
+            <span>{accounts[0].address}</span>
+          </div>
+          <div className="copy">
+            复制地址
+          </div>
+        </div>
+        :
         <div className="container container-content">
           <button className="new-account" onClick={() =>
             props.history.push('/createAccount')
@@ -71,7 +86,7 @@ function Home(props: any) {
           <button onClick={testSign}>test sign</button>
           <span>{sig}</span>
         </div>
-      </div>
+      }
     </>
   )
 }

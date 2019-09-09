@@ -1,8 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { Link } from 'react-router-dom';
-import Icon from '../components/Icon';
-import logo from "../assets/logo.jpg";
+import Icon from '../../components/Icon';
+import logo from "../../assets/logo.jpg";
 import "./header.scss";
 
 function Header(props: any) {

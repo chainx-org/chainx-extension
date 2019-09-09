@@ -1,6 +1,5 @@
 import React from "react"; import { BrowserRouter as Router } from "react-router-dom";
 import { Redirect, Route, Switch } from "react-router";
-import Setting from './Setting';
 import Home from './Home';
 import Header from './Header';
 import CreateAccount from './CreateAccount';
@@ -17,7 +16,6 @@ export default function App() {
             <Route exact path="/" component={Home} />
             <Route path="/createAccount" component={CreateAccount} />
             <Route path="/importAccount" component={ImportAccount} />
-            <Route path="/setting" component={Setting} />
             <Redirect to="/" />
           </Switch>
         </div>

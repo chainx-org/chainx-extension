@@ -1,23 +1,12 @@
 @import '../assets/iconfont/iconfont.css';
-
-$gray: #f2f3f4;
-$grayDivide: #dce0e2;
-$fontgray: #3f3f3f;
-$blue: #3da0d2;
-$red: #C54315;
-$green: #03AC79;
-$yellow: #f6c94a;
-$deepYellow: #D8A001;
-$deepGray: #DEDEDE;
-$winWidth: 1280px;
-$winPadding: 0;
+@import '../assets/variables.scss';
 
 #root {
   width: 358px;
   height: 580px;
   line-height: 1.25;
   display: flex;
-  flex-direction: column;  
+  flex-direction: column;
 }
 
 .divide-1 {
@@ -29,12 +18,57 @@ $winPadding: 0;
 .container {
   width: 318px;
   display: flex;
+  color: $fontgray;
 }
 
 .content {
   width: 100%;
   display: flex;
   justify-content: center;
+  .container-account {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    .account-title {
+      height: 56px;
+      width: 100%;
+      color: $fontgray;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #EEEEEE;
+    }
+    .account-address {
+      display: flex;
+      justify-content: center;
+      width: 246px;
+      height: 40px;
+      margin-top: 16px;
+      font-size: 14px;
+      color: #8e9e93;
+      span {
+        text-align: center;
+        word-wrap: break-word;
+        word-break: break-all;
+        white-space: pre-wrap;
+      }
+    }
+    .copy {
+      width: 78px;
+      height: 18px;
+      background: #F2F3F4;
+      border: 1px solid #DCE0E2;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
   .container-content {
     flex-direction: column;
     align-items: center;
@@ -52,5 +86,32 @@ button {
   width: 318px;
   border: 1px solid #DCE0E2;
   border-radius: 20px;
+  font-size: 14px;
   cursor: pointer;
+}
+
+.button-yellow-half {
+  width: 151px;
+  height: 40px;
+  background: $yellow;
+  border: 1px solid rgba(0,0,0,0.04);
+  border-radius: 20px;
+  font-size: 14px;
+  color: #000;
+  cursor: pointer;
+}
+
+.button-yellow-full {
+  width: 318px;
+  height: 40px;
+  background: $yellow;
+  border: 1px solid rgba(0,0,0,0.04);
+  border-radius: 20px;
+  font-size: 14px;
+  color: #000;
+  cursor: pointer;
+}
+
+.margin-top-40 {
+  margin-top: 40px;
 }

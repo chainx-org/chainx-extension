@@ -1,0 +1,71 @@
+@import '../../assets/variables.scss';
+
+.create-account {
+  display: flex;
+  flex-direction: column;
+  min-height: 86px;
+  .create-account-title {
+    font-size: 20px;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .create-account-sub-title {
+      margin-top: 8px;
+      color: $subTitle;
+      font-size: 14px;
+    }
+  }
+  .create-account-body {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    .error-message {
+      margin-top: 20px;
+      color: red;
+      font-size: 16px;
+    }
+    .create-account-body-content {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      .word-item {
+        margin-top: 16px;
+        width: 100px;
+        height: 40px;
+        background: #FFFFFF;
+        border: 1px solid #DCE0E2;
+        border-radius: 20px;
+        color: $fontgray;
+        font-size: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .word-item-click {
+        cursor: pointer;
+      }
+      .word-item-selected {
+        background: #F2F3F4;
+        border: 1px solid #DCE0E2;
+      }
+      .input-word {
+
+      }
+      .input-submit {
+        margin-top: 12px;
+        padding-left: 12px;
+        width: 100%;
+        height: 48px;
+        background: #FFFFFF;
+        border: 1px solid #DCE0E2;
+        border-radius: 6px;
+        font-size: 14px;
+        color: $fontgray;
+        ::placeholder {
+          color: $placeholderColor;
+        }
+      }
+    }
+  }
+}
