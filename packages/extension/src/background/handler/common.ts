@@ -5,13 +5,25 @@ import {
   SignTransactionRequest,
   ChainxNode
 } from "../types";
-import keyring from "../keyring";
+import keyring, { KeyStore } from "../keyring";
 // @ts-ignore
 import { u8aToHex } from '@chainx/util';
 import nodes from '../nodes';
 
 export async function createChainxAccount({ name, mnemonic, password }: ChainxAccountCreateRequest) {
   return await keyring.addFromMnemonic(name, mnemonic, password);
+}
+
+export async function setChainxCurrentAccount({ address }: { address: string }) {
+  return await keyring.setCurrentAccount(address);
+}
+
+export function getCurrentChainxAccount(): Promise<KeyStore | null> {
+  return Promise.resolve(keyring.getCurrentAccount());
+}
+
+export function removeChainxAccount({ address }: { address: string }): Promise<any> {
+  return keyring.removeAccount(address);
 }
 
 export async function getAllChainxAccount(): Promise<AccountInfo[]> {
