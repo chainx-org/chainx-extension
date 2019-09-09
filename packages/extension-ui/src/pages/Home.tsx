@@ -40,10 +40,14 @@ function Home(props: any) {
       <div className="content">
         <div className="container container-content">
           <button className="new-account" onClick={() =>
-            props.history.push('/setting')
+            props.history.push('/createAccount')
           }>新增账户
           </button>
-          <button className="import-account">导入账户</button>
+          <button className="import-account" onClick={() => 
+            props.history.push('/importAccount')
+          }>导入账户</button>
+
+          <br />
           <button onClick={test}>{text}</button>
           <div>hello world</div>
           <button onClick={getAccounts}>get accounts</button>
