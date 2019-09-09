@@ -59,3 +59,11 @@ export async function signMessage(address: string, message: string, password: st
 export async function signTransaction(request: SignTransactionRequest) {
   return sendMessage('chainx.transaction.sign', request);
 }
+
+export async function createChainxNode(name: string, url: string) {
+  return sendMessage('chainx.nodes.create', { name, url })
+}
+
+export async function getAllChainxNodes() {
+  return sendMessage('chainx.nodes.all')
+}

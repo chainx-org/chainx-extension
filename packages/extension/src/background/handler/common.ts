@@ -1,7 +1,14 @@
-import { AccountInfo, ChainxAccountCreateRequest, ChainxSignMessageRequest, SignTransactionRequest } from "../types";
+import {
+  AccountInfo,
+  ChainxAccountCreateRequest,
+  ChainxSignMessageRequest,
+  SignTransactionRequest,
+  ChainxNode
+} from "../types";
 import keyring from "../keyring";
 // @ts-ignore
 import { u8aToHex } from '@chainx/util';
+import nodes from '../nodes';
 
 export async function createChainxAccount({ name, mnemonic, password }: ChainxAccountCreateRequest) {
   return await keyring.addFromMnemonic(name, mnemonic, password);
@@ -26,4 +33,12 @@ export async function signTransaction(request: SignTransactionRequest): Promise<
 
   // TODO: sign transaction and return the signed raw tx
   return Promise.resolve(request);
+}
+
+export async function createChainxNode({ name, url }: ChainxNode): Promise<any> {
+  return await nodes.addNode(name, url);
+}
+
+export async function getAllChainxNodes(): Promise<ChainxNode[]> {
+  return nodes.nodes;
 }

@@ -1,6 +1,5 @@
 // @ts-ignore
 import Account from '@chainx/account';
-
 // @ts-ignore
 import store from './store';
 
@@ -14,6 +13,8 @@ interface StoreItem {
   address: string,
   keyStore: object
 }
+
+export const ACCOUNT_PREFIX = 'account_';
 
 class Keyring {
   accounts: KeyStore[];
@@ -42,7 +43,7 @@ class Keyring {
       keyStore
     };
 
-    const result = await store.set(name, item, (): void => {
+    const result = await store.set(`${ACCOUNT_PREFIX}${name}`, item, (): void => {
       this.accounts.push({ name, ...item });
     })
 
@@ -50,8 +51,10 @@ class Keyring {
   }
 
   loadAll(): Promise<any> {
-    return store.all((name, item) => {
-      this.accounts.push({ name, ...item });
+    return store.all((key, item) => {
+      if (key.startsWith(ACCOUNT_PREFIX)) {
+        this.accounts.push({ name: key.slice(ACCOUNT_PREFIX.length), ...item });
+      }
     })
   }
 
