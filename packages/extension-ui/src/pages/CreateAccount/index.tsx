@@ -68,7 +68,7 @@ function CreateAccount(props: any) {
             }
             if (currentStep === 3) {
               const name = 'xat'
-              const pass = '1q2w3e4R'
+              const pass = 'password'
               console.log(name, pass, mnemonic)
               createAccount(name, pass, mnemonic).then(data => {
                 props.history.push('/')

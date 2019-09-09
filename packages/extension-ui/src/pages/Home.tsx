@@ -1,55 +1,61 @@
 
-import * as React from "react";
-import { useState } from "react";
-import { createAccount, getAllAccounts, signMessage } from '../messaging';
-import { AccountInfo } from "@chainx/extension-ui/types";
+import React, { useEffect } from "react"
+import { useState } from "react"
+import { getAllAccounts, signMessage, getCurrentChainxAccount, removeChainxAccount } from '../messaging'
+import { AccountInfo } from "@chainx/extension-ui/types"
 // @ts-ignore
-import logo from "../assets/logo.jpg";
-import "./index.scss";
+import logo from "../assets/logo.jpg"
+import "./index.scss"
 
 function Home(props: any) {
+  const [sig, setSig] = useState('')
+  const [accounts, setAccounts] = useState<AccountInfo[]>([])
+  const [currentAccount, setCurrentAccount] = useState<AccountInfo>({ address: '', name: ''})
 
-  const [text, setText] = useState("test");
-  const [accounts, setAccounts] = useState<AccountInfo[]>([]);
-  const mnemonic = 'bird ensure file media winner flock vague hand village decrease stuff design';
-  const [sig, setSig] = useState('');
+  useEffect(() => {
+    getCurrentAccount()
+    getAccounts()
+  }, [])
 
-  async function test() {
-    try {
-      await createAccount('hello', 'password', mnemonic);
-      setText("success");
-    } catch (e) {
-      setText("fail");
-    }
+  async function getCurrentAccount() {
+    const result =  await getCurrentChainxAccount()
+    console.log('current account', result)
+    setCurrentAccount(result)
   }
 
   async function getAccounts() {
-    const result = await getAllAccounts();
-    setAccounts(result);
+    const result = await getAllAccounts()
+    setAccounts(result)
+    if (!currentAccount.address) {
+      setCurrentAccount(result[0])
+    }
+  }
+
+  async function removeAccount() {
+    const result = await removeChainxAccount(currentAccount.address)
+    console.log('remove account result', currentAccount.address, result)
   }
 
   async function testSign() {
     if (accounts.length > 0) {
-      const sig = await signMessage(accounts[0].address, 'message', 'password');
+      const sig = await signMessage(currentAccount.address, 'message', 'password')
       setSig(sig);
     }
   }
 
-  getAccounts()
-
   return (
     <>
       {
-        accounts[0] ? 
+        currentAccount ? 
         <div className="container-account">
           <div className="account-title">
-            {accounts[0].name}
+            {currentAccount.name}
           </div>
           <div className="account-address">
-            <span>{accounts[0].address}</span>
+            <span>{currentAccount.address}</span>
           </div>
-          <div className="copy">
-            复制地址
+          <div className="copy" onClick={() => removeAccount()}>
+            Remove Account
           </div>
         </div>
         :
@@ -63,9 +69,6 @@ function Home(props: any) {
           }>导入账户</button>
 
           <br />
-          <button onClick={test}>{text}</button>
-          <div>hello world</div>
-          <button onClick={getAccounts}>get accounts</button>
           {
             accounts.map(account => {
               return (
