@@ -68,6 +68,16 @@ class Keyring {
     });
   }
 
+  async removeAccount(address: string): Promise<any> {
+    const target = this.accounts.find(item => item.address === address);
+    if (!target) {
+      return Promise.reject({message: "address not exist"});
+    }
+
+    await store.remove(`${ACCOUNT_PREFIX}${target.name}`);
+    await this.loadAll();
+  }
+
   async loadAll(): Promise<any> {
     await store.all((key, item) => {
       if (key.startsWith(ACCOUNT_PREFIX)) {

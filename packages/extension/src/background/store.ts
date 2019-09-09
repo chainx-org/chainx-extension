@@ -32,9 +32,17 @@ class Store {
     }));
   }
 
-  public remove (key: string, cb?: () => void): void {
-    extension.storage.local.remove(key, (): void => {
-      cb && cb();
+  public remove (key: string, cb?: () => void): Promise<any> {
+    return new Promise((resolve, reject) => {
+      extension.storage.local.remove(key, (): void => {
+        if (extension.runtime.lastError) {
+          reject(extension.runtime.lastError);
+          return;
+        }
+
+        cb && cb();
+        resolve()
+      });
     });
   }
 

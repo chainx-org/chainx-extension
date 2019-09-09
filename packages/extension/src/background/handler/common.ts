@@ -22,6 +22,10 @@ export function getCurrentChainxAccount(): Promise<KeyStore | null> {
   return Promise.resolve(keyring.getCurrentAccount());
 }
 
+export function removeChainxAccount({ address }: { address: string }): Promise<any> {
+  return keyring.removeAccount(address);
+}
+
 export async function getAllChainxAccount(): Promise<AccountInfo[]> {
   return keyring.accounts.map(account => ({
     name: account.name,
