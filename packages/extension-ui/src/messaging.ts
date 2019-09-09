@@ -2,6 +2,12 @@ import extension from "extensionizer";
 // @ts-ignore
 import { PORT_POPUP } from '@chainx/extension-defaults';
 import { AccountInfo, SignTransactionRequest } from "@chainx/extension-ui/types";
+import {
+  CHAINX_ACCOUNT_ALL,
+  CHAINX_ACCOUNT_CREATE,
+  CHAINX_ACCOUNT_SIGN_MESSAGE, CHAINX_NODE_ALL, CHAINX_NODE_CREATE,
+  CHAINX_TRANSACTION_SIGN
+} from "@chainx/extension-ui/constants";
 
 interface Handler {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,25 +51,25 @@ function sendMessage(message: string, request: any = {}, subscriber?: (data: any
 }
 
 export async function createAccount(name: string, password: string, mnemonic: string): Promise<boolean> {
-  return sendMessage('chainx.accounts.create', { name, password, mnemonic });
+  return sendMessage(CHAINX_ACCOUNT_CREATE, { name, password, mnemonic });
 }
 
 export async function getAllAccounts(): Promise<AccountInfo[]> {
-  return sendMessage('chainx.accounts.all');
+  return sendMessage(CHAINX_ACCOUNT_ALL);
 }
 
 export async function signMessage(address: string, message: string, password: string) {
-  return sendMessage('chainx.accounts.sign.message', { address, message, password });
+  return sendMessage(CHAINX_ACCOUNT_SIGN_MESSAGE, { address, message, password });
 }
 
 export async function signTransaction(request: SignTransactionRequest) {
-  return sendMessage('chainx.transaction.sign', request);
+  return sendMessage(CHAINX_TRANSACTION_SIGN, request);
 }
 
 export async function createChainxNode(name: string, url: string) {
-  return sendMessage('chainx.nodes.create', { name, url })
+  return sendMessage(CHAINX_NODE_CREATE, { name, url })
 }
 
 export async function getAllChainxNodes() {
-  return sendMessage('chainx.nodes.all')
+  return sendMessage(CHAINX_NODE_ALL)
 }
