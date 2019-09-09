@@ -67,8 +67,26 @@ function createWebpack ({ alias = {}, context }) {
           ]
         },
         {
-          test: /\.scss$/,
-          use: ['style-loader', 'css-loader', 'sass-loader']
+          test: /\.(|woff|woff2|eot|ttf|svg)$/,
+          use: [
+            {
+              loader: require.resolve('url-loader')
+            }
+          ]
+        },
+        {
+          test: /\.(scss)$/,
+          use: [
+            'style-loader',
+            'css-loader',
+            'sass-loader',
+            // { 
+            //   loader: 'sass-resources-loader',
+            //   options: {
+            //     resources: path.resolve(__dirname, '../extension-ui/src/index.scss')
+            //   }
+            // }
+          ]
         }
       ]
     },
