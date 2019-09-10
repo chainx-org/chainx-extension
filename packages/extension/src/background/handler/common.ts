@@ -30,6 +30,10 @@ export async function setChainxCurrentAccount({ address }: { address: string }) 
   return await keyring.setCurrentAccount(address);
 }
 
+export async function exportPrivateKey({ address, password }: { address: string, password: string }): Promise<string> {
+  return await keyring.exportPrivateKey(address, password);
+}
+
 export async function getCurrentChainxAccount(): Promise<AccountInfo | null> {
   const account = keyring.getCurrentAccount();
   if (!account) {
