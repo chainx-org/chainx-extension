@@ -6,7 +6,7 @@ import {
   CHAINX_ACCOUNT_ALL,
   CHAINX_ACCOUNT_CREATE,
   CHAINX_ACCOUNT_CREATE_FROM_PRIVATE,
-  CHAINX_ACCOUNT_CURRENT,
+  CHAINX_ACCOUNT_CURRENT, CHAINX_ACCOUNT_EXPORT_PRIVATE,
   CHAINX_ACCOUNT_REMOVE,
   CHAINX_ACCOUNT_SELECT,
   CHAINX_ACCOUNT_SIGN_MESSAGE,
@@ -62,6 +62,10 @@ export async function createAccount(name: string, password: string, mnemonic: st
 
 export async function createAccountFromPrivateKey(name: string, privateKey: string, password: string) {
   return sendMessage(CHAINX_ACCOUNT_CREATE_FROM_PRIVATE, { name, privateKey, password });
+}
+
+export async function exportChainxAccountPrivateKey(address: string, password: string) {
+  return sendMessage(CHAINX_ACCOUNT_EXPORT_PRIVATE, { address, password });
 }
 
 export async function getAllAccounts(): Promise<AccountInfo[]> {

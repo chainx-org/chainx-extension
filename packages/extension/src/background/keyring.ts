@@ -72,6 +72,16 @@ class Keyring {
     return this._addAccount(account, password);
   }
 
+  async exportPrivateKey(address: string, password: string): Promise<string> {
+    const account = this.accounts.find(item => item.address === address);
+    if (!account) {
+      return Promise.reject({ message: "address not exist" });
+    }
+
+    const chainxAccount = Account.fromKeyStore(account.keyStore, password);
+    return chainxAccount.privateKey();
+  }
+
   getCurrentAccount() {
     return this.currentAccount;
   }

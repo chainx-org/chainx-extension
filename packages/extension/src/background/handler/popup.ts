@@ -8,12 +8,12 @@ import {
   CHAINX_ACCOUNT_SELECT,
   CHAINX_ACCOUNT_CURRENT,
   CHAINX_ACCOUNT_REMOVE,
-  CHAINX_ACCOUNT_CREATE_FROM_PRIVATE
+  CHAINX_ACCOUNT_CREATE_FROM_PRIVATE, CHAINX_ACCOUNT_EXPORT_PRIVATE
 } from "../constants";
 import { MessageRequest } from "./types";
 import {
   createChainxAccount, createChainxAccountFromPrivateKey,
-  createChainxNode,
+  createChainxNode, exportPrivateKey,
   getAllChainxAccount, getAllChainxNodes, getCurrentChainxAccount, removeChainxAccount, setChainxCurrentAccount,
   signChainxMessage,
   signTransaction
@@ -41,6 +41,8 @@ export default function handlePopup({ message, request }: MessageRequest): Promi
       return getCurrentChainxAccount();
     case CHAINX_ACCOUNT_REMOVE:
       return removeChainxAccount(request);
+    case CHAINX_ACCOUNT_EXPORT_PRIVATE:
+      return exportPrivateKey(request);
   }
 
   return Promise.resolve()
