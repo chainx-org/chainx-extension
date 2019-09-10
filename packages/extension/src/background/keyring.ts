@@ -132,7 +132,7 @@ class Keyring {
   async signMessage(address: string, message: string, password: string): Promise<any> {
     const account = this.accounts.find(account => account.address === address);
     if (!account) {
-      return Promise.reject({message: "invalid account"});
+      return Promise.reject({ message: "invalid account" });
     }
 
     const signer = Account.fromKeyStore(account.keyStore, password);

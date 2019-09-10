@@ -7,9 +7,13 @@ function RequestSign(props: any) {
   const [pass, setPass] = useState('')
 
   const sign = async () => {
-    const result = await signMessage('5QNKsFw5FYBUst68sHuW6CiMKY3FkJ6sLhof4Qw2xhRuRmxn', 'message', pass)
-    console.log('sign message ', result)
-    setSig(result)
+    try {
+      const result = await signMessage('5QNKsFw5FYBUst68sHuW6CiMKY3FkJ6sLhof4Qw2xhRuRmxn', 'message', pass)
+      console.log('sign message ', result)
+      setSig(result)
+    } catch (e) {
+      console.log('page error:', e);
+    }
   }
   return (
     <div className="container request-sign">
