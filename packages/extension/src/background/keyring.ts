@@ -32,7 +32,8 @@ class Keyring {
       return Promise.reject({ message: "name already exist" });
     }
 
-    const addressExist = this.accounts.findIndex(item => item.address === account.address()) >= 0;
+    const address = account.address();
+    const addressExist = this.accounts.findIndex(item => item.address === address) >= 0;
     if (addressExist) {
       return Promise.reject({ message: "address already exist" });
     }
@@ -40,24 +41,15 @@ class Keyring {
     const keyStore = account.encrypt(password);
 
     const item: StoreItem = {
-      address: account.address(),
+      address,
       keyStore
     };
 
     await store.set(`${ACCOUNT_PREFIX}${name}`, item, (): void => {
       this.accounts.push({ name, ...item });
     })
-
-    await new Promise(async (resolve, reject) => {
-      try {
-        await store.set(CURRENT_ACCOUNT_KEY, account.address(), async () => {
-          await this.loadAll();
-          resolve()
-        })
-      } catch (e) {
-        reject();
-      }
-    })
+    await store.set(CURRENT_ACCOUNT_KEY, address)
+    await this.loadAll();
 
     return this.currentAccount;
   }
