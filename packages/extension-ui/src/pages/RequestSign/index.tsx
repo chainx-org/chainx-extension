@@ -7,7 +7,13 @@ import './requestSign.scss'
 
 function RequestSign(props: any) {
   const [sig, setSig] = useState('')
+  const [pass, setPass] = useState('')
 
+  const sign = async () => {
+    const result = await signMessage('5QNKsFw5FYBUst68sHuW6CiMKY3FkJ6sLhof4Qw2xhRuRmxn', 'message', pass)
+    console.log('sign message ', result)
+    setSig(result)
+  }
   return (
     <div className="container request-sign">
       <div className="detail">
@@ -24,15 +30,29 @@ function RequestSign(props: any) {
           <span>5PqyfFXGWKi75d5cKAqpkdbmWtVANYcMEbXCHLbpwDYiT1Ec</span>
         </div>
       </div>
-      <div className="submit">
+      <div className="submit-area">
         <div className="title">
           <span>输入密码</span>
         </div>
-        <input />
-        <div className="button-area">
-          <button>取消</button>
-          <button>签名</button>
+        <input
+          value={pass}
+          onChange={e => setPass(e.target.value)}
+          onKeyPress={event => {
+            if (event.key === "Enter") {
+              sign()
+            }
+          }}
+          className="input"
+          type="password"
+          placeholder='密码'
+        />
+        <div className="button-area margin-top-40">
+          <button className="button button-white-half" onClick={() => props.history.push('/')}>取消</button>
+          <button className="button button-yellow-half" onClick={() => {
+            sign()
+          }}>签名</button>
         </div>
+        <span>sign result: {sig}</span>
       </div>
     </div>
   )
