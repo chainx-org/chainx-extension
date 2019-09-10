@@ -1,11 +1,11 @@
 import {
   AccountInfo,
   ChainxAccountCreateRequest,
+  ChainxNode,
   ChainxSignMessageRequest,
-  SignTransactionRequest,
-  ChainxNode
+  SignTransactionRequest
 } from "../types";
-import keyring, { KeyStore } from "../keyring";
+import keyring from "../keyring";
 // @ts-ignore
 import { u8aToHex } from '@chainx/util';
 import nodes from '../nodes';
