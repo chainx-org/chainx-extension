@@ -4,6 +4,12 @@ export interface ChainxAccountCreateRequest {
   mnemonic: string
 }
 
+export interface ChainxAccountCreateFromPrivateKeyRequest {
+  name: string,
+  password: string,
+  privateKey: string
+}
+
 export interface AccountInfo {
   name: string,
   address: string

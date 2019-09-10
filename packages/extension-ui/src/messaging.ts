@@ -4,8 +4,14 @@ import { PORT_POPUP } from '@chainx/extension-defaults';
 import { AccountInfo, SignTransactionRequest } from "@chainx/extension-ui/types";
 import {
   CHAINX_ACCOUNT_ALL,
-  CHAINX_ACCOUNT_CREATE, CHAINX_ACCOUNT_CURRENT, CHAINX_ACCOUNT_REMOVE, CHAINX_ACCOUNT_SELECT,
-  CHAINX_ACCOUNT_SIGN_MESSAGE, CHAINX_NODE_ALL, CHAINX_NODE_CREATE,
+  CHAINX_ACCOUNT_CREATE,
+  CHAINX_ACCOUNT_CREATE_FROM_PRIVATE,
+  CHAINX_ACCOUNT_CURRENT,
+  CHAINX_ACCOUNT_REMOVE,
+  CHAINX_ACCOUNT_SELECT,
+  CHAINX_ACCOUNT_SIGN_MESSAGE,
+  CHAINX_NODE_ALL,
+  CHAINX_NODE_CREATE,
   CHAINX_TRANSACTION_SIGN
 } from "@chainx/extension-ui/constants";
 
@@ -52,6 +58,10 @@ function sendMessage(message: string, request: any = {}, subscriber?: (data: any
 
 export async function createAccount(name: string, password: string, mnemonic: string): Promise<boolean> {
   return sendMessage(CHAINX_ACCOUNT_CREATE, { name, password, mnemonic });
+}
+
+export async function createAccountFromPrivateKey(name: string, privateKey: string, password: string) {
+  return sendMessage(CHAINX_ACCOUNT_CREATE_FROM_PRIVATE, { name, privateKey, password });
 }
 
 export async function getAllAccounts(): Promise<AccountInfo[]> {

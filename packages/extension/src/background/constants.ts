@@ -1,4 +1,5 @@
 export const CHAINX_ACCOUNT_CREATE = 'chainx.accounts.create';
+export const CHAINX_ACCOUNT_CREATE_FROM_PRIVATE = 'chainx.accounts.create.private'; // 从私钥创建账户
 export const CHAINX_ACCOUNT_ALL = 'chainx.accounts.all';
 export const CHAINX_ACCOUNT_SELECT = 'chainx.accounts.select'; // 设置目标账户
 export const CHAINX_ACCOUNT_CURRENT = 'chainx.accounts.current'; // 获取当前账户

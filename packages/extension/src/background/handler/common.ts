@@ -1,5 +1,5 @@
 import {
-  AccountInfo,
+  AccountInfo, ChainxAccountCreateFromPrivateKeyRequest,
   ChainxAccountCreateRequest,
   ChainxNode,
   ChainxSignMessageRequest,
@@ -12,6 +12,14 @@ import nodes from '../nodes';
 
 export async function createChainxAccount({ name, mnemonic, password }: ChainxAccountCreateRequest): Promise<AccountInfo> {
   const account = await keyring.addFromMnemonic(name, mnemonic, password);
+  return {
+    name: account.name,
+    address: account.address
+  };
+}
+
+export async function createChainxAccountFromPrivateKey({ name, privateKey, password }: ChainxAccountCreateFromPrivateKeyRequest) {
+  const account = await keyring.addFromPrivateKey(name, privateKey, password);
   return {
     name: account.name,
     address: account.address
