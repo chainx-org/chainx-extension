@@ -3,6 +3,7 @@ import { useState } from 'react'
 // @ts-ignore
 import Account from '@chainx/account'
 import { createAccount } from '../../messaging'
+// @ts-ignore
 import shuffle from 'lodash.shuffle'
 import './createAccount.scss'
 

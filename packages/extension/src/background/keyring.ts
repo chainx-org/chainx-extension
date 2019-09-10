@@ -48,7 +48,7 @@ class Keyring {
     await store.set(`${ACCOUNT_PREFIX}${name}`, item, (): void => {
       this.accounts.push({ name, ...item });
     })
-    await store.set(CURRENT_ACCOUNT_KEY, address)
+    await store.set(CURRENT_ACCOUNT_KEY, address);
     await this.loadAll();
 
     return this.currentAccount;
@@ -118,18 +118,14 @@ class Keyring {
       return
     }
 
-    await store.get(CURRENT_ACCOUNT_KEY, account => {
-      if (!account) {
+    await store.get(CURRENT_ACCOUNT_KEY, address => {
+      if (!address) {
         this.currentAccount = this.accounts[0] || null;
         return;
       }
 
-      const target = this.accounts.find(item => item.address === account.address);
-      if (!target) {
-        this.currentAccount = this.accounts[0];
-      } else {
-        this.currentAccount = target;
-      }
+      const target = this.accounts.find(item => item.address === address);
+      this.currentAccount = target || this.accounts[0];
     })
   }
 
