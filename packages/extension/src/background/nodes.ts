@@ -11,12 +11,14 @@ class Nodes {
     this.nodes = [];
   }
 
-  loadAll(): Promise<any> {
-    return store.all((key, item) => {
+  async loadAll(): Promise<ChainxNode[]> {
+    await store.all((key, item) => {
       if (key.startsWith(NODE_PREFIX)) {
         this.nodes.push({ name: key.slice(NODE_PREFIX.length), ...item });
       }
     })
+
+    return this.nodes;
   }
 
   async addNode(name: string, url: string): Promise<ChainxNode> {
