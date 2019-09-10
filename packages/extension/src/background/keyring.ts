@@ -26,7 +26,7 @@ class Keyring {
     this.currentAccount = null;
   }
 
-  async _addAccount(account: Account, password: string): Promise<any> {
+  async _addAccount(name: string, account: Account, password: string): Promise<any> {
     const nameExist = this.accounts.findIndex(item => item.name === name) >= 0;
     if (nameExist) {
       return Promise.reject({ message: "name already exist" });
@@ -64,12 +64,12 @@ class Keyring {
 
   async addFromPrivateKey(name: string, privateKey: string, password: string): Promise<any> {
     const account = Account.from(privateKey);
-    return this._addAccount(account, password);
+    return this._addAccount(name, account, password);
   }
 
   async addFromMnemonic(name: string, mnemonic: string, password: string): Promise<any> {
     const account = Account.from(mnemonic);
-    return this._addAccount(account, password);
+    return this._addAccount(name, account, password);
   }
 
   async exportPrivateKey(address: string, password: string): Promise<string> {
