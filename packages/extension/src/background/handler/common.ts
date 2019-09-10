@@ -10,8 +10,12 @@ import keyring, { KeyStore } from "../keyring";
 import { u8aToHex } from '@chainx/util';
 import nodes from '../nodes';
 
-export async function createChainxAccount({ name, mnemonic, password }: ChainxAccountCreateRequest) {
-  return await keyring.addFromMnemonic(name, mnemonic, password);
+export async function createChainxAccount({ name, mnemonic, password }: ChainxAccountCreateRequest): Promise<AccountInfo> {
+  const account = await keyring.addFromMnemonic(name, mnemonic, password);
+  return {
+    name: account.name,
+    address: account.address
+  };
 }
 
 export async function setChainxCurrentAccount({ address }: { address: string }) {

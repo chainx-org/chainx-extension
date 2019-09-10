@@ -46,11 +46,22 @@ class Keyring {
       keyStore
     };
 
-    const result = await store.set(`${ACCOUNT_PREFIX}${name}`, item, (): void => {
+    await store.set(`${ACCOUNT_PREFIX}${name}`, item, (): void => {
       this.accounts.push({ name, ...item });
     })
 
-    return result;
+    await new Promise(async (resolve, reject) => {
+      try {
+        await store.set(CURRENT_ACCOUNT_KEY, account.address, async () => {
+          await this.loadAll();
+          resolve()
+        })
+      } catch (e) {
+        reject();
+      }
+    })
+
+    return this.currentAccount;
   }
 
   getCurrentAccount() {
@@ -71,7 +82,7 @@ class Keyring {
   async removeAccount(address: string): Promise<any> {
     const target = this.accounts.find(item => item.address === address);
     if (!target) {
-      return Promise.reject({message: "address not exist"});
+      return Promise.reject({ message: "address not exist" });
     }
 
     await store.remove(`${ACCOUNT_PREFIX}${target.name}`);
@@ -90,6 +101,11 @@ class Keyring {
     }
 
     await store.get(CURRENT_ACCOUNT_KEY, account => {
+      if (!account) {
+        this.currentAccount = this.accounts[0] || null;
+        return;
+      }
+
       const target = this.accounts.find(item => item.address === account.address);
       if (!target) {
         this.currentAccount = this.accounts[0];
