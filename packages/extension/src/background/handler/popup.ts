@@ -8,13 +8,24 @@ import {
   CHAINX_ACCOUNT_SELECT,
   CHAINX_ACCOUNT_CURRENT,
   CHAINX_ACCOUNT_REMOVE,
-  CHAINX_ACCOUNT_CREATE_FROM_PRIVATE, CHAINX_ACCOUNT_EXPORT_PRIVATE
+  CHAINX_ACCOUNT_CREATE_FROM_PRIVATE,
+  CHAINX_ACCOUNT_EXPORT_PRIVATE,
+  CHAINX_NODE_SELECT,
+  CHAINX_NODE_CURRENT,
+  CHAINX_NODE_REMOVE
 } from "../constants";
 import { MessageRequest } from "./types";
 import {
-  createChainxAccount, createChainxAccountFromPrivateKey,
-  createChainxNode, exportPrivateKey,
-  getAllChainxAccount, getAllChainxNodes, getCurrentChainxAccount, removeChainxAccount, setChainxCurrentAccount,
+  createChainxAccount,
+  createChainxAccountFromPrivateKey,
+  createChainxNode,
+  exportPrivateKey,
+  getAllChainxAccount,
+  getAllChainxNodes, getChainxCurrentNode,
+  getCurrentChainxAccount,
+  removeChainxAccount, removeChainxNode,
+  setChainxCurrentAccount,
+  setChainxCurrentNode,
   signChainxMessage,
   signTransaction
 } from './common';
@@ -43,6 +54,12 @@ export default function handlePopup({ message, request }: MessageRequest): Promi
       return removeChainxAccount(request);
     case CHAINX_ACCOUNT_EXPORT_PRIVATE:
       return exportPrivateKey(request);
+    case CHAINX_NODE_SELECT:
+      return setChainxCurrentNode(request);
+    case CHAINX_NODE_CURRENT:
+      return getChainxCurrentNode();
+    case CHAINX_NODE_REMOVE:
+      return removeChainxNode(request);
   }
 
   return Promise.resolve()

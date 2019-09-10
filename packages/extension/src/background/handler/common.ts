@@ -78,3 +78,15 @@ export async function createChainxNode({ name, url }: ChainxNode): Promise<Chain
 export async function getAllChainxNodes(): Promise<ChainxNode[]> {
   return nodes.nodes;
 }
+
+export async function setChainxCurrentNode({ url }: { url: string }) {
+  return nodes.setCurrentNode(url);
+}
+
+export async function getChainxCurrentNode() {
+  return nodes.getCurrentNode();
+}
+
+export async function removeChainxNode({ url }: { url: string }) {
+  return nodes.removeNode(url);
+}

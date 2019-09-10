@@ -1,6 +1,7 @@
 // @ts-ignore
 import store from './store';
 import { ChainxNode } from "./types";
+import { CURRENT_ACCOUNT_KEY } from "./keyring";
 
 export const NODE_PREFIX = 'node_';
 export const CURRENT_NODE_KEY = 'current_node_key';
@@ -48,11 +49,48 @@ class Nodes {
   async addNode(name: string, url: string): Promise<ChainxNode> {
     const node: ChainxNode = { name, url };
 
+    if (this.nodes.find(item => item.name === name)) {
+      return Promise.reject({ message: "name already exist" });
+    }
+
+    if (this.nodes.find(item => item.url === url)) {
+      return Promise.reject({ message: "url already exist" });
+    }
+
     await store.set(`${NODE_PREFIX}${name}`, node, () => {
       this.nodes.push(node);
     })
 
     return { name, url };
+  }
+
+  async setCurrentNode(url: string): Promise<any> {
+    const target = this.nodes.find(item => item.url === url);
+    if (!target) {
+      return Promise.reject({ message: "url not exist" });
+    }
+
+    await store.set(CURRENT_NODE_KEY, target, () => {
+      this.currentNode = target;
+    })
+  }
+
+  async getCurrentNode() {
+    return this.currentNode;
+  }
+
+  async removeNode(url: string): Promise<any> {
+    const target = this.nodes.find(item => item.url === url);
+    if (!target) {
+      return Promise.reject({ message: "name not exist" });
+    }
+
+    await store.remove(`${NODE_PREFIX}${target.name}`);
+    if (this.currentNode && this.currentNode.url === url) {
+      await store.remove(CURRENT_ACCOUNT_KEY);
+    }
+
+    await this.loadAll();
   }
 }
 
