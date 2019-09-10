@@ -25,7 +25,7 @@ export async function setChainxCurrentAccount({ address }: { address: string }) 
 export async function getCurrentChainxAccount(): Promise<AccountInfo | null> {
   const account = keyring.getCurrentAccount();
   if (!account) {
-    return account;
+    return null;
   }
 
   return {

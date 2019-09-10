@@ -90,6 +90,8 @@ class Keyring {
   }
 
   async loadAll(): Promise<any> {
+    this.accounts = [];
+
     await store.all((key, item) => {
       if (key.startsWith(ACCOUNT_PREFIX)) {
         this.accounts.push({ name: key.slice(ACCOUNT_PREFIX.length), ...item });
