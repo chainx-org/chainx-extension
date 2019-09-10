@@ -86,11 +86,15 @@ class Keyring {
     }
 
     await store.remove(`${ACCOUNT_PREFIX}${target.name}`);
+    if (this.currentAccount && this.currentAccount.address === address) {
+      await store.remove(CURRENT_ACCOUNT_KEY);
+    }
     await this.loadAll();
   }
 
   async loadAll(): Promise<any> {
     this.accounts = [];
+    this.currentAccount = null;
 
     await store.all((key, item) => {
       if (key.startsWith(ACCOUNT_PREFIX)) {
