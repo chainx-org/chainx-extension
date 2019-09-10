@@ -32,7 +32,7 @@ class Keyring {
       return Promise.reject({ message: "name already exist" });
     }
 
-    const addressExist = this.accounts.findIndex(item => item.address === account.address) >= 0;
+    const addressExist = this.accounts.findIndex(item => item.address === account.address()) >= 0;
     if (addressExist) {
       return Promise.reject({ message: "address already exist" });
     }
@@ -86,15 +86,17 @@ class Keyring {
     return this.currentAccount;
   }
 
-  async setCurrentAccount(address: string): Promise<any> {
+  async setCurrentAccount(address: string): Promise<KeyStore | null> {
     const account = this.accounts.find(item => item.address === address);
     if (!account) {
       return Promise.reject({ message: "address not exist" });
     }
 
-    return await store.set(CURRENT_ACCOUNT_KEY, address, () => {
+    await store.set(CURRENT_ACCOUNT_KEY, address, () => {
       this.currentAccount = account;
     });
+
+    return this.currentAccount;
   }
 
   async removeAccount(address: string): Promise<any> {

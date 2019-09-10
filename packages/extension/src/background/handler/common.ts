@@ -26,8 +26,16 @@ export async function createChainxAccountFromPrivateKey({ name, privateKey, pass
   };
 }
 
-export async function setChainxCurrentAccount({ address }: { address: string }) {
-  return await keyring.setCurrentAccount(address);
+export async function setChainxCurrentAccount({ address }: { address: string }): Promise<AccountInfo | null> {
+  const current = await keyring.setCurrentAccount(address);
+  if (current) {
+    return {
+      name: current.name,
+      address: current.address
+    }
+  }
+
+  return current;
 }
 
 export async function exportPrivateKey({ address, password }: { address: string, password: string }): Promise<string> {
