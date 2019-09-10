@@ -1,7 +1,7 @@
 
 import React, { useEffect } from "react"
 import { useState } from "react"
-import { getAllAccounts, signMessage, getCurrentChainxAccount, removeChainxAccount } from '../messaging'
+import { exportChainxAccountPrivateKey, signMessage, getCurrentChainxAccount, removeChainxAccount } from '../messaging'
 import { AccountInfo } from "@chainx/extension-ui/types"
 // @ts-ignore
 import logo from "../assets/logo.jpg"
@@ -10,6 +10,7 @@ import "./index.scss"
 function Home(props: any) {
   const [sig, setSig] = useState('')
   const [currentAccount, setCurrentAccount] = useState<AccountInfo>({ address: '', name: ''})
+  const [pk, setPk] = useState('')
 
   useEffect(() => {
     getCurrentAccount()
@@ -20,6 +21,11 @@ function Home(props: any) {
     setCurrentAccount(result)
   }
 
+  async function exportPk() {
+    const result = await exportChainxAccountPrivateKey(currentAccount.address, 'password')
+    console.log(result)
+    setPk(result)
+  }
 
   async function removeAccount() {
     const result = await removeChainxAccount(currentAccount.address)
@@ -45,6 +51,10 @@ function Home(props: any) {
           <div className="copy" onClick={() => removeAccount()}>
             Remove Account
           </div>
+          <span>Private Key: {pk}</span>
+          <button className="export" onClick={() => exportPk()}>
+            Export Private Key
+          </button>
         </div>
         :
         <div className="container container-content">
