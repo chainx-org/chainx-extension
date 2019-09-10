@@ -72,44 +72,59 @@
   .container-content {
     flex-direction: column;
     align-items: center;
-    .new-account {
+    .button-new-account {
       margin-top: 56px;
     }
-    .import-account {
+    .button-import-account {
       margin-top: 16px;
     }
   }
 }
 
-button {
+.input {
+  margin-top: 16px;
+  padding: 12px;
+  width: 296px;
+  height: 24px;
+  background: #FFFFFF;
+  border: 1px solid $grayDivide;
+  border-radius: 6px;
+  font-size: 14px;
+  color: $fontgray;
+  ::placeholder {
+    color: $placeholderColor;
+  }
+}
+
+.button {
   height: 40px;
-  width: 318px;
-  border: 1px solid #DCE0E2;
   border-radius: 20px;
   font-size: 14px;
   cursor: pointer;
+}
+
+.button-white {
+  width: 318px;
+  border: 1px solid #DCE0E2;
+}
+
+.button-white-half {
+  width: 318px;
+  border: 1px solid #DCE0E2;
 }
 
 .button-yellow-half {
   width: 151px;
-  height: 40px;
   background: $yellow;
   border: 1px solid rgba(0,0,0,0.04);
-  border-radius: 20px;
-  font-size: 14px;
   color: #000;
-  cursor: pointer;
 }
 
-.button-yellow-full {
+.button-yellow {
   width: 318px;
-  height: 40px;
   background: $yellow;
   border: 1px solid rgba(0,0,0,0.04);
-  border-radius: 20px;
-  font-size: 14px;
   color: #000;
-  cursor: pointer;
 }
 
 .margin-top-40 {
