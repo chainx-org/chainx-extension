@@ -50,7 +50,7 @@ class Keyring {
 
     await new Promise(async (resolve, reject) => {
       try {
-        await store.set(CURRENT_ACCOUNT_KEY, account.address, async () => {
+        await store.set(CURRENT_ACCOUNT_KEY, account.address(), async () => {
           await this.loadAll();
           resolve()
         })
