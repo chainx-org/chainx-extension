@@ -1,8 +1,5 @@
-
-import React, { useEffect } from 'react'
-import { useState } from "react"
+import React, { useState } from 'react'
 import { signMessage } from '../../messaging'
-import { AccountInfo } from '@chainx/extension-ui/types'
 import './requestSign.scss'
 
 function RequestSign(props: any) {

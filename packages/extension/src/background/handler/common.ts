@@ -65,7 +65,7 @@ export async function getAllChainxAccount(): Promise<AccountInfo[]> {
   }));
 }
 
-export async function signChainxMessage({ address, message, password }: ChainxSignMessageRequest) {
+export async function signChainxMessage({ address, message, password }: ChainxSignMessageRequest): Promise<string> {
   return u8aToHex(keyring.signMessage(address, message, password));
 }
 
