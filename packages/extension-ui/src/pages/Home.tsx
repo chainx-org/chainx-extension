@@ -22,13 +22,14 @@ function Home(props: any) {
   }
 
   async function exportPk() {
-    const result = await exportChainxAccountPrivateKey(currentAccount.address, 'password')
+    const result = await exportChainxAccountPrivateKey(currentAccount.address, '1q2w3e4r')
     console.log(result)
     setPk(result)
   }
 
   async function removeAccount() {
     const result = await removeChainxAccount(currentAccount.address)
+    getCurrentAccount()
     console.log('remove account result', currentAccount.address, result)
   }
 
