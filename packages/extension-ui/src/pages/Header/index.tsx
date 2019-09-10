@@ -94,7 +94,11 @@ function Header(props: any) {
               {
                 accounts.map(item => (
                   <div className="account-item" key={item.name}
-                    onClick={() => setChainxCurrentAccount(item.address)}  
+                    onClick={() => {
+                      setChainxCurrentAccount(item.address).then(d => console.log(d))
+                      setShowAccountArea(false)
+                      props.history.push('/')
+                    }}
                   >
                     <span className="name">{item.name}</span>
                     <DotInCenterStr value={item.address} />

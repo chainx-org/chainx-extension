@@ -2,16 +2,33 @@ import React from 'react'
 import { useState } from 'react'
 import { createAccount, createAccountFromPrivateKey } from '../../messaging'
 import './ImportAccount.scss'
+import handler from 'packages/extension/src/background/handler';
 
 function ImportAccount(props: any) {
   const [currentStep, setCurrentStep] = useState(0)
   const [currentTabIndex, setCurrentTabIndex] = useState(0)
+  const [obj, setObj] = useState({name: '', pass: '', repass: ''})
+  const [pk, setPk] = useState('')
   const [errMsg, setErrMsg] = useState('')
   const [mnemonicList, setMnemonicList] = useState(new Array(12).fill(''))
 
   const titleList = [['导入助记词', '导入私钥'], ['密码', '密码']]
   const subTitleList = [['按顺序输入助记词', '输入你的账户私钥'], ['', '']]
   const buttonTextList = ['下一步', '完成']
+
+  const create = async() => {
+    let secret = mnemonicList.join(' ')
+    let handler = createAccount
+    if (currentTabIndex === 1) {
+      secret = pk
+      handler = createAccountFromPrivateKey
+    }
+    handler(obj.name, obj.pass, secret).then(_ => {
+      props.history.push('/')
+    }).catch(err => {
+      setErrMsg(err.message)
+    })
+  }
 
   return (
     <div className="container import-account">
@@ -36,9 +53,9 @@ function ImportAccount(props: any) {
                 mnemonicList.map((item, index) => (
                   <input className="word-item" key={index} 
                     value={mnemonicList[index]}
-                    onChange={value => {
-                      mnemonicList.splice(index, 1, value)
-                      setMnemonicList(mnemonicList)
+                    onChange={e => {
+                      mnemonicList.splice(index, 1, e.target.value)
+                      setMnemonicList(Array.from(mnemonicList))
                     }}
                   />
                 ))
@@ -46,14 +63,38 @@ function ImportAccount(props: any) {
             </div>
             :
             <div className="import-private-key">
-              <textarea />
+              <textarea
+                value={pk}
+                onChange={e => setPk(e.target.value)}
+                onKeyPress={event => {
+                  if (event.key === "Enter") {
+                    create()
+                  }
+                }}
+              />
             </div>
             : null
           }
           {
             currentStep === 1 && 
             <>
-              <input className="input" type="password" name="password" placeholder="密码" />
+              <input className="input" type="text"
+                value={obj.name}
+                onChange={e => setObj({...obj, ['name']: e.target.value})}
+                placeholder="标签（12字符以内）" />
+              <input className="input" type="password"
+                value={obj.pass}
+                onChange={e => setObj({...obj, ['pass']: e.target.value})}
+                placeholder="密码" />
+              <input className="input" type="password"
+                value={obj.repass}
+                onChange={e => setObj({...obj, ['repass']: e.target.value})}
+                onKeyPress={event => {
+                  if (event.key === "Enter") {
+                    create()
+                  }
+                }}
+                placeholder="确认密码" />
             </>
           }
         </div>
@@ -65,25 +106,8 @@ function ImportAccount(props: any) {
             if (currentStep < 1) {
               setCurrentStep(currentStep+1)
             }
-            const pk = ''
             if (currentStep === 1) {
-              const name = 'pk'
-              const pass = 'password'
-              console.log(name, pass, mnemonicList)
-              if (currentTabIndex === 1) {
-                createAccountFromPrivateKey(name, pk, pass).then(data => {
-                  console.log('import pk', data)
-                  props.history.push('/')
-                }).catch(err => {
-                  setErrMsg(err.message)
-                })
-              } else if (currentTabIndex === 0) {
-                createAccount(name, pass, mnemonicList.join(' ')).then(_ => {
-                  props.history.push('/')
-                }).catch(err => {
-                  setErrMsg(err.message)
-                })
-              }
+              create()
             }
           }}
         >{buttonTextList[currentStep]}</button>

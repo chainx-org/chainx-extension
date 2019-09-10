@@ -13,11 +13,20 @@ function CreateAccount(props: any) {
   const buttonTextList = ['开始', '下一步', '下一步', '完成']
   
   const [currentStep, setCurrentStep] = useState(0)
+  const [obj, setObj] = useState({name: '', pass: '', repass: ''})
   const [errMsg, setErrMsg] = useState('')
   const [mnemonic] = useState(Account.newMnemonic())
   const mnemonicList = mnemonic.split(' ')
   const [shuffleMnemonicList] = useState(shuffle(mnemonicList))
   const mnemonicWords = mnemonicList.map((item: string, index: number) => ({ value: item, index: index }))
+  console.log(mnemonic)
+  const create = async() => {
+    createAccount(obj.name, obj.pass, mnemonic).then(_ => {
+      props.history.push('/')
+    }).catch(err => {
+      setErrMsg(err.message)
+    })
+  }
 
   return (
     <div className="container create-account">
@@ -52,9 +61,23 @@ function CreateAccount(props: any) {
           {
             currentStep === 3 && 
             <>
-              <input className="input" type="text" name="password" placeholder="标签（12字符以内）" />
-              <input className="input" type="password" name="password" placeholder="密码" />
-              <input className="input" type="password" name="repassword" placeholder="确认密码" />
+              <input className="input" type="text"
+                value={obj.name}
+                onChange={e => setObj({...obj, ['name']: e.target.value})}
+                placeholder="标签（12字符以内）" />
+              <input className="input" type="password"
+                value={obj.pass}
+                onChange={e => setObj({...obj, ['pass']: e.target.value})}
+                placeholder="密码" />
+              <input className="input" type="password"
+                value={obj.repass}
+                onChange={e => setObj({...obj, ['repass']: e.target.value})}
+                onKeyPress={event => {
+                  if (event.key === "Enter") {
+                    create()
+                  }
+                }}
+                placeholder="确认密码" />
             </>
           }
         </div>
@@ -67,14 +90,7 @@ function CreateAccount(props: any) {
               setCurrentStep(currentStep+1)
             }
             if (currentStep === 3) {
-              const name = 'hello'
-              const pass = 'password'
-              console.log(name, pass, mnemonic)
-              createAccount(name, pass, mnemonic).then(data => {
-                props.history.push('/')
-              }).catch(err => {
-                setErrMsg(err.message)
-              })
+              create()
             }
           }}
         >{buttonTextList[currentStep]}</button>
