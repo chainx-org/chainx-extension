@@ -1,0 +1,11 @@
+@import '../../assets/variables.scss';
+
+.request-sign {
+  display: flex;
+  flex-direction: column;
+  .detail {
+    width: 100%;
+    height: 156px;
+    border-bottom: 1px solid $grayDivide;
+  }
+}
