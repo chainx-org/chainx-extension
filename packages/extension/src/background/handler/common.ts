@@ -71,7 +71,7 @@ export async function signTransaction(request: SignTransactionRequest): Promise<
   return Promise.resolve(request);
 }
 
-export async function createChainxNode({ name, url }: ChainxNode): Promise<any> {
+export async function createChainxNode({ name, url }: ChainxNode): Promise<ChainxNode> {
   return await nodes.addNode(name, url);
 }
 

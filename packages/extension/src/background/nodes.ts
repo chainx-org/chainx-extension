@@ -19,12 +19,14 @@ class Nodes {
     })
   }
 
-  async addNode(name: string, url: string): Promise<any> {
+  async addNode(name: string, url: string): Promise<ChainxNode> {
     const node: ChainxNode = { name, url };
 
     await store.set(`${NODE_PREFIX}${name}`, node, () => {
       this.nodes.push(node);
     })
+
+    return { name, url };
   }
 }
 
