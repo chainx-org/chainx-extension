@@ -11,7 +11,7 @@ import {
   CHAINX_ACCOUNT_SELECT,
   CHAINX_ACCOUNT_SIGN_MESSAGE,
   CHAINX_NODE_ALL,
-  CHAINX_NODE_CREATE,
+  CHAINX_NODE_CREATE, CHAINX_NODE_CURRENT, CHAINX_NODE_REMOVE, CHAINX_NODE_SELECT,
   CHAINX_TRANSACTION_SIGN
 } from "@chainx/extension-ui/constants";
 
@@ -98,4 +98,16 @@ export async function getCurrentChainxAccount() {
 
 export async function removeChainxAccount(address: string) {
   return sendMessage(CHAINX_ACCOUNT_REMOVE, { address });
+}
+
+export async function setChainxNode(url: string) {
+  return sendMessage(CHAINX_NODE_SELECT, { url });
+}
+
+export async function getCurrentChainxNode() {
+  return sendMessage(CHAINX_NODE_CURRENT);
+}
+
+export async function removeChainxNode(url: string) {
+  return sendMessage(CHAINX_NODE_REMOVE, { url });
 }

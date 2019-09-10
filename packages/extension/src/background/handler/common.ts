@@ -26,8 +26,16 @@ export async function createChainxAccountFromPrivateKey({ name, privateKey, pass
   };
 }
 
-export async function setChainxCurrentAccount({ address }: { address: string }) {
-  return await keyring.setCurrentAccount(address);
+export async function setChainxCurrentAccount({ address }: { address: string }): Promise<AccountInfo | null> {
+  const current = await keyring.setCurrentAccount(address);
+  if (current) {
+    return {
+      name: current.name,
+      address: current.address
+    }
+  }
+
+  return current;
 }
 
 export async function exportPrivateKey({ address, password }: { address: string, password: string }): Promise<string> {
@@ -71,10 +79,22 @@ export async function signTransaction(request: SignTransactionRequest): Promise<
   return Promise.resolve(request);
 }
 
-export async function createChainxNode({ name, url }: ChainxNode): Promise<any> {
+export async function createChainxNode({ name, url }: ChainxNode): Promise<ChainxNode> {
   return await nodes.addNode(name, url);
 }
 
 export async function getAllChainxNodes(): Promise<ChainxNode[]> {
   return nodes.nodes;
+}
+
+export async function setChainxCurrentNode({ url }: { url: string }) {
+  return nodes.setCurrentNode(url);
+}
+
+export async function getChainxCurrentNode() {
+  return nodes.getCurrentNode();
+}
+
+export async function removeChainxNode({ url }: { url: string }) {
+  return nodes.removeNode(url);
 }
