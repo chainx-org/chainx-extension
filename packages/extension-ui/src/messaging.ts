@@ -60,7 +60,7 @@ export async function createAccount(name: string, password: string, mnemonic: st
   return sendMessage(CHAINX_ACCOUNT_CREATE, { name, password, mnemonic });
 }
 
-export async function createAccountFromPrivateKey(name: string, privateKey: string, password: string) {
+export async function createAccountFromPrivateKey(name: string, password: string, privateKey: string) {
   return sendMessage(CHAINX_ACCOUNT_CREATE_FROM_PRIVATE, { name, privateKey, password });
 }
 
