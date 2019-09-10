@@ -22,8 +22,16 @@ export async function setChainxCurrentAccount({ address }: { address: string }) 
   return await keyring.setCurrentAccount(address);
 }
 
-export function getCurrentChainxAccount(): Promise<KeyStore | null> {
-  return Promise.resolve(keyring.getCurrentAccount());
+export async function getCurrentChainxAccount(): Promise<AccountInfo | null> {
+  const account = keyring.getCurrentAccount();
+  if (!account) {
+    return account;
+  }
+
+  return {
+    name: account.name,
+    address: account.address
+  };
 }
 
 export function removeChainxAccount({ address }: { address: string }): Promise<any> {
