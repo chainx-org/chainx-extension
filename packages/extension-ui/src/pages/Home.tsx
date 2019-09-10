@@ -9,27 +9,17 @@ import "./index.scss"
 
 function Home(props: any) {
   const [sig, setSig] = useState('')
-  const [accounts, setAccounts] = useState<AccountInfo[]>([])
   const [currentAccount, setCurrentAccount] = useState<AccountInfo>({ address: '', name: ''})
 
   useEffect(() => {
     getCurrentAccount()
-    getAccounts()
   }, [])
 
   async function getCurrentAccount() {
     const result =  await getCurrentChainxAccount()
-    console.log('current account', result)
     setCurrentAccount(result)
   }
 
-  async function getAccounts() {
-    const result = await getAllAccounts()
-    setAccounts(result)
-    if (!currentAccount.address) {
-      setCurrentAccount(result[0])
-    }
-  }
 
   async function removeAccount() {
     const result = await removeChainxAccount(currentAccount.address)
@@ -37,10 +27,8 @@ function Home(props: any) {
   }
 
   async function testSign() {
-    if (accounts.length > 0) {
-      const sig = await signMessage(currentAccount.address, 'message', 'password')
-      setSig(sig);
-    }
+    const sig = await signMessage(currentAccount.address, 'message', 'password')
+    setSig(sig);
   }
 
   return (
@@ -60,32 +48,15 @@ function Home(props: any) {
         </div>
         :
         <div className="container container-content">
-          <button className="new-account" onClick={() =>
+          <button className="button button-white button-new-account" onClick={() =>
             props.history.push('/createAccount')
           }>新增账户
           </button>
-          <button className="import-account" onClick={() => 
+          <button className="button button-white button-import-account" onClick={() => 
             props.history.push('/importAccount')
           }>导入账户</button>
 
           <br />
-          {
-            accounts.map(account => {
-              return (
-                <div key={account.address}>
-                  <div>
-                    <span>name:</span>
-                    <span>{account.name}</span>
-                  </div>
-                  <div>
-                    <span>address:</span>
-                    <span>{account.address}</span>
-                  </div>
-                </div>
-              )
-            })
-          }
-
           <button onClick={testSign}>test sign</button>
           <span>{sig}</span>
         </div>
