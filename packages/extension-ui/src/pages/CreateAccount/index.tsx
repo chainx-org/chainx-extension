@@ -52,22 +52,22 @@ function CreateAccount(props: any) {
           {
             currentStep === 3 && 
             <>
-              <input className="input-submit" type="text" name="password" placeholder="标签（12字符以内）" />
-              <input className="input-submit" type="password" name="password" placeholder="密码" />
-              <input className="input-submit" type="password" name="repassword" placeholder="确认密码" />
+              <input className="input" type="text" name="password" placeholder="标签（12字符以内）" />
+              <input className="input" type="password" name="password" placeholder="密码" />
+              <input className="input" type="password" name="repassword" placeholder="确认密码" />
             </>
           }
         </div>
         {
           errMsg ? <span className="error-message">{errMsg}</span> : null
         }
-        <button className="button-yellow-full margin-top-40"
+        <button className="button button-yellow margin-top-40"
           onClick={() => {
             if (currentStep < 3) {
               setCurrentStep(currentStep+1)
             }
             if (currentStep === 3) {
-              const name = 'xat'
+              const name = 'hello'
               const pass = 'password'
               console.log(name, pass, mnemonic)
               createAccount(name, pass, mnemonic).then(data => {
