@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import Icon from '../../components/Icon';
 import logo from "../../assets/logo.jpg";
 import "./header.scss";
@@ -51,21 +51,23 @@ function Header(props: any) {
         showAccountArea && !showNodeListArea ? (
         <div className="account-area">
           <div className="action">
-            <div>
-              <Link to="importAccount">
-                <Icon name="Putin" className="account-area-icon" />
-                <span>
-                  导入账户
-                </span>
-              </Link>
+            <div onClick={() => {
+              setShowAccountArea(false)
+              props.history.push('/importAccount')
+            }}>
+              <Icon name="Putin" className="account-area-icon" />
+              <span>
+                导入账户
+              </span>
             </div>
-            <div>
-              <Link to="createAccount">
-                <Icon name="Add" className="account-area-icon" />
-                <span>
-                  新建账户
-                </span>
-              </Link>
+            <div onClick={() => {
+              setShowAccountArea(false)
+              props.history.push('/createAccount')
+            }}>
+              <Icon name="Add" className="account-area-icon" />
+              <span>
+                新建账户
+              </span>
             </div>
           </div>
           <div className="accounts">
@@ -77,4 +79,4 @@ function Header(props: any) {
   )
 }
 
-export default Header
+export default withRouter(Header)

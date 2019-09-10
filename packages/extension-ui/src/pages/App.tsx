@@ -10,7 +10,7 @@ export default function App() {
   return (
     <Router>
       <React.Fragment>
-        <Header />
+        <Header props />
         <div className="content">
           <Switch>
             <Route exact path="/" component={Home} />
