@@ -13,6 +13,11 @@
       width: 32px;
       height: 32px;
     }
+    .center-title {
+      font-weight: 500;
+      font-size: 20px;
+      color: $fontgray;
+    }
     .right {
       display: flex;
       .current-node {
@@ -114,6 +119,22 @@
     }
     .account-area-icon {
       color: $yellow;
+    }
+  }
+  .accounts {
+    display: flex;
+    flex-direction: column;
+    .account-item {
+      display: flex;
+      flex-direction: column;
+      height: 62px;
+      width: 100%;
+      cursor: pointer;
+      .name {
+        font-size: 13px;
+        color: $fontgray;
+        font-weight: 500;
+      }
     }
   }
 }
