@@ -12,6 +12,7 @@ function RequestSign(props: any) {
       console.log('sign message ', result)
       setSig(result)
     } catch (e) {
+      setSig(`Error: ${e.message}`)
       console.log('page error:', e);
     }
   }
