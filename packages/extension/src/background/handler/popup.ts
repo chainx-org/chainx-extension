@@ -13,7 +13,8 @@ import {
   CHAINX_NODE_SELECT,
   CHAINX_NODE_CURRENT,
   CHAINX_NODE_REMOVE
-} from "../constants";
+// @ts-ignore
+} from "@chainx/extension-defaults";
 import { MessageRequest } from "./types";
 import {
   createChainxAccount,

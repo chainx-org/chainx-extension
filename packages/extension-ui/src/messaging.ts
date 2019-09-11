@@ -1,8 +1,7 @@
 import extension from "extensionizer";
-// @ts-ignore
-import { PORT_POPUP } from '@chainx/extension-defaults';
 import { AccountInfo, SignTransactionRequest } from "@chainx/extension-ui/types";
 import {
+  PORT_POPUP,
   CHAINX_ACCOUNT_ALL,
   CHAINX_ACCOUNT_CREATE,
   CHAINX_ACCOUNT_CREATE_FROM_PRIVATE,
@@ -13,7 +12,8 @@ import {
   CHAINX_NODE_ALL,
   CHAINX_NODE_CREATE, CHAINX_NODE_CURRENT, CHAINX_NODE_REMOVE, CHAINX_NODE_SELECT,
   CHAINX_TRANSACTION_SIGN
-} from "@chainx/extension-ui/constants";
+// @ts-ignore
+} from "@chainx/extension-defaults";
 
 interface Handler {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
