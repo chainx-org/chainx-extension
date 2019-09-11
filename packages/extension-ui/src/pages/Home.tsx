@@ -1,6 +1,7 @@
 
 import React, { useEffect } from "react"
 import { useState } from "react"
+import ClipboardJS from 'clipboard'
 import { exportChainxAccountPrivateKey, signMessage, getCurrentChainxAccount, removeChainxAccount } from '../messaging'
 import { AccountInfo } from "@chainx/extension-ui/types"
 // @ts-ignore
@@ -12,10 +13,19 @@ function Home(props: any) {
   const [showPasswordPage, setShowPasswordPage] = useState(false)
   const [pass, setPass] = useState('')
   const [currentAccount, setCurrentAccount] = useState<AccountInfo>({ address: '', name: ''})
+  const [copySuccess, setCopySuccess] = useState('')
 
   useEffect(() => {
+    setCopyEvent()
     getCurrentAccount()
   }, [])
+
+  function setCopyEvent() {
+    const clipboard = new ClipboardJS('.copy')
+    clipboard.on('success', function() {
+      setCopySuccess('Copied!')
+    })
+  }
 
   async function getCurrentAccount() {
     const result =  await getCurrentChainxAccount()
@@ -71,10 +81,14 @@ function Home(props: any) {
           </div>
           <div className="account-address">
             <span>{currentAccount.address}</span>
-          </div>
-          <div className="copy" onClick={() => operateAccount('remove')}>
-            Remove Account
-          </div>
+          </div> 
+          <button className="copy"
+            data-clipboard-text={currentAccount.address}
+            onClick={() => copy()}>
+            <Icon className="copy-icon" name="copy" />
+            <span className="copy-text">Copy</span>
+          </button>
+          <span>{copySuccess}</span>
         </div>
         :
         <div className="container container-column container-no-account">
