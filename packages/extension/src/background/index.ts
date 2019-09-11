@@ -6,6 +6,7 @@ import extension from 'extensionizer';
 import handle from './handler';
 import keyring from './keyring';
 import nodes from './nodes';
+import { setChainx } from './chainx';
 
 // listen to all messages and handle appropriately
 extension.runtime.onConnect.addListener((port): void => {
@@ -23,7 +24,10 @@ extension.runtime.onConnect.addListener((port): void => {
   port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
 });
 
-Promise.all([keyring.loadAll(), nodes.initNodeAndLoadAll()]).then((): void => {
+Promise.all([keyring.loadAll(), nodes.initNodeAndLoadAll()]).then(async () => {
+  if (nodes.currentNode) {
+    await setChainx(nodes.currentNode.url);
+  }
   console.log('initialization completed');
 }).catch((error): void => {
   console.error('initialization failed', error);
