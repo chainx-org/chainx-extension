@@ -2,7 +2,7 @@
 import React, { useEffect } from "react"
 import { useState } from "react"
 import ClipboardJS from 'clipboard'
-import { exportChainxAccountPrivateKey, signMessage, getCurrentChainxAccount, removeChainxAccount } from '../messaging'
+import { getCurrentChainxAccount } from '../messaging'
 import { AccountInfo } from "@chainx/extension-ui/types"
 // @ts-ignore
 import Icon from '../components/Icon'
@@ -10,8 +10,6 @@ import "./index.scss"
 
 function Home(props: any) {
   const [showAccountAction, setShowAccountAction] = useState(false)
-  const [showPasswordPage, setShowPasswordPage] = useState(false)
-  const [pass, setPass] = useState('')
   const [currentAccount, setCurrentAccount] = useState<AccountInfo>({ address: '', name: ''})
   const [copySuccess, setCopySuccess] = useState('')
 
@@ -32,37 +30,20 @@ function Home(props: any) {
     setCurrentAccount(result)
   }
 
-  async function exportPk(address: string, password: string) {
-    const result = await exportChainxAccountPrivateKey(address, password)
-    props.history.push({ pathname: '/showPrivateKey', query: { pk: result}})
-  }
-
-  async function removeAccount(address: string, password: string) {
-    const result = await removeChainxAccount(currentAccount.address, password)
-    getCurrentAccount()
-    console.log('remove account result', currentAccount.address, result)
-  }
-
   async function operateAccount(type: string) {
-    if (!pass && currentAccount.address) {
-      if (type === 'export') {
-        exportPk(currentAccount.address, '1q2w3e4r')
-      } else if (type === 'remove') {
-        removeAccount(currentAccount.address, '1q2w3e4r')
-      }
+    if (currentAccount.address) {
+      props.history.push({ pathname: '/enterPassword', query: 
+        { 
+          address: currentAccount.address,
+          type: type
+        }})
     }
-    setShowPasswordPage(false)
+    setShowAccountAction(false)
   }
 
   return (
     <>
-      { showPasswordPage ?
-        <div className="container container-column">
-          
-          <input className="input" />
-          <button className="button button-yellow">确定</button>
-        </div>
-        :
+      { 
         currentAccount ? 
         <div className="container-account">
           <div className="account-title">
@@ -84,7 +65,7 @@ function Home(props: any) {
           </div> 
           <button className="copy"
             data-clipboard-text={currentAccount.address}
-            onClick={() => copy()}>
+          >
             <Icon className="copy-icon" name="copy" />
             <span className="copy-text">Copy</span>
           </button>
