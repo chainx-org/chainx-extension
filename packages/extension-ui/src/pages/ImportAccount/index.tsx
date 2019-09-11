@@ -68,7 +68,7 @@ function ImportAccount(props: any) {
                 onChange={e => setPk(e.target.value)}
                 onKeyPress={event => {
                   if (event.key === "Enter") {
-                    create()
+                    setCurrentStep(s => s+1)
                   }
                 }}
               />
