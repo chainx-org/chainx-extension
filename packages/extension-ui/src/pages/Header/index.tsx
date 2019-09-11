@@ -128,27 +128,32 @@ function Header(props: any) {
                 </span>
               </div>
             </div>
-            <div className="accounts">
-              {
-                accounts.map(item => (
-                  <div className={item.address === currentAccount.address ? 'account-item active' : 'account-item'} key={item.name}
-                    onClick={() => {
-                      setChainxCurrentAccount(item.address).then(d => console.log(d))
-                      setCurrentAccount(item)
-                      setShowAccountArea(false)
-                      props.history.push('/')
-                    }}
-                  >
-                    <div className="account-item-active-flag">
+            {
+              accounts.length > 0 ?
+              <div className="accounts">
+                {
+                  accounts.map(item => (
+                    <div className={item.address === currentAccount.address ? 'account-item active' : 'account-item'} key={item.name}
+                      onClick={() => {
+                        setChainxCurrentAccount(item.address).then(d => console.log(d))
+                        setCurrentAccount(item)
+                        setShowAccountArea(false)
+                        props.history.push('/')
+                      }}
+                    >
+                      <div className="account-item-active-flag">
+                      </div>
+                      <div className="account-item-detail">
+                        <span className="name">{item.name}</span>
+                        <DotInCenterStr value={item.address} />
+                      </div>
                     </div>
-                    <div className="account-item-detail">
-                      <span className="name">{item.name}</span>
-                      <DotInCenterStr value={item.address} />
-                    </div>
-                  </div>
-                ))
-              }
-            </div>
+                  ))
+                }
+              </div>
+              :
+              null
+            }
           </div>) : null
         }
       </div>

@@ -72,6 +72,9 @@
       .node-item {
         display: flex;
         height: 32px;
+        &:hover {
+          background-color: $itemBgColor;
+        }
         &.active {
           background-color: $itemBgColor;
           .node-item-active-flag {
@@ -167,6 +170,9 @@
       font-size: 12px;
       color: $addressColor;
       cursor: pointer;
+      &:hover {
+        background-color: $itemBgColor;
+      }
       &.active {
         background-color: $itemBgColor;
         .account-item-active-flag {
