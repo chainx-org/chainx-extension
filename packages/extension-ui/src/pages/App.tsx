@@ -6,6 +6,7 @@ import Header from './Header'
 import CreateAccount from './CreateAccount'
 import ImportAccount from './ImportAccount'
 import RequestSign from './RequestSign'
+import ShowPrivateKey from './ShowPrivateKey/index'
 import "./index.scss"
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
             <Route path="/createAccount" component={CreateAccount} />
             <Route path="/importAccount" component={ImportAccount} />
             <Route path="/requestSign" component={RequestSign} />
+            <Route path="/showPrivateKey" component={ShowPrivateKey} />
             <Redirect to="/" />
           </Switch>
         </div>
