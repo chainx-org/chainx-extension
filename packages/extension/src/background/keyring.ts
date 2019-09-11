@@ -94,13 +94,13 @@ class Keyring {
   async removeAccount(address: string, password: string): Promise<any> {
     const target = this.accounts.find(item => item.address === address);
     if (!target) {
-      return { message: "address not exist" };
+      return Promise.reject({ message: "address not exist" });
     }
 
     try {
       Account.fromKeyStore(target.keyStore, password);
     } catch (e) {
-      return { message: "Invalid password" };
+      return Promise.reject({ message: "Invalid password" });
     }
 
     await store.remove(`${ACCOUNT_PREFIX}${target.name}`);
