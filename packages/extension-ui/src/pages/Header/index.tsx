@@ -1,8 +1,14 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { getAllAccounts, setChainxCurrentAccount } from '../../messaging'
-import { AccountInfo } from "@chainx/extension-ui/types"
+import { getAllAccounts,
+         getCurrentChainxAccount,
+         setChainxCurrentAccount,
+         setChainxNode,
+         removeChainxNode,
+         getCurrentChainxNode,
+         getAllChainxNodes } from '../../messaging'
+import { AccountInfo, NodeInfo } from "@chainx/extension-ui/types"
 import Icon from '../../components/Icon'
 import DotInCenterStr from '../../components/DotInCenterStr'
 import logo from "../../assets/logo.jpg"
@@ -12,6 +18,26 @@ function Header(props: any) {
   const [showNodeListArea, setShowNodeListArea] = useState(false)
   const [showAccountArea, setShowAccountArea] = useState(false)
   const [accounts, setAccounts] = useState<AccountInfo[]>([])
+  const [currentAccount, setCurrentAccount] = useState<AccountInfo>({ address: '', name: ''})
+  const [currentNode, setCurrentNode] = useState<NodeInfo>({ name: '', url: '' })
+  const [nodeList, setNodeList] = useState<NodeInfo[]>([])
+
+  useEffect(() => {
+    getCurrentAccount()
+    getNodeStatus()
+  }, [])
+
+  async function getNodeStatus() {
+    const currentNodeResult = await getCurrentChainxNode()
+    const nodeListResult = await getAllChainxNodes()
+    setCurrentNode(currentNodeResult)
+    setNodeList(nodeListResult)
+  }
+
+  async function getCurrentAccount() {
+    const result =  await getCurrentChainxAccount()
+    setCurrentAccount(result)
+  }
 
   useEffect(() => {
     getAccounts()
@@ -41,7 +67,8 @@ function Header(props: any) {
               setShowNodeListArea(!showNodeListArea)
               setShowAccountArea(false)
             }}>
-              <span>HashQuark</span>
+              <span className="dot"></span>
+              <span>{currentNode.name}</span>
             </div>
             <div className="setting" onClick={() => {
               setShowAccountArea(!showAccountArea)
@@ -55,14 +82,25 @@ function Header(props: any) {
           showNodeListArea && !showAccountArea ? (
           <div className="node-list-area">
             <div className="node-list">
-              <div className="node-item">xixi</div>
-            </div>
-            <div className="divide-1">
-            </div>
-            <div className="auto-select">
-            <span>自动切换最优节点</span>
+              {
+                nodeList.map(item => (
+                  <div className={item.name === currentNode.name ? 'node-item active' : 'node-item'} key={item.name}
+                    onClick={() => {
+                      console.log('click node')
+                    }}
+                  >
+                    <div className="node-item-active-flag">
+                    </div>
+                    <div className="node-item-detail">
+                      <span className="url">{item.url.slice(6)}</span>
+                      <span className="delay">44ms</span>
+                    </div>
+                  </div>
+                ))
+              }
             </div>
             <div className="add-node">
+              <Icon name="Add" className="add-node-icon" />
               <span>添加节点</span>
             </div>
           </div>) : null
@@ -93,15 +131,20 @@ function Header(props: any) {
             <div className="accounts">
               {
                 accounts.map(item => (
-                  <div className="account-item" key={item.name}
+                  <div className={item.address === currentAccount.address ? 'account-item active' : 'account-item'} key={item.name}
                     onClick={() => {
                       setChainxCurrentAccount(item.address).then(d => console.log(d))
+                      setCurrentAccount(item)
                       setShowAccountArea(false)
                       props.history.push('/')
                     }}
                   >
-                    <span className="name">{item.name}</span>
-                    <DotInCenterStr value={item.address} />
+                    <div className="account-item-active-flag">
+                    </div>
+                    <div className="account-item-detail">
+                      <span className="name">{item.name}</span>
+                      <DotInCenterStr value={item.address} />
+                    </div>
                   </div>
                 ))
               }
