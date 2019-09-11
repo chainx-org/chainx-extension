@@ -4,13 +4,14 @@ import { useState } from "react"
 import { exportChainxAccountPrivateKey, signMessage, getCurrentChainxAccount, removeChainxAccount } from '../messaging'
 import { AccountInfo } from "@chainx/extension-ui/types"
 // @ts-ignore
-import logo from "../assets/logo.jpg"
+import Icon from '../components/Icon'
 import "./index.scss"
 
 function Home(props: any) {
-  const [sig, setSig] = useState('')
+  const [showAccountAction, setShowAccountAction] = useState(false)
+  const [showPasswordPage, setShowPasswordPage] = useState(false)
+  const [pass, setPass] = useState('')
   const [currentAccount, setCurrentAccount] = useState<AccountInfo>({ address: '', name: ''})
-  const [pk, setPk] = useState('')
 
   useEffect(() => {
     getCurrentAccount()
@@ -21,44 +22,62 @@ function Home(props: any) {
     setCurrentAccount(result)
   }
 
-  async function exportPk() {
-    const result = await exportChainxAccountPrivateKey(currentAccount.address, '1q2w3e4r')
-    console.log(result)
-    setPk(result)
+  async function exportPk(address: string, password: string) {
+    const result = await exportChainxAccountPrivateKey(address, password)
+    props.history.push({ pathname: '/showPrivateKey', query: { pk: result}})
   }
 
-  async function removeAccount() {
-    const result = await removeChainxAccount(currentAccount.address)
+  async function removeAccount(address: string, password: string) {
+    const result = await removeChainxAccount(currentAccount.address, password)
     getCurrentAccount()
     console.log('remove account result', currentAccount.address, result)
   }
 
-  async function testSign() {
-    const sig = await signMessage(currentAccount.address, 'message', 'password')
-    setSig(sig);
+  async function operateAccount(type: string) {
+    if (!pass && currentAccount.address) {
+      if (type === 'export') {
+        exportPk(currentAccount.address, '1q2w3e4r')
+      } else if (type === 'remove') {
+        removeAccount(currentAccount.address, '1q2w3e4r')
+      }
+    }
+    setShowPasswordPage(false)
   }
 
   return (
     <>
-      {
+      { showPasswordPage ?
+        <div className="container container-column">
+          
+          <input className="input" />
+          <button className="button button-yellow">确定</button>
+        </div>
+        :
         currentAccount ? 
         <div className="container-account">
           <div className="account-title">
-            {currentAccount.name}
+            <span className="name">{currentAccount.name}</span>
+            <div className="arrow"  onClick={() => setShowAccountAction(!showAccountAction)}>
+              <Icon className="arrow-icon" name="Arrowdown" />
+            </div>
+            {
+              showAccountAction ?
+              <div className="account-action">
+                <span onClick={() => operateAccount('export')}>Export PrivateKey</span>
+                <span onClick={() => operateAccount('remove')}>Forget Account</span>
+              </div>
+              : null
+            }
           </div>
           <div className="account-address">
             <span>{currentAccount.address}</span>
           </div>
-          <div className="copy" onClick={() => removeAccount()}>
+          <div className="copy" onClick={() => operateAccount('remove')}>
             Remove Account
           </div>
-          <span>Private Key: {pk}</span>
-          <button className="export" onClick={() => exportPk()}>
-            Export Private Key
-          </button>
         </div>
         :
-        <div className="container container-content">
+        <div className="container container-column container-no-account">
           <button className="button button-white button-new-account" onClick={() =>
             props.history.push('/createAccount')
           }>新增账户
@@ -66,10 +85,6 @@ function Home(props: any) {
           <button className="button button-white button-import-account" onClick={() => 
             props.history.push('/importAccount')
           }>导入账户</button>
-
-          <br />
-          <button onClick={testSign}>test sign</button>
-          <span>{sig}</span>
         </div>
       }
     </>
