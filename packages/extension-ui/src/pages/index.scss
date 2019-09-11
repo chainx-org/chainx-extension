@@ -21,6 +21,16 @@
   color: $fontgray;
 }
 
+.container-column {
+  flex-direction: column;
+}
+
+.container-spacebetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .content {
   width: 100%;
   display: flex;
@@ -34,11 +44,55 @@
       height: 56px;
       width: 100%;
       color: $fontgray;
-      font-size: 16px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       border-bottom: 1px solid #EEEEEE;
+      .name {
+        margin-left: 119px;
+        width: 120px;
+        overflow: hidden;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 500;
+      }
+      .arrow {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        width: 24px;
+        height: 24px;
+        margin-right: 20px;
+        cursor: pointer;
+        .arrow-icon {
+          font-size: 8px;
+        }
+      }
+      .account-action {
+        position: absolute;
+        top: 130px;
+        left: 112px;
+        border: 1px solid $grayDivide;
+        box-shadow: 0 5px 10px 0 rgba(0,0,0,0.30);
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        width: 226px;
+        height: 80px;
+        justify-content: space-around;
+        font-size: 14px;
+        background-color: #fff;
+        span {
+          cursor: pointer;
+          padding-left: 20px;
+          padding-top: 12px;
+          padding-bottom: 12px;
+          border-radius: 4px;
+        }
+        :hover {
+          background-color: $itemBgColor;
+        }
+      }
     }
     .account-address {
       display: flex;
@@ -69,8 +123,7 @@
       justify-content: center;
     }
   }
-  .container-content {
-    flex-direction: column;
+  .container-no-account {
     align-items: center;
     .button-new-account {
       margin-top: 56px;
@@ -129,4 +182,11 @@
 
 .margin-top-40 {
   margin-top: 40px;
+}
+
+.span-center-wrap {
+  text-align: center;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-wrap;
 }
