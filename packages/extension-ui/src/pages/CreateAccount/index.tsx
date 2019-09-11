@@ -6,6 +6,7 @@ import { createAccount } from '../../messaging'
 // @ts-ignore
 import shuffle from 'lodash.shuffle'
 import './createAccount.scss'
+import StaticWarning from '../../components/StaticWarning/index';
 
 function CreateAccount(props: any) {
   
@@ -39,9 +40,7 @@ function CreateAccount(props: any) {
         <div className="create-account-body-content">
           {
             currentStep === 0 && 
-            <div className="start">
-              <span>不要将您的助记词存储在电脑上，或者网上某处。任何拥有您助记词的人都能取用您的资金</span>
-            </div>
+            <StaticWarning title='备份助记词' />
           }
           {
             currentStep === 1 && 
@@ -63,6 +62,7 @@ function CreateAccount(props: any) {
             currentStep === 3 && 
             <>
               <input className="input" type="text"
+                required
                 value={obj.name}
                 onChange={e => setObj({...obj, ['name']: e.target.value})}
                 placeholder="标签（12字符以内）" />
@@ -85,16 +85,24 @@ function CreateAccount(props: any) {
         {
           errMsg ? <span className="error-message">{errMsg}</span> : null
         }
-        <button className="button button-yellow margin-top-40"
-          onClick={() => {
-            if (currentStep < 3) {
-              setCurrentStep(currentStep+1)
-            }
-            if (currentStep === 3) {
-              create()
-            }
-          }}
-        >{buttonTextList[currentStep]}</button>
+        {
+          currentStep === 2 ?
+          <div className="container-spacebetween margin-top-40">
+            <button className="button button-white-half" onClick={() => setCurrentStep(s => s-1)}>上一步</button>
+            <button className="button button-yellow-half" onClick={() => setCurrentStep(s => s+1)}>下一步</button>
+          </div>
+          :
+          <button className="button button-yellow margin-top-40"
+            onClick={() => {
+              if (currentStep < 3) {
+                setCurrentStep(currentStep+1)
+              }
+              if (currentStep === 3) {
+                create()
+              }
+            }}
+          >{buttonTextList[currentStep]}</button>
+        }
       </div>
     </div>
   )
