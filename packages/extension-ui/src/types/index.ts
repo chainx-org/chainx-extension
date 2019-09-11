@@ -9,3 +9,8 @@ export interface SignTransactionRequest {
   method: string,
   args: Array<any>
 }
+
+export interface NodeInfo {
+  name: string,
+  url: string
+}
