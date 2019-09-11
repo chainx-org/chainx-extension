@@ -46,6 +46,8 @@ class Nodes {
       }
     }
 
+    await this.setCurrentNode(initNodes[0].url);
+
     return this.loadAll();
   }
 
