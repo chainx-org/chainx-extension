@@ -16,7 +16,6 @@ extension.runtime.onConnect.addListener((port): void => {
     promise.then(response => {
       port.postMessage({ id: data.id, response });
     }).catch((error): void => {
-      console.log('reject in background', error);
       port.postMessage({ id: data.id, error: error.message });
     })
   });
