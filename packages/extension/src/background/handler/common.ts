@@ -54,8 +54,8 @@ export async function getCurrentChainxAccount(): Promise<AccountInfo | null> {
   };
 }
 
-export function removeChainxAccount({ address }: { address: string }): Promise<any> {
-  return keyring.removeAccount(address);
+export function removeChainxAccount({ address, password }: { address: string, password: string }): Promise<any> {
+  return keyring.removeAccount(address, password);
 }
 
 export async function getAllChainxAccount(): Promise<AccountInfo[]> {

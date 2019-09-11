@@ -96,8 +96,8 @@ export async function getCurrentChainxAccount() {
   return sendMessage(CHAINX_ACCOUNT_CURRENT);
 }
 
-export async function removeChainxAccount(address: string) {
-  return sendMessage(CHAINX_ACCOUNT_REMOVE, { address });
+export async function removeChainxAccount(address: string, password: string) {
+  return sendMessage(CHAINX_ACCOUNT_REMOVE, { address, password });
 }
 
 export async function setChainxNode(url: string) {
