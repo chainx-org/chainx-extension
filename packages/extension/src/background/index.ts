@@ -24,7 +24,7 @@ extension.runtime.onConnect.addListener((port): void => {
   port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
 });
 
-Promise.all([keyring.loadAll(), nodes.loadAll()]).then((): void => {
+Promise.all([keyring.loadAll(), nodes.initNodeAndLoadAll()]).then((): void => {
   console.log('initialization completed');
 }).catch((error): void => {
   console.error('initialization failed', error);
