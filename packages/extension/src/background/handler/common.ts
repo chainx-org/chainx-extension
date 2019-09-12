@@ -5,7 +5,7 @@ import {
   ChainxSignMessageRequest,
   SignTransactionRequest
 } from "../types";
-import keyring from "../keyring";
+import keyring, { KeyStore } from "../keyring";
 // @ts-ignore
 import { u8aToHex } from '@chainx/util';
 import nodes from '../nodes';
@@ -63,6 +63,10 @@ export async function getAllChainxAccount(): Promise<AccountInfo[]> {
     name: account.name,
     address: account.address
   }));
+}
+
+export function getChainxAccountByAddress(address: string): KeyStore | null {
+  return keyring.accounts.find(item => item.address === address) || null;
 }
 
 export async function signChainxMessage({ address, message, password }: ChainxSignMessageRequest): Promise<string> {
