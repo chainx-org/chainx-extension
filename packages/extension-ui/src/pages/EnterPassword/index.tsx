@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import './enterPassword.scss'
 import { exportChainxAccountPrivateKey, removeChainxAccount } from '../../messaging'
+import ErrorMessage from '../../components/ErrorMessage'
 
 function EnterPassword(props: any) {
   const [pass, setPass] = useState('')
@@ -51,12 +52,12 @@ function EnterPassword(props: any) {
           }
         }}
         placeholder="密码" />
-      {
-        errMsg ? <span className="error-message">{errMsg}</span> : null
-      }
       <button className="button button-yellow margin-top-40"
         onClick={() => enter()}
       >Confirm</button>
+      {
+        errMsg ? <ErrorMessage msg={errMsg} /> : null
+      }
     </div>
   )
 }
