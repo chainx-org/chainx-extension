@@ -2,12 +2,12 @@ import React from 'react'
 import { useState } from 'react'
 // @ts-ignore
 import Account from '@chainx/account'
-import { createAccount } from '../../messaging'
 // @ts-ignore
 import shuffle from 'lodash.shuffle'
 import './createAccount.scss'
 import StaticWarning from '../../components/StaticWarning'
 import ErrorMessage from '../../components/ErrorMessage'
+import NameAndPassword from '../../components/NameAndPassword'
 
 function CreateAccount(props: any) {
   
@@ -16,21 +16,12 @@ function CreateAccount(props: any) {
   const buttonTextList = ['开始', '下一步', '下一步', '完成']
   
   const [currentStep, setCurrentStep] = useState(0)
-  const [obj, setObj] = useState({name: '', pass: '', repass: ''})
   const [errMsg, setErrMsg] = useState('')
   const [mnemonic] = useState(Account.newMnemonic())
   const mnemonicList = mnemonic.split(' ')
   const [shuffleMnemonicList] = useState(shuffle(mnemonicList))
   const [validateMnemonicList, setValidateMnemonicList] = useState(new Array(12).fill(''))
   const mnemonicWords = mnemonicList.map((item: string, index: number) => ({ value: item, index: index }))
-  
-  const create = async() => {
-    createAccount(obj.name, obj.pass, mnemonic).then(_ => {
-      props.history.push('/')
-    }).catch(err => {
-      setErrMsg(err.message)
-    })
-  }
 
   const clearErrMsg = async() => {
     setErrMsg('')
@@ -92,45 +83,29 @@ function CreateAccount(props: any) {
           }
           {
             currentStep === 3 && 
-            <>
-              <input className="input" type="text"
-                required
-                value={obj.name}
-                onChange={e => setObj({...obj, ['name']: e.target.value})}
-                placeholder="标签（12字符以内）" />
-              <input className="input" type="password"
-                value={obj.pass}
-                onChange={e => setObj({...obj, ['pass']: e.target.value})}
-                placeholder="密码" />
-              <input className="input" type="password"
-                value={obj.repass}
-                onChange={e => setObj({...obj, ['repass']: e.target.value})}
-                onKeyPress={event => {
-                  if (event.key === "Enter") {
-                    create()
-                  }
-                }}
-                placeholder="确认密码" />
-            </>
+            <NameAndPassword
+              type='mnemonic'
+              secret={mnemonic}
+              onSuccess={function () { props.history.push('/') }}
+            />
           }
         </div>
         {
-          currentStep === 2 ?
-          <div className="container-spacebetween margin-top-40">
-            <button className="button button-white-half" onClick={() => clearErrMsg() && setCurrentStep(s => s-1)}>上一步</button>
-            <button className="button button-yellow-half" onClick={() => checkMnemonic() && setCurrentStep(s => s+1)}>下一步</button>
-          </div>
-          :
+          currentStep < 2 &&
           <button className="button button-yellow margin-top-40"
             onClick={() => {
               if (currentStep < 2) {
                 setCurrentStep(s => s+1)
               }
-              if (currentStep === 3) {
-                create()
-              }
             }}
           >{buttonTextList[currentStep]}</button>
+        }
+        {
+          currentStep === 2 &&
+          <div className="container-spacebetween margin-top-40">
+            <button className="button button-white-half" onClick={() => clearErrMsg() && setCurrentStep(s => s-1)}>上一步</button>
+            <button className="button button-yellow-half" onClick={() => checkMnemonic() && setCurrentStep(s => s+1)}>下一步</button>
+          </div>
         }
         {
           currentStep > 1 ? errMsg ? <ErrorMessage msg={errMsg} /> : null : null
