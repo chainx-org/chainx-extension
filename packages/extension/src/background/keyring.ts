@@ -1,5 +1,5 @@
 // @ts-ignore
-import Account from '@chainx/account';
+import { Account } from 'chainx.js';
 // @ts-ignore
 import store from './store';
 

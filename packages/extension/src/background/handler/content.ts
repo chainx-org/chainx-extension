@@ -4,12 +4,11 @@ import { CHAINX_TRANSACTION_SIGN } from "@chainx/extension-defaults";
 import { getChainx } from "../chainx";
 import { getChainxAccountByAddress, getCurrentChainxAccount } from "./common";
 // @ts-ignore
-import Account from '@chainx/account';
+import { Account } from 'chainx.js';
 // @ts-ignore
 import { CHAINX_ACCOUNT_CURRENT } from "@chainx/extension-defaults";
 
 export default async function handleContent({ id, message, request }: MessageRequest) {
-  console.log('handle request from content script:', `id: ${id}, message: ${message}, request: ${request}`);
   if (message === CHAINX_TRANSACTION_SIGN) {
     return signTransaction(request);
   } else if (message === CHAINX_ACCOUNT_CURRENT) {
@@ -37,9 +36,9 @@ async function signTransaction({ address, password, module, method, args }: Chai
 
   const account = Account.fromKeyStore(item.keyStore, password);
 
-  const submittable = call(args);
+  const submittable = call(...args);
   const nonce = await submittable.getNonce(account.publicKey());
-  // @ts-ignore
-  submittable.sign(account, { nonce });
+
+  submittable.sign(account, { nonce: nonce.toNumber() });
   return submittable.toHex();
 }
