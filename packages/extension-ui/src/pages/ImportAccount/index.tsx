@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { createAccount, createAccountFromPrivateKey } from '../../messaging'
 import './ImportAccount.scss'
-import handler from 'packages/extension/src/background/handler';
+import ErrorMessage from '../../components/ErrorMessage'
 
 function ImportAccount(props: any) {
   const [currentStep, setCurrentStep] = useState(0)
@@ -30,6 +30,25 @@ function ImportAccount(props: any) {
     })
   }
 
+  const checkStep1 = () => {
+    console.log(currentStep, currentTabIndex, 'check step1', pk, mnemonicList)
+    if (currentTabIndex === 0) {
+      if (mnemonicList.some(item => item === '')) {
+        setErrMsg('Mnemonic is not correct')
+        return
+      }
+    } else if (currentTabIndex === 1) {
+      console.log('check step1 ', pk)
+      if (!pk) {
+        setErrMsg('Private key is not correct')
+        return
+      }
+    }
+    
+    setErrMsg('')
+    setCurrentStep(s => s+1)
+  }
+
   return (
     <div className="container import-account">
       <div className="import-account-title">
@@ -37,7 +56,10 @@ function ImportAccount(props: any) {
           <span>{titleList[currentStep][currentTabIndex]}</span>
           {
             currentStep === 0 ?
-            <span className="second-choice" onClick={() => setCurrentTabIndex(1-currentTabIndex)}>{titleList[currentStep][1-currentTabIndex]}</span>
+            <span className="second-choice" onClick={() => {
+              setErrMsg('')
+              setCurrentTabIndex(1-currentTabIndex)
+            }}>{titleList[currentStep][1-currentTabIndex]}</span>
             : null
           }
         </div>
@@ -68,7 +90,7 @@ function ImportAccount(props: any) {
                 onChange={e => setPk(e.target.value)}
                 onKeyPress={event => {
                   if (event.key === "Enter") {
-                    setCurrentStep(s => s+1)
+                    checkStep1()
                   }
                 }}
               />
@@ -98,19 +120,19 @@ function ImportAccount(props: any) {
             </>
           }
         </div>
-        {
-          errMsg ? <span className="error-message">{errMsg}</span> : null
-        }
         <button className="button button-yellow margin-top-40"
           onClick={() => {
             if (currentStep < 1) {
-              setCurrentStep(currentStep+1)
+              checkStep1()
             }
             if (currentStep === 1) {
               create()
             }
           }}
         >{buttonTextList[currentStep]}</button>
+        {
+          errMsg ? <ErrorMessage msg={errMsg} /> : null
+        }
       </div>
     </div>
   )
