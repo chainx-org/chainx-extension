@@ -74,6 +74,7 @@
         height: 32px;
         &:hover {
           background-color: $itemBgColor;
+          cursor: pointer;
         }
         &.active {
           background-color: $itemBgColor;

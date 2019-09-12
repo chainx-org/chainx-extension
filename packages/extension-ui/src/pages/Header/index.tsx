@@ -23,9 +23,14 @@ function Header(props: any) {
   const [nodeList, setNodeList] = useState<NodeInfo[]>([])
 
   useEffect(() => {
-    getCurrentAccount()
+    getAccountStatus()
     getNodeStatus()
   }, [])
+
+  async function getAccountStatus() {
+    getCurrentAccount()
+    getAccounts()
+  }
 
   async function getNodeStatus() {
     const currentNodeResult = await getCurrentChainxNode()
@@ -39,14 +44,15 @@ function Header(props: any) {
     setCurrentAccount(result)
   }
 
-  useEffect(() => {
-    getAccounts()
-  }, [])
-
   async function getAccounts() {
     const result = await getAllAccounts()
-    console.log(result)
     setAccounts(result)
+  }
+
+  async function setNode(url: string) {
+    await setChainxNode(url)
+    await getNodeStatus()
+    setShowNodeListArea(false)
   }
 
   return (
@@ -84,9 +90,10 @@ function Header(props: any) {
             <div className="node-list">
               {
                 nodeList.map(item => (
-                  <div className={item.name === currentNode.name ? 'node-item active' : 'node-item'} key={item.name}
+                  <div className={item.name === currentNode.name ? 'node-item active' : 'node-item'}
+                    key={item.name}
                     onClick={() => {
-                      console.log('click node')
+                      setNode(item.url)
                     }}
                   >
                     <div className="node-item-active-flag">
@@ -138,7 +145,7 @@ function Header(props: any) {
                         setChainxCurrentAccount(item.address).then(d => console.log(d))
                         setCurrentAccount(item)
                         setShowAccountArea(false)
-                        props.history.push('/')
+                        props.history.push({ pathname: '/', query: { refresh: true } })
                       }}
                     >
                       <div className="account-item-active-flag">
