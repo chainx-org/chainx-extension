@@ -1,33 +1,44 @@
 
 import React, { useEffect } from "react"
 import { useState } from "react"
+import { useRedux } from '../shared'
 import ClipboardJS from 'clipboard'
-import { getCurrentChainxAccount } from '../messaging'
-import { AccountInfo } from "@chainx/extension-ui/types"
+import { getCurrentChainxAccount, getAllAccounts } from '../messaging'
 // @ts-ignore
 import Icon from '../components/Icon'
 import "./index.scss"
 
 function Home(props: any) {
   const [showAccountAction, setShowAccountAction] = useState(false)
-  const [currentAccount, setCurrentAccount] = useState<AccountInfo>({ address: '', name: ''})
+  const [{currentAccount}, setCurrentAccount] = useRedux('currentAccount', { address: '', name: ''})
+  const [{accounts}, setAccounts] = useRedux('accounts')
   const [copySuccess, setCopySuccess] = useState('')
 
   useEffect(() => {
     setCopyEvent()
-    getCurrentAccount()
+    getAccountStatus()
   }, [])
+
+  async function getAccountStatus() {
+    getCurrentAccount()
+    getAccounts()
+  }
+
+  async function getCurrentAccount() {
+    const result =  await getCurrentChainxAccount()
+    setCurrentAccount({ currentAccount: result })
+  }
+
+  async function getAccounts() {
+    const result = await getAllAccounts()
+    setAccounts({ accounts: result })
+  }
 
   function setCopyEvent() {
     const clipboard = new ClipboardJS('.copy')
     clipboard.on('success', function() {
       setCopySuccess('Copied!')
     })
-  }
-
-  async function getCurrentAccount() {
-    const result =  await getCurrentChainxAccount()
-    setCurrentAccount(result)
   }
 
   async function operateAccount(type: string) {
