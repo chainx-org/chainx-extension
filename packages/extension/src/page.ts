@@ -1,3 +1,7 @@
+// @ts-ignore
+import { CHAINX_TRANSACTION_SIGN } from '@chainx/extension-defaults';
+
+
 window.addEventListener('message', ({ source, data }): void => {
   // only allow messages from our window, by the inject
   if (source !== window || data.origin !== 'content') {
@@ -35,7 +39,18 @@ async function enable(): Promise<any> {
   return await sendMessage('chainx.accounts.current');
 }
 
+async function sign(): Promise<any> {
+  return await sendMessage(CHAINX_TRANSACTION_SIGN, {
+    address: "5PqoAuvnFAdPMYysQ6aMZKeN5fS8kN3pwuUKpkyFaKCp4HwC",
+    password: "a",
+    module: "xAssets",
+    method: "transfer",
+    args: ["5PqoAuvnFAdPMYysQ6aMZKeN5fS8kN3pwuUKpkyFaKCp4HwC", "PCX", 1000, "memo"]
+  })
+}
+
 // @ts-ignore
 window.chainxProvider = {
-  enable
+  enable,
+  sign
 }

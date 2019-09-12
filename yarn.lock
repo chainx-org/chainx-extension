@@ -885,17 +885,6 @@
     bs58 "^4.0.1"
     tweetnacl "^1.0.0"
 
-"@chainx/account@^2.21.0-y.5":
-  version "2.21.0-y.5"
-  resolved "https://registry.yarnpkg.com/@chainx/account/-/account-2.21.0-y.5.tgz#34c122ea34c1dfa7074af0b55ee547c4eccee146"
-  integrity sha512-0ZBxPzEHy5hyiOBKJIzv5ybpimLPWfZ2QK49WV+bREN20+j25PnRpwEr+iblSdFLorHo+Bp3QfasMJtmIF2NeQ==
-  dependencies:
-    "@chainx/keyring" "^2.21.0-y.5"
-    "@chainx/keystore" "^2.21.0-y.5"
-    bip32 "^1.0.2"
-    bs58 "^4.0.1"
-    tweetnacl "^1.0.0"
-
 "@chainx/extrinsics@^2.21.0":
   version "2.21.0"
   resolved "https://registry.yarnpkg.com/@chainx/extrinsics/-/extrinsics-2.21.0.tgz#72a56d92d6f1b6641fa9f8f92bcb96d209d55db1"
@@ -920,33 +909,12 @@
     "@chainx/util-crypto" "^2.21.0"
     bs58 "^4.0.1"
 
-"@chainx/keyring@^2.21.0-y.5":
-  version "2.21.0-y.5"
-  resolved "https://registry.yarnpkg.com/@chainx/keyring/-/keyring-2.21.0-y.5.tgz#0b1251abf4e59d6a2ab842445d906dcf8720833b"
-  integrity sha512-Vl3ZPw49Bz0wu5KKS9Itcg4tNU2A0QBbwl3ZpXRIIVVX3ExF8s9iB6ans6Wwujd4zsWUWEDReniel9Yc1A2v9Q==
-  dependencies:
-    "@babel/runtime" "^7.4.5"
-    "@chainx/util" "^2.21.0-y.5"
-    "@chainx/util-crypto" "^2.21.0-y.5"
-    bs58 "^4.0.1"
-
 "@chainx/keystore@^2.21.0":
   version "2.21.0"
   resolved "https://registry.yarnpkg.com/@chainx/keystore/-/keystore-2.21.0.tgz#00154f0f09c2ba8028cd691d301569abc21a4038"
   integrity sha512-YmMQ38QlFrRXj4RqbQuaN8aMBgfekgNti0wZUSb+qzb7c+B10onr+W4maqeT4iAkKLj1Fb/fvBGGlIOx06BFjA==
   dependencies:
     "@chainx/util" "^2.21.0"
-    blakejs "^1.1.0"
-    crypto-browserify "^3.12.0"
-    pbkdf2 "^3.0.17"
-    randombytes "^2.0.6"
-
-"@chainx/keystore@^2.21.0-y.5":
-  version "2.21.0-y.5"
-  resolved "https://registry.yarnpkg.com/@chainx/keystore/-/keystore-2.21.0-y.5.tgz#4097eca17359b43c441bf760718c182f7144fe33"
-  integrity sha512-8BBu3DNeTZlZdTM6+0Ll1HPiORmpj0EC+BC81aGZmKEfj90jqaNA5SCgsMc4QP8U9B4zh37L14C5QazJmylfzw==
-  dependencies:
-    "@chainx/util" "^2.21.0-y.5"
     blakejs "^1.1.0"
     crypto-browserify "^3.12.0"
     pbkdf2 "^3.0.17"
@@ -1016,21 +984,6 @@
     tweetnacl "^1.0.1"
     xxhashjs "^0.2.2"
 
-"@chainx/util-crypto@^2.21.0-y.5":
-  version "2.21.0-y.5"
-  resolved "https://registry.yarnpkg.com/@chainx/util-crypto/-/util-crypto-2.21.0-y.5.tgz#387b164fe37356df608248426e1f2baee344810d"
-  integrity sha512-mqaVpi6mM6W5Ltj79L6pXbpPJPsIa+5n/PzDjk83jAap3Kyrkusi7urHCXSYSHglIS7Dm2F00glM64QZQaUoDA==
-  dependencies:
-    "@babel/runtime" "^7.4.5"
-    "@chainx/util" "^2.21.0-y.5"
-    "@chainx/wasm-crypto" "^2.21.0-y.4"
-    bip39 "^2.5.0"
-    blakejs "^1.1.0"
-    js-sha3 "^0.8.0"
-    secp256k1 "^3.7.0"
-    tweetnacl "^1.0.1"
-    xxhashjs "^0.2.2"
-
 "@chainx/util@2.21.0", "@chainx/util@^2.21.0":
   version "2.21.0"
   resolved "https://registry.yarnpkg.com/@chainx/util/-/util-2.21.0.tgz#fc57eec30e0a64df9f55fc2e3fec98efa7a72b85"
@@ -1043,27 +996,10 @@
     ip-regex "^4.1.0"
     moment "^2.24.0"
 
-"@chainx/util@^2.21.0-y.5":
-  version "2.21.0-y.5"
-  resolved "https://registry.yarnpkg.com/@chainx/util/-/util-2.21.0-y.5.tgz#5a2bd822f5da71f83b3432f9b3cca8139e331561"
-  integrity sha512-guM0cJ7wuh4i1LaCmhqsd4dRAtRvv+j0z0FqCymXS4HL6e6y8gRg3iVg6c9a4dzTcydnSvXGlc8JqBDQVdvDCQ==
-  dependencies:
-    "@babel/runtime" "^7.4.5"
-    bn.js "^4.11.8"
-    camelcase "^5.3.1"
-    chalk "^2.4.2"
-    ip-regex "^4.1.0"
-    moment "^2.24.0"
-
 "@chainx/wasm-crypto@^2.21.0":
   version "2.21.0"
   resolved "https://registry.yarnpkg.com/@chainx/wasm-crypto/-/wasm-crypto-2.21.0.tgz#b35740322b1086c33e98c4ad98dd7a3316874275"
   integrity sha512-LSDmaSsqLJVJyWKiPLFLzHGpM+H2QQmdjfmlE9PpewdDehxFnaOYjDeoIro35RAwHrfZCGXoNKNN7dvuVIYc6A==
-
-"@chainx/wasm-crypto@^2.21.0-y.4":
-  version "2.21.0-y.4"
-  resolved "https://registry.yarnpkg.com/@chainx/wasm-crypto/-/wasm-crypto-2.21.0-y.4.tgz#0d81a60abec7aaa99056096360f99b700ff54d8b"
-  integrity sha512-qOZpnz7eLHi2cXaTN2TkvXmeZXAPps1Aw5iJS/Qyo96B8m21bNownNRxupjiXbPDw4m5BNVzr7Q26lKWaYpjVQ==
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"

@@ -37,9 +37,3 @@ script.onload = (): void => {
 
 // @ts-ignore
 (document.head || document.documentElement).appendChild(script);
-
-setTimeout(() => {
-  port.postMessage({
-    msg: "from content"
-  });
-}, 1000)
