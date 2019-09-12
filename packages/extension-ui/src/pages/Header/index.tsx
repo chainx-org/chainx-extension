@@ -1,14 +1,13 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { getAllAccounts,
-         getCurrentChainxAccount,
-         setChainxCurrentAccount,
+import { useRedux } from '../../shared'
+import { setChainxCurrentAccount,
          setChainxNode,
          removeChainxNode,
          getCurrentChainxNode,
          getAllChainxNodes } from '../../messaging'
-import { AccountInfo, NodeInfo } from "@chainx/extension-ui/types"
+import { NodeInfo } from "@chainx/extension-ui/types"
 import Icon from '../../components/Icon'
 import DotInCenterStr from '../../components/DotInCenterStr'
 import logo from "../../assets/logo.jpg"
@@ -17,36 +16,20 @@ import "./header.scss";
 function Header(props: any) {
   const [showNodeListArea, setShowNodeListArea] = useState(false)
   const [showAccountArea, setShowAccountArea] = useState(false)
-  const [accounts, setAccounts] = useState<AccountInfo[]>([])
-  const [currentAccount, setCurrentAccount] = useState<AccountInfo>({ address: '', name: ''})
+  const [{currentAccount}, setCurrentAccount] = useRedux('currentAccount')
+  const [{accounts}] = useRedux('accounts')
   const [currentNode, setCurrentNode] = useState<NodeInfo>({ name: '', url: '' })
   const [nodeList, setNodeList] = useState<NodeInfo[]>([])
 
   useEffect(() => {
-    getAccountStatus()
     getNodeStatus()
   }, [])
-
-  async function getAccountStatus() {
-    getCurrentAccount()
-    getAccounts()
-  }
 
   async function getNodeStatus() {
     const currentNodeResult = await getCurrentChainxNode()
     const nodeListResult = await getAllChainxNodes()
     setCurrentNode(currentNodeResult)
     setNodeList(nodeListResult)
-  }
-
-  async function getCurrentAccount() {
-    const result =  await getCurrentChainxAccount()
-    setCurrentAccount(result)
-  }
-
-  async function getAccounts() {
-    const result = await getAllAccounts()
-    setAccounts(result)
   }
 
   async function setNode(url: string) {
@@ -139,13 +122,12 @@ function Header(props: any) {
               accounts.length > 0 ?
               <div className="accounts">
                 {
-                  accounts.map(item => (
+                  accounts.length > 0 && accounts.map(item => (
                     <div className={item.address === currentAccount.address ? 'account-item active' : 'account-item'} key={item.name}
                       onClick={() => {
                         setChainxCurrentAccount(item.address).then(d => console.log(d))
-                        setCurrentAccount(item)
+                        setCurrentAccount({ currentAccount: item })
                         setShowAccountArea(false)
-                        props.history.push({ pathname: '/', query: { refresh: true } })
                       }}
                     >
                       <div className="account-item-active-flag">
