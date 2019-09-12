@@ -6,7 +6,8 @@ import { createAccount } from '../../messaging'
 // @ts-ignore
 import shuffle from 'lodash.shuffle'
 import './createAccount.scss'
-import StaticWarning from '../../components/StaticWarning/index';
+import StaticWarning from '../../components/StaticWarning'
+import ErrorMessage from '../../components/ErrorMessage'
 
 function CreateAccount(props: any) {
   
@@ -20,14 +21,29 @@ function CreateAccount(props: any) {
   const [mnemonic] = useState(Account.newMnemonic())
   const mnemonicList = mnemonic.split(' ')
   const [shuffleMnemonicList] = useState(shuffle(mnemonicList))
+  const [validateMnemonicList, setValidateMnemonicList] = useState(new Array(12).fill(''))
   const mnemonicWords = mnemonicList.map((item: string, index: number) => ({ value: item, index: index }))
-  console.log(mnemonic)
+  
   const create = async() => {
     createAccount(obj.name, obj.pass, mnemonic).then(_ => {
       props.history.push('/')
     }).catch(err => {
       setErrMsg(err.message)
     })
+  }
+
+  const clearErrMsg = async() => {
+    setErrMsg('')
+    return true
+  }
+
+  const checkMnemonic = () => {
+    if (mnemonic === validateMnemonicList.join(' ')) {
+      clearErrMsg()
+      return true
+    }
+    setErrMsg('Mnemonic not correct')
+    return false
   }
 
   return (
@@ -53,7 +69,23 @@ function CreateAccount(props: any) {
           {
             currentStep === 2 && 
             shuffleMnemonicList.map((item: any, index: number) => (
-              <div className="word-item word-item-click" key={index}>
+              <div
+                className={
+                  "word-item word-item-click " +
+                  (validateMnemonicList.indexOf(item) > -1 ? "word-item-selected" : '')
+                }
+                key={index}
+                onClick={() => {
+                  let replaceWord = item
+                  let wordIndex = validateMnemonicList.indexOf('')
+                  if (validateMnemonicList.includes(item)) {
+                    wordIndex = validateMnemonicList.indexOf(item)
+                    replaceWord = ''
+                  }
+                  validateMnemonicList.splice(wordIndex, 1, replaceWord)
+                  setValidateMnemonicList(Array.from(validateMnemonicList))
+                }}
+              >
                 {item}
               </div>
             ))
@@ -83,19 +115,16 @@ function CreateAccount(props: any) {
           }
         </div>
         {
-          errMsg ? <span className="error-message">{errMsg}</span> : null
-        }
-        {
           currentStep === 2 ?
           <div className="container-spacebetween margin-top-40">
-            <button className="button button-white-half" onClick={() => setCurrentStep(s => s-1)}>上一步</button>
-            <button className="button button-yellow-half" onClick={() => setCurrentStep(s => s+1)}>下一步</button>
+            <button className="button button-white-half" onClick={() => clearErrMsg() && setCurrentStep(s => s-1)}>上一步</button>
+            <button className="button button-yellow-half" onClick={() => checkMnemonic() && setCurrentStep(s => s+1)}>下一步</button>
           </div>
           :
           <button className="button button-yellow margin-top-40"
             onClick={() => {
-              if (currentStep < 3) {
-                setCurrentStep(currentStep+1)
+              if (currentStep < 2) {
+                setCurrentStep(s => s+1)
               }
               if (currentStep === 3) {
                 create()
@@ -103,7 +132,22 @@ function CreateAccount(props: any) {
             }}
           >{buttonTextList[currentStep]}</button>
         }
+        {
+          currentStep > 1 ? errMsg ? <ErrorMessage msg={errMsg} /> : null : null
+        }
       </div>
+      {
+        currentStep === 2 && 
+        <div className="validate-mnemonic-area">
+          <div className="validate-mnemonic-area-container">
+            {
+              validateMnemonicList.map((item, index) => (
+                <span key={index}>{item}</span>
+              ))
+            }
+          </div>
+        </div>
+      }
     </div>
   )
 }
