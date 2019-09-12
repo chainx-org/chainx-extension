@@ -1,7 +1,7 @@
 
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import { useState } from "react"
-import { useRedux } from '../shared'
+import { useRedux, useOutsideClick } from '../shared'
 import ClipboardJS from 'clipboard'
 import { getCurrentChainxAccount, getAllAccounts } from '../messaging'
 // @ts-ignore
@@ -9,6 +9,7 @@ import Icon from '../components/Icon'
 import "./index.scss"
 
 function Home(props: any) {
+  const ref = useRef<HTMLInputElement>(null)
   const [showAccountAction, setShowAccountAction] = useState(false)
   const [{currentAccount}, setCurrentAccount] = useRedux('currentAccount', { address: '', name: ''})
   const [{accounts}, setAccounts] = useRedux('accounts')
@@ -18,6 +19,10 @@ function Home(props: any) {
     setCopyEvent()
     getAccountStatus()
   }, [])
+
+  useOutsideClick(ref, () => {
+    setShowAccountAction(false)
+  })
 
   async function getAccountStatus() {
     getCurrentAccount()
@@ -59,7 +64,10 @@ function Home(props: any) {
         <div className="container-account">
           <div className="account-title">
             <span className="name">{currentAccount.name}</span>
-            <div className="arrow"  onClick={() => setShowAccountAction(!showAccountAction)}>
+            <div ref={ref} className="arrow"  onClick={() => {
+              setShowAccountAction(!showAccountAction)
+            }}
+            >
               <Icon className="arrow-icon" name="Arrowdown" />
             </div>
             {
@@ -90,7 +98,8 @@ function Home(props: any) {
           </button>
           <button className="button button-white button-import-account" onClick={() => 
             props.history.push('/importAccount')
-          }>导入账户</button>
+          }>导入账户</button>import useOutsideClick from '../shared/useClickOutside';
+
         </div>
       }
     </>

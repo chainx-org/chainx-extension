@@ -1,7 +1,7 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { useRedux } from '../../shared'
+import { useRedux, useOutsideClick } from '../../shared'
 import { setChainxCurrentAccount,
          setChainxNode,
          removeChainxNode,
@@ -14,6 +14,8 @@ import logo from "../../assets/logo.jpg"
 import "./header.scss";
 
 function Header(props: any) {
+  const refNodeList = useRef<HTMLInputElement>(null)
+  const refAccountList = useRef<HTMLInputElement>(null)
   const [showNodeListArea, setShowNodeListArea] = useState(false)
   const [showAccountArea, setShowAccountArea] = useState(false)
   const [{currentAccount}, setCurrentAccount] = useRedux('currentAccount')
@@ -24,6 +26,14 @@ function Header(props: any) {
   useEffect(() => {
     getNodeStatus()
   }, [])
+
+  useOutsideClick(refNodeList, () => {
+    setShowNodeListArea(false)
+  })
+
+  useOutsideClick(refAccountList, () => {
+    setShowAccountArea(false)
+  })
 
   async function getNodeStatus() {
     const currentNodeResult = await getCurrentChainxNode()
@@ -52,14 +62,14 @@ function Header(props: any) {
           :
           <div className="right">
             <Link to='/requestSign'>Sign</Link>
-            <div className="current-node" onClick={() => {
+            <div ref={refNodeList} className="current-node" onClick={() => {
               setShowNodeListArea(!showNodeListArea)
               setShowAccountArea(false)
             }}>
               <span className="dot"></span>
               <span>{currentNode.name}</span>
             </div>
-            <div className="setting" onClick={() => {
+            <div ref={refAccountList} className="setting" onClick={() => {
               setShowAccountArea(!showAccountArea)
               setShowNodeListArea(false)
             }}>
