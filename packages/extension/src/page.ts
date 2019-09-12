@@ -1,10 +1,21 @@
-window.addEventListener('message', (msg): void => {
+window.addEventListener('message', ({ source, data }): void => {
   // only allow messages from our window, by the inject
-  if (msg.source !== window || msg.data.origin !== 'content') {
+  if (source !== window || data.origin !== 'content') {
     return;
   }
 
-  console.log('page msg from content', msg);
+  const handler = handlers[data.id];
+  if (!handler) {
+    console.error(`Uknown response: ${JSON.stringify(data)}`);
+    return;
+  }
+
+  if (data.error) {
+    handler.reject(new Error(data.error));
+  } else {
+    handler.resolve(data.response);
+  }
+
 });
 
 const handlers: any = {};
@@ -20,15 +31,9 @@ function sendMessage(message: any, request: any = null): Promise<any> {
   });
 }
 
-async function enable (origin: string): Promise<any> {
-  await sendMessage('chainx.accounts.create', { origin });
-
-  return "ok";
+async function enable(): Promise<any> {
+  return await sendMessage('chainx.accounts.current');
 }
-
-console.log('abcd');
-
-console.log("hello world from ChainX extension");
 
 // @ts-ignore
 window.chainxProvider = {

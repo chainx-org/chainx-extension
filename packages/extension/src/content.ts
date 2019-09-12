@@ -21,7 +21,6 @@ window.addEventListener('message', ({ data, source }): void => {
     return;
   }
 
-  console.log('data', data);
   port.postMessage(data);
 });
 

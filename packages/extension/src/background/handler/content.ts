@@ -2,14 +2,18 @@ import { ChainxSignRequest, MessageRequest } from "./types";
 // @ts-ignore
 import { CHAINX_TRANSACTION_SIGN } from "@chainx/extension-defaults";
 import { getChainx } from "../chainx";
-import { getChainxAccountByAddress } from "./common";
+import { getChainxAccountByAddress, getCurrentChainxAccount } from "./common";
 // @ts-ignore
 import Account from '@chainx/account';
+// @ts-ignore
+import { CHAINX_ACCOUNT_CURRENT } from "@chainx/extension-defaults";
 
 export default async function handleContent({ id, message, request }: MessageRequest) {
   console.log('handle request from content script:', `id: ${id}, message: ${message}, request: ${request}`);
   if (message === CHAINX_TRANSACTION_SIGN) {
     return signTransaction(request);
+  } else if (message === CHAINX_ACCOUNT_CURRENT) {
+    return getCurrentChainxAccount();
   }
 
   return true;
