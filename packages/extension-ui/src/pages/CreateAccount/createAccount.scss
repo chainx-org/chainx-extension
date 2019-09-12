@@ -20,11 +20,6 @@
     margin-top: 8px;
     display: flex;
     flex-direction: column;
-    .error-message {
-      margin-top: 20px;
-      color: red;
-      font-size: 16px;
-    }
     .create-account-body-content {
       display: flex;
       justify-content: space-between;
@@ -44,10 +39,42 @@
       }
       .word-item-click {
         cursor: pointer;
+        transition: filter 0.3s ease 0.3s;
+        &:hover {
+          background: #F2F3F4;
+        }
+        &:active {
+          filter: drop-shadow(0 0 2px #000);
+          transition: filter .3s;
+        }
       }
       .word-item-selected {
         background: #F2F3F4;
         border: 1px solid $grayDivide;
+      }
+    }
+  }
+  .validate-mnemonic-area {
+    position: absolute;
+    bottom: 0;
+    left: -20px;
+    width: 378px;
+    height: 90px;
+    background-color: $itemBgColor;
+    display: flex;
+    justify-content: center;
+    .validate-mnemonic-area-container {
+      width: 318px;
+      min-height: 60px;
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 8px;
+      span {
+        height: 15px;
+        margin-top: 8px;
+        margin-left: 10px;
+        font-size: 14px;
+        color: $fontgray;
       }
     }
   }
