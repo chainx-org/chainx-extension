@@ -1,15 +1,18 @@
 import extension from 'extensionizer'
+import { Popup } from './types'
 
 const NOTIFICATION_HEIGHT = 580
 const NOTIFICATION_WIDTH = 358
 
 class NotificationManager {
+  _popupId: Number
+  
   constructor() {
     this._popupId = null
   }
 
   showPopup () {
-    this._getPopup((err, popup) => {
+    this._getPopup((err, popup: Popup) => {
       if (err) throw err
       // Bring focus to chrome popup
       if (popup) {
@@ -36,33 +39,33 @@ class NotificationManager {
 
   closePopup () {
     // closes notification popup
-    this._getPopup((err, popup) => {
+    this._getPopup((err, popup: Popup) => {
       if (err) throw err
       if (!popup) return
       extension.windows.remove(popup.id, console.error)
     })
   }
 
-  _getPopup (cb) {
+  _getPopup (cb: Function) {
     this._getWindows((err, windows) => {
       if (err) throw err
       cb(null, this._getPopupIn(windows))
     })
   }
 
-  _getWindows (cb) {
+  _getWindows (cb: Function) {
     // Ignore in test environment
     if (!extension.windows) {
       return cb()
     }
 
-    extension.windows.getAll({}, (windows) => {
+    extension.windows.getAll({}, (windows: Popup[]) => {
       cb(null, windows)
     })
   }
 
-  _getPopupIn (windows) {
-    return windows ? windows.find((win) => {
+  _getPopupIn (windows: Popup[]) {
+    return windows ? windows.find((win: Popup) => {
       // Returns notification popup
       return (win && win.type === 'popup' && win.id === this._popupId)
     }) : null
