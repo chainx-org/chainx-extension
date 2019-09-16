@@ -55,13 +55,21 @@ function Header(props: any) {
           <img className="logo" src={logo} alt="logo" />
         </Link>
         {
-          props.history.location.pathname.indexOf('sign') > -1 ?
+          props.history.location.pathname.indexOf('requestSign') > -1 ?
           <div className="center-title">
             <span>请求签名</span>
           </div>
           :
           <div className="right">
-            <Link to='/requestSign'>Sign</Link>
+            <div onClick={() => 
+              chrome.windows.create({
+                url: 'notification.html', 
+                type: 'popup', 
+                width: 360, 
+                height: 620,
+                left: 460 || Math.round(window.screenX + (window.outerWidth / 2) - 180)
+              })
+            }>Sign</div>
             <div ref={refNodeList} className="current-node" onClick={() => {
               setShowNodeListArea(!showNodeListArea)
               setShowAccountArea(false)
