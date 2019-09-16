@@ -33,7 +33,7 @@ async function requestSignTransaction({ id, address, module, method, args }: Cha
   }
 
   if (tx.toSign) {
-    return Promise.reject({ message: "sign transaction busy" });
+    return Promise.reject({ message: "Sign transaction busy" });
   }
   tx.setToSign({ id, address, module, method, args });
 
