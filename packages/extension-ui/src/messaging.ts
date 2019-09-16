@@ -48,7 +48,7 @@ port.onMessage.addListener((data): void => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function sendMessage(message: string, request: any = {}, subscriber?: (data: any) => void): Promise<any> {
   return new Promise((resolve, reject): void => {
-    const id = `chainx.${Date.now()}.${++idCounter}`;
+    const id = `chainx.popup.${Date.now()}.${++idCounter}`;
 
     handlers[id] = { resolve, reject, subscriber };
 

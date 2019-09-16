@@ -27,7 +27,7 @@ let idCounter = 0;
 
 function sendMessage(message: any, request: any = null): Promise<any> {
   return new Promise((resolve, reject): void => {
-    const id = `chainx.${Date.now()}.${++idCounter}`;
+    const id = `chainx.page.${Date.now()}.${++idCounter}`;
 
     handlers[id] = { resolve, reject };
 
