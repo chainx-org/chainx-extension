@@ -10,6 +10,7 @@ import { setChainxCurrentAccount,
 import { NodeInfo } from "@chainx/extension-ui/types"
 import Icon from '../../components/Icon'
 import DotInCenterStr from '../../components/DotInCenterStr'
+// @ts-ignore
 import logo from "../../assets/logo.jpg"
 import "./header.scss";
 
@@ -142,10 +143,11 @@ function Header(props: any) {
                 {
                   accounts.length > 0 && accounts.map(item => (
                     <div className={item.address === currentAccount.address ? 'account-item active' : 'account-item'} key={item.name}
-                      onClick={() => {
+                      onClick={async () => {
                         setChainxCurrentAccount(item.address).then(d => console.log(d))
-                        setCurrentAccount({ currentAccount: item })
+                        await setCurrentAccount({ currentAccount: item })
                         setShowAccountArea(false)
+                        props.history.push('/')  
                       }}
                     >
                       <div className="account-item-active-flag">
