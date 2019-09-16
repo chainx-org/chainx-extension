@@ -7,7 +7,7 @@ class Transaction {
     this.toSign = null;
   }
 
-  setToSign(request: ChainxSignRequest) {
+  setToSign(request: ChainxSignRequest | null) {
     this.toSign = request;
     return this.toSign;
   }

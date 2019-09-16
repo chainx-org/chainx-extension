@@ -10,6 +10,7 @@ import { tx } from "../store";
 import { handlers } from "./content";
 import { getChainxAccountByAddress } from "./common";
 import { getChainx } from "../chainx";
+import notificationManager from "../notification-manager";
 
 export default function handleNotification({ message, request }: MessageRequest): Promise<any> {
   if (message === CHAINX_TRANSACTION_SIGN) {
@@ -43,6 +44,8 @@ export async function rejectSignTransaction({ id }: ChainxSignRequest) {
   }
 
   handler['reject']({ message: "Reject the sign request" });
+  tx.setToSign(null);
+  notificationManager.closePopup();
   return;
 }
 
@@ -89,5 +92,7 @@ async function signTransaction(request: ChainxSignRequest, password: string) {
 
   const hex = submittable.toHex();
   handler['resolve'](hex);
+  tx.setToSign(null);
+  notificationManager.closePopup();
   return hex;
 }
