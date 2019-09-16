@@ -32,3 +32,8 @@ export interface ChainxNode {
   name: string,
   url: string,
 }
+
+export interface Popup {
+  id: Number,
+  type: string,
+}
