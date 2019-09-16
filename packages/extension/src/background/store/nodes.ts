@@ -1,6 +1,6 @@
 // @ts-ignore
 import store from './store';
-import { ChainxNode } from "./types";
+import { ChainxNode } from "../types";
 import { CURRENT_ACCOUNT_KEY } from "./keyring";
 
 export const NODE_PREFIX = 'node_';

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { signMessage, getCurrentChainxAccount } from '../../messaging'
+// @ts-ignore
 import { useRedux } from '../../shared'
+// @ts-ignore
 import ErrorMessage from '../../components/ErrorMessage';
 import './requestSign.scss'
 
@@ -8,14 +10,14 @@ function RequestSign(props: any) {
   const [sig, setSig] = useState('')
   const [pass, setPass] = useState('')
   const [errMsg, setErrMsg] = useState('')
-  const [{currentAccount}, setCurrentAccount] = useRedux('currentAccount', { address: '', name: ''})
+  const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount', { address: '', name: '' })
 
   useEffect(() => {
     getCurrentAccount()
   }, [])
 
   const getCurrentAccount = async () => {
-    const result =  await getCurrentChainxAccount()
+    const result = await getCurrentChainxAccount()
     setCurrentAccount({ currentAccount: result })
   }
 
@@ -79,13 +81,15 @@ function RequestSign(props: any) {
           <button className="button button-white-half" onClick={() => {
             props.history.push('/')
             window.close()
-          }}>取消</button>
+          }}>取消
+          </button>
           <button className="button button-yellow-half" onClick={() => {
             sign()
-          }}>签名</button>
+          }}>签名
+          </button>
         </div>
         <span className="result">sign result: {sig}</span>
-        <ErrorMessage msg={errMsg} />
+        <ErrorMessage msg={errMsg}/>
       </div>
     </div>
   )

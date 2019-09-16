@@ -5,10 +5,10 @@ import {
   ChainxSignMessageRequest,
   SignTransactionRequest
 } from "../types";
-import keyring, { KeyStore } from "../keyring";
+import keyring, { KeyStore } from "../store/keyring";
 // @ts-ignore
 import { u8aToHex } from '@chainx/util';
-import nodes from '../nodes';
+import nodes from '../store/nodes';
 
 export async function createChainxAccount({ name, mnemonic, password }: ChainxAccountCreateRequest): Promise<AccountInfo> {
   const account = await keyring.addFromMnemonic(name, mnemonic, password);

@@ -4,8 +4,7 @@
 
 import extension from 'extensionizer';
 import handle from './handler';
-import keyring from './keyring';
-import nodes from './nodes';
+import { keyring, nodes } from './store';
 import { setChainx } from './chainx';
 
 // listen to all messages and handle appropriately
