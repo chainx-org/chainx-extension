@@ -3,10 +3,10 @@ import { ChainxSignRequest, MessageRequest } from "./types";
 import { CHAINX_TRANSACTION_SIGN } from "@chainx/extension-defaults";
 import { getChainx } from "../chainx";
 import { getChainxAccountByAddress, getCurrentChainxAccount } from "./common";
-// @ts-ignore
 import { Account } from 'chainx.js';
 // @ts-ignore
 import { CHAINX_ACCOUNT_CURRENT } from "@chainx/extension-defaults";
+import { tx } from "../store";
 import NotificationManager from '../notification-manager';
 const notificationManager = new NotificationManager()
 
@@ -14,7 +14,7 @@ export default async function handleContent({ id, message, request }: MessageReq
   notificationManager.showPopup()
 
   if (message === CHAINX_TRANSACTION_SIGN) {
-    return signTransaction(request);
+    return signTransaction({ id, ...request });
   } else if (message === CHAINX_ACCOUNT_CURRENT) {
     return getCurrentChainxAccount();
   }
@@ -22,7 +22,7 @@ export default async function handleContent({ id, message, request }: MessageReq
   return true;
 }
 
-async function signTransaction({ address, password, module, method, args }: ChainxSignRequest) {
+async function signTransaction({ id, address, module, method, args }: ChainxSignRequest) {
   const chainx = getChainx();
   const chainxModule = chainx.api.tx[module];
   if (!chainxModule) {
@@ -38,6 +38,16 @@ async function signTransaction({ address, password, module, method, args }: Chai
     return Promise.reject({ message: "Invalid address" });
   }
 
+  if (tx.toSign) {
+    return Promise.reject({ message: "sign transaction busy" });
+  }
+  tx.setToSign({ id, address, module, method, args });
+
+  // TODO: open window and type password to confirm sign.
+  return mockSign(item, call, args, 'a');
+}
+
+async function mockSign(item, call, args, password) {
   const account = Account.fromKeyStore(item.keyStore, password);
 
   const submittable = call(...args);

@@ -39,10 +39,9 @@ async function enable(): Promise<any> {
   return await sendMessage('chainx.accounts.current');
 }
 
-async function sign(): Promise<any> {
+async function sign(address: string): Promise<any> {
   return await sendMessage(CHAINX_TRANSACTION_SIGN, {
-    address: "5PqoAuvnFAdPMYysQ6aMZKeN5fS8kN3pwuUKpkyFaKCp4HwC",
-    password: "a",
+    address,
     module: "xAssets",
     method: "transfer",
     args: ["5PqoAuvnFAdPMYysQ6aMZKeN5fS8kN3pwuUKpkyFaKCp4HwC", "PCX", 1000, "memo"]
