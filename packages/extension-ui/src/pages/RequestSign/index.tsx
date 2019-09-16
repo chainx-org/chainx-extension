@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { signMessage, getCurrentChainxAccount } from '../../messaging'
-// @ts-ignore
+import { SignTransactionRequest } from '@chainx/extension-ui/types'
 import { useRedux } from '../../shared'
-// @ts-ignore
-import ErrorMessage from '../../components/ErrorMessage';
+import ErrorMessage from '../../components/ErrorMessage'
 import './requestSign.scss'
 
 function RequestSign(props: any) {
@@ -11,6 +10,11 @@ function RequestSign(props: any) {
   const [pass, setPass] = useState('')
   const [errMsg, setErrMsg] = useState('')
   const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount', { address: '', name: '' })
+
+  const { 
+    match: { params: { id } },
+    location: { query }
+  } = props
 
   useEffect(() => {
     getCurrentAccount()
@@ -30,6 +34,13 @@ function RequestSign(props: any) {
   }
 
   const sign = async () => {
+    const request: SignTransactionRequest = {
+      address: 'string',
+      module: 'string',
+      method: 'string',
+      args: []
+    }
+
     if (!currentAccount.address) {
       setErrMsg(`Error: address is not exist`)
     }
@@ -45,6 +56,16 @@ function RequestSign(props: any) {
       setErrMsg(`Error: ${e.message}`)
     }
   }
+
+  const removeCurrentSign = async () => {
+    try {
+      console.log(props.match.params.id, props.location.query)
+      await signMessage(currentAccount.address, 'message', pass)
+    } catch (e) {
+      window.close()
+    }
+  }
+
   return (
     <div className="container request-sign">
       <div className="detail">
@@ -79,8 +100,7 @@ function RequestSign(props: any) {
         />
         <div className="button-area margin-top-40">
           <button className="button button-white-half" onClick={() => {
-            props.history.push('/')
-            window.close()
+            removeCurrentSign()
           }}>取消
           </button>
           <button className="button button-yellow-half" onClick={() => {
