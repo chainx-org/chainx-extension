@@ -1,17 +1,21 @@
 import extension from "extensionizer";
 import { AccountInfo, SignTransactionRequest } from "@chainx/extension-ui/types";
 import {
-  PORT_POPUP,
   CHAINX_ACCOUNT_ALL,
   CHAINX_ACCOUNT_CREATE,
   CHAINX_ACCOUNT_CREATE_FROM_PRIVATE,
-  CHAINX_ACCOUNT_CURRENT, CHAINX_ACCOUNT_EXPORT_PRIVATE,
+  CHAINX_ACCOUNT_CURRENT,
+  CHAINX_ACCOUNT_EXPORT_PRIVATE,
   CHAINX_ACCOUNT_REMOVE,
   CHAINX_ACCOUNT_SELECT,
   CHAINX_ACCOUNT_SIGN_MESSAGE,
   CHAINX_NODE_ALL,
-  CHAINX_NODE_CREATE, CHAINX_NODE_CURRENT, CHAINX_NODE_REMOVE, CHAINX_NODE_SELECT,
-  CHAINX_TRANSACTION_SIGN
+  CHAINX_NODE_CREATE,
+  CHAINX_NODE_CURRENT,
+  CHAINX_NODE_REMOVE,
+  CHAINX_NODE_SELECT,
+  CHAINX_TRANSACTION_SIGN_REQUEST,
+  PORT_POPUP
 // @ts-ignore
 } from "@chainx/extension-defaults";
 
@@ -77,7 +81,7 @@ export async function signMessage(address: string, message: string, password: st
 }
 
 export async function signTransaction(request: SignTransactionRequest) {
-  return sendMessage(CHAINX_TRANSACTION_SIGN, request);
+  return sendMessage(CHAINX_TRANSACTION_SIGN_REQUEST, request);
 }
 
 export async function createChainxNode(name: string, url: string) {

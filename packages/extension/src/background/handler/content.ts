@@ -1,20 +1,16 @@
 import { ChainxSignRequest, MessageRequest } from "./types";
-// @ts-ignore
-import { CHAINX_TRANSACTION_SIGN } from "@chainx/extension-defaults";
 import { getChainx } from "../chainx";
 import { getChainxAccountByAddress, getCurrentChainxAccount } from "./common";
-import { Account } from 'chainx.js';
-// @ts-ignore
-import { CHAINX_ACCOUNT_CURRENT } from "@chainx/extension-defaults";
 import { tx } from "../store";
-import NotificationManager from '../notification-manager';
-const notificationManager = new NotificationManager()
+import notificationManager from '../notification-manager';
+// @ts-ignore
+import { CHAINX_ACCOUNT_CURRENT, CHAINX_TRANSACTION_SIGN_REQUEST } from "@chainx/extension-defaults";
+
+export const handlers = {};
 
 export default async function handleContent({ id, message, request }: MessageRequest) {
-  notificationManager.showPopup()
-
-  if (message === CHAINX_TRANSACTION_SIGN) {
-    return signTransaction({ id, ...request });
+  if (message === CHAINX_TRANSACTION_SIGN_REQUEST) {
+    return requestSignTransaction({ id, ...request });
   } else if (message === CHAINX_ACCOUNT_CURRENT) {
     return getCurrentChainxAccount();
   }
@@ -22,14 +18,12 @@ export default async function handleContent({ id, message, request }: MessageReq
   return true;
 }
 
-async function signTransaction({ id, address, module, method, args }: ChainxSignRequest) {
+async function requestSignTransaction({ id, address, module, method, args }: ChainxSignRequest) {
   const chainx = getChainx();
-  const chainxModule = chainx.api.tx[module];
-  if (!chainxModule) {
+  if (!chainx.api.tx[module]) {
     return Promise.reject({ message: "Invalid module" });
   }
-  const call = chainx.api.tx[module][method];
-  if (!call) {
+  if (!chainx.api.tx[module][method]) {
     return Promise.reject({ message: "Invalid method" });
   }
 
@@ -43,16 +37,9 @@ async function signTransaction({ id, address, module, method, args }: ChainxSign
   }
   tx.setToSign({ id, address, module, method, args });
 
-  // TODO: open window and type password to confirm sign.
-  return mockSign(item, call, args, 'a');
-}
+  notificationManager.showPopup();
 
-async function mockSign(item, call, args, password) {
-  const account = Account.fromKeyStore(item.keyStore, password);
-
-  const submittable = call(...args);
-  const nonce = await submittable.getNonce(account.publicKey());
-
-  submittable.sign(account, { nonce: nonce.toNumber() });
-  return submittable.toHex();
+  return new Promise((resolve, reject): void => {
+    handlers[id] = { resolve, reject };
+  });
 }

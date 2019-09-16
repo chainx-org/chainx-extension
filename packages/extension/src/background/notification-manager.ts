@@ -76,4 +76,6 @@ class NotificationManager {
 
 }
 
-export default NotificationManager
+const notificationManager = new NotificationManager();
+
+export default notificationManager;
