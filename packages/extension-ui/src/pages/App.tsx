@@ -11,6 +11,10 @@ import EnterPassword from './EnterPassword'
 import "./index.scss"
 
 export default function App() {
+  let redirectUrl = '/'
+  if (document.title === 'ChinaX Wallet Notification') {
+    redirectUrl = '/requestSign'
+  }
   return (
     <Router>
       <React.Fragment>
@@ -23,7 +27,7 @@ export default function App() {
             <Route path="/requestSign" component={RequestSign} />
             <Route path="/showPrivateKey" component={ShowPrivateKey} />
             <Route path="/enterPassword" component={EnterPassword} />
-            <Redirect to="/" />
+            <Redirect to={redirectUrl} />
           </Switch>
         </div>
       </React.Fragment>
