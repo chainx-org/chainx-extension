@@ -1,11 +1,7 @@
 import { ChainxSignRequest, MessageRequest } from "./types";
 import { Account } from "chainx.js";
 // @ts-ignore
-import {
-  CHAINX_TRANSACTION_GET_TO_SIGN,
-  CHAINX_TRANSACTION_SIGN,
-  CHAINX_TRANSACTION_SIGN_REQUEST
-} from "@chainx/extension-defaults/src";
+import { CHAINX_TRANSACTION_GET_TO_SIGN, CHAINX_TRANSACTION_SIGN } from "@chainx/extension-defaults/src";
 import { tx } from "../store";
 import { handlers } from "./content";
 import { getChainxAccountByAddress } from "./common";
