@@ -18,6 +18,7 @@ export default async function handleContent({ id, message, request }: MessageReq
   return true;
 }
 
+
 async function requestSignTransaction({ id, address, module, method, args }: ChainxSignRequest) {
   const chainx = getChainx();
   if (!chainx.api.tx[module]) {
