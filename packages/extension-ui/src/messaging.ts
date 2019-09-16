@@ -15,6 +15,8 @@ import {
   CHAINX_NODE_REMOVE,
   CHAINX_NODE_SELECT,
   CHAINX_TRANSACTION_SIGN_REQUEST,
+  CHAINX_TRANSACTION_SIGN_REJECT,
+  CHAINX_TRANSACTION_GET_TO_SIGN,
   PORT_POPUP
 // @ts-ignore
 } from "@chainx/extension-defaults";
@@ -82,6 +84,14 @@ export async function signMessage(address: string, message: string, password: st
 
 export async function signTransaction(request: SignTransactionRequest) {
   return sendMessage(CHAINX_TRANSACTION_SIGN_REQUEST, request);
+}
+
+export async function getToSign() {
+  return sendMessage(CHAINX_TRANSACTION_GET_TO_SIGN);
+}
+
+export async function rejectSign(id: Number) {
+  return sendMessage(CHAINX_TRANSACTION_SIGN_REJECT, id)
 }
 
 export async function createChainxNode(name: string, url: string) {
