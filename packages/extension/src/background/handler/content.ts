@@ -34,7 +34,11 @@ async function signTransaction({ id, address, module, method, args }: ChainxSign
     return Promise.reject({ message: "Invalid address" });
   }
 
-  await tx.setToSign({ id, address, module, method, args });
+  if (tx.toSign) {
+    return Promise.reject({ message: "sign transaction busy" });
+  }
+  tx.setToSign({ id, address, module, method, args });
+
   // TODO: open window and type password to confirm sign.
   return mockSign(item, call, args, 'a');
 }
