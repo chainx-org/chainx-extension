@@ -1,7 +1,11 @@
 import { ChainxSignRequest, MessageRequest } from "./types";
 import { Account } from "chainx.js";
 // @ts-ignore
-import { CHAINX_TRANSACTION_GET_TO_SIGN, CHAINX_TRANSACTION_SIGN } from "@chainx/extension-defaults/src";
+import {
+  CHAINX_TRANSACTION_GET_TO_SIGN,
+  CHAINX_TRANSACTION_SIGN,
+  CHAINX_TRANSACTION_SIGN_REJECT
+} from "@chainx/extension-defaults/src";
 import { tx } from "../store";
 import { handlers } from "./content";
 import { getChainxAccountByAddress } from "./common";
@@ -12,10 +16,36 @@ export default function handleNotification({ message, request }: MessageRequest)
     return signTransaction(request, request.password);
   } else if (message === CHAINX_TRANSACTION_GET_TO_SIGN) {
     return Promise.resolve(tx.toSign);
+  } else if (message === CHAINX_TRANSACTION_SIGN_REJECT) {
+    return rejectSignTransaction(request);
   }
 
   return Promise.resolve();
 }
+
+export async function rejectSignTransaction({ id }: ChainxSignRequest) {
+  const handler = handlers[id];
+  if (!tx.toSign) {
+    if (handler) {
+      handler['reject']({ message: "Fail to sign" });
+      return
+    } else {
+      return Promise.reject({ message: "Invalid request" });
+    }
+  }
+
+  if (!handler) {
+    return Promise.reject({ message: "No handler for request" });
+  }
+
+  if (id !== tx.toSign.id) {
+    return Promise.reject({ message: "Invalid request" });
+  }
+
+  handler['reject']({ message: "Reject the sign request" });
+  return;
+}
+
 
 async function signTransaction(request: ChainxSignRequest, password: string) {
   const handler = handlers[request.id];
