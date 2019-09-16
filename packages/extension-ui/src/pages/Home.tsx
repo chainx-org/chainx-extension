@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react"
 import { useState } from "react"
 import { useRedux, useOutsideClick } from '../shared'
 import ClipboardJS from 'clipboard'
-import { getCurrentChainxAccount, getAllAccounts } from '../messaging'
+import { getCurrentChainxAccount, getAllAccounts, getToSign } from '../messaging'
 // @ts-ignore
 import Icon from '../components/Icon'
 import "./index.scss"
@@ -18,11 +18,24 @@ function Home(props: any) {
   useEffect(() => {
     setCopyEvent()
     getAccountStatus()
+    getUnapprovedTxs()
   }, [])
 
   useOutsideClick(ref, () => {
     setShowAccountAction(false)
   })
+
+  async function getUnapprovedTxs() {
+    try {
+      const toSign = await getToSign()
+      console.log('to sign object: ', toSign)
+      if (toSign) {
+        props.history.push({ pathname: '/requestSign/' + toSign.id, query: toSign})
+      }
+    } catch (error) {
+      console.log('error occurs ', error)
+    }
+  }
 
   async function getAccountStatus() {
     getCurrentAccount()
@@ -89,6 +102,7 @@ function Home(props: any) {
             <span className="copy-text">Copy</span>
           </button>
           <span>{copySuccess}</span>
+          <button onClick={() => getUnapprovedTxs().then(d => console.log(d))}>Test</button>
         </div>
         :
         <div className="container container-column container-no-account">
