@@ -7,8 +7,12 @@ import { getChainxAccountByAddress, getCurrentChainxAccount } from "./common";
 import { Account } from 'chainx.js';
 // @ts-ignore
 import { CHAINX_ACCOUNT_CURRENT } from "@chainx/extension-defaults";
+import NotificationManager from '../notification-manager';
+const notificationManager = new NotificationManager()
 
 export default async function handleContent({ id, message, request }: MessageRequest) {
+  notificationManager.showPopup()
+
   if (message === CHAINX_TRANSACTION_SIGN) {
     return signTransaction(request);
   } else if (message === CHAINX_ACCOUNT_CURRENT) {
