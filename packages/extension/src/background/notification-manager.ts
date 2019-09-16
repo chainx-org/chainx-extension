@@ -5,7 +5,7 @@ const NOTIFICATION_HEIGHT = 580
 const NOTIFICATION_WIDTH = 358
 
 class NotificationManager {
-  _popupId: Number
+  _popupId: Number | null;
   
   constructor() {
     this._popupId = null
@@ -17,6 +17,7 @@ class NotificationManager {
       // Bring focus to chrome popup
       if (popup) {
         // bring focus to existing chrome popup
+        // @ts-ignore
         extension.windows.update(popup.id, { focused: true })
       } else {
         const {screenX, screenY, outerWidth, outerHeight} = window
@@ -32,6 +33,7 @@ class NotificationManager {
           top: Math.max(notificationTop, 0),
           left: Math.max(notificationLeft, 0),
         }, cb)
+        // @ts-ignore
         creation && creation.then && creation.then(cb)
       }
     })
@@ -42,6 +44,7 @@ class NotificationManager {
     this._getPopup((err, popup: Popup) => {
       if (err) throw err
       if (!popup) return
+      // @ts-ignore
       extension.windows.remove(popup.id, console.error)
     })
   }
