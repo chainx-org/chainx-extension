@@ -10,7 +10,7 @@ import { tx } from "../store";
 
 export default async function handleContent({ id, message, request }: MessageRequest) {
   if (message === CHAINX_TRANSACTION_SIGN) {
-    return signTransaction(request);
+    return signTransaction({ id, ...request });
   } else if (message === CHAINX_ACCOUNT_CURRENT) {
     return getCurrentChainxAccount();
   }
@@ -18,7 +18,7 @@ export default async function handleContent({ id, message, request }: MessageReq
   return true;
 }
 
-async function signTransaction({ address, module, method, args }: ChainxSignRequest) {
+async function signTransaction({ id, address, module, method, args }: ChainxSignRequest) {
   const chainx = getChainx();
   const chainxModule = chainx.api.tx[module];
   if (!chainxModule) {
@@ -34,7 +34,7 @@ async function signTransaction({ address, module, method, args }: ChainxSignRequ
     return Promise.reject({ message: "Invalid address" });
   }
 
-  await tx.setToSign({ address, module, method, args });
+  await tx.setToSign({ id, address, module, method, args });
   // TODO: open window and type password to confirm sign.
   return mockSign(item, call, args, 'a');
 }
