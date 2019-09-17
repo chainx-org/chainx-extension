@@ -1,5 +1,5 @@
 import extension from "extensionizer";
-import { AccountInfo, SignTransactionRequest } from "@chainx/extension-ui/types";
+import { AccountInfo } from "@chainx/extension-ui/types";
 import {
   CHAINX_ACCOUNT_ALL,
   CHAINX_ACCOUNT_CREATE,
@@ -14,10 +14,11 @@ import {
   CHAINX_NODE_CURRENT,
   CHAINX_NODE_REMOVE,
   CHAINX_NODE_SELECT,
-  CHAINX_TRANSACTION_SIGN_REQUEST,
   CHAINX_TRANSACTION_SIGN_REJECT,
   CHAINX_TRANSACTION_GET_TO_SIGN,
-  PORT_POPUP
+  CHAINX_TRANSACTION_SIGN,
+  PORT_POPUP,
+  PORT_NOTIFICATION
 // @ts-ignore
 } from "@chainx/extension-defaults";
 
@@ -32,11 +33,12 @@ interface Handler {
 type Handlers = Record<string, Handler>;
 
 const port = extension.runtime.connect({ name: PORT_POPUP });
+const notificationPort = extension.runtime.connect({ name: PORT_NOTIFICATION });
 let idCounter = 0;
+let notificationIdCounter = 0;
 const handlers: Handlers = {};
 
-// setup a listener for messages, any incoming resolves the promise
-port.onMessage.addListener((data): void => {
+const messageHandler = (data): void => {
   const handler = handlers[data.id];
 
   if (!handler) {
@@ -49,9 +51,12 @@ port.onMessage.addListener((data): void => {
   } else {
     handler.resolve(data.response);
   }
-});
+};
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// setup a listener for messages, any incoming resolves the promise
+port.onMessage.addListener(messageHandler);
+notificationPort.onMessage.addListener(messageHandler);
+
 function sendMessage(message: string, request: any = {}, subscriber?: (data: any) => void): Promise<any> {
   return new Promise((resolve, reject): void => {
     const id = `chainx.popup.${Date.now()}.${++idCounter}`;
@@ -59,6 +64,16 @@ function sendMessage(message: string, request: any = {}, subscriber?: (data: any
     handlers[id] = { resolve, reject, subscriber };
 
     port.postMessage({ id, message, request });
+  });
+}
+
+function sendNotificationMessage(message: string, request: any = {}) {
+  return new Promise((resolve, reject): void => {
+    const id = `chainx.notification.${Date.now()}.${++notificationIdCounter}`;
+
+    handlers[id] = { resolve, reject };
+
+    notificationPort.postMessage({ id, message, request });
   });
 }
 
@@ -82,16 +97,16 @@ export async function signMessage(address: string, message: string, password: st
   return sendMessage(CHAINX_ACCOUNT_SIGN_MESSAGE, { address, message, password });
 }
 
-export async function signTransaction(request: SignTransactionRequest) {
-  return sendMessage(CHAINX_TRANSACTION_SIGN_REQUEST, request);
+export async function signTransaction() {
+  return sendNotificationMessage(CHAINX_TRANSACTION_SIGN)
 }
 
 export async function getToSign() {
-  return sendMessage(CHAINX_TRANSACTION_GET_TO_SIGN);
+  return sendNotificationMessage(CHAINX_TRANSACTION_GET_TO_SIGN);
 }
 
 export async function rejectSign(id: Number) {
-  return sendMessage(CHAINX_TRANSACTION_SIGN_REJECT, id)
+  return sendNotificationMessage(CHAINX_TRANSACTION_SIGN_REJECT, id)
 }
 
 export async function createChainxNode(name: string, url: string) {
