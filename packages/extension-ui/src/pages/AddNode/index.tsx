@@ -20,12 +20,17 @@ function AddNode(props: any) {
     if (!check()) {
       return 
     }
-    const result = await addChainxNode(name, url)
-    console.log(result)
+    const result = await addChainxNode(name, url).catch(error => {
+      setErrMsg(error.message)
+      console.log('occur error: ', error)
+      return
+    })
+    setErrMsg('')
+    console.log('result ', result)
   }
 
   return (
-    <div className="add-node">
+    <div className="add-node-page">
       <span className="title">添加节点</span>
       <input className="input" type="text"
         value={name}

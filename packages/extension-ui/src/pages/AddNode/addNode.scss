@@ -1,6 +1,6 @@
 @import '../../assets/variables.scss';
 
-.add-node {
+.add-node-page {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,5 +13,12 @@
     font-weight: 500;
     color: $fontgray;
     align-self: flex-start;
+  }
+  .node-url {
+    margin-top: 16px;
+    font-size: 14px;
+    align-self: flex-start;
+    margin-left: 20px;
+    color: #000;
   }
 }

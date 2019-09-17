@@ -103,7 +103,9 @@ function Header(props: any) {
                 ))
               }
             </div>
-            <div className="add-node">
+            <div className="add-node" onClick={() => {
+              props.history.push('/addNode')
+            }}>
               <Icon name="Add" className="add-node-icon" />
               <span>添加节点</span>
             </div>
