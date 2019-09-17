@@ -112,7 +112,7 @@ function Home(props: any) {
           </button>
           <button className="button button-white button-import-account" onClick={() => 
             props.history.push('/importAccount')
-          }>导入账户</button>import useOutsideClick from '../shared/useClickOutside';
+          }>导入账户</button>
 
         </div>
       }
