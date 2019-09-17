@@ -1,6 +1,10 @@
-
 const fetchFromWs = ({ url, method, params = [], timeOut = 5000 }) => {
-  const id = Number(Date.now() + Math.random().toString().substr(2, 3)).toString(36);
+  const id = Number(
+    Date.now() +
+      Math.random()
+        .toString()
+        .substr(2, 3)
+  ).toString(36);
   const message = JSON.stringify({ id, jsonrpc: '2.0', method, params });
   let startTime;
   let endTime;
@@ -14,7 +18,7 @@ const fetchFromWs = ({ url, method, params = [], timeOut = 5000 }) => {
             endTime = Date.now();
             resolve({
               data: data.result,
-              wastTime: endTime - startTime,
+              wastTime: endTime - startTime
             });
             ws.close();
           }
@@ -38,11 +42,11 @@ const fetchFromWs = ({ url, method, params = [], timeOut = 5000 }) => {
         setTimeout(() => {
           reject('请求超时');
         }, timeOut);
-      }),
+      })
     ]);
   } else {
     return request();
   }
 };
 
-export default fetchFromWs
+export default fetchFromWs;

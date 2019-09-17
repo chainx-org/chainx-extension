@@ -2,7 +2,6 @@ import handleContent from './content';
 import handlePopup from './popup';
 import handleNotification from './notification';
 import { MessageRequest } from './types';
-// @ts-ignore
 import {
   PORT_POPUP,
   PORT_CONTENT,

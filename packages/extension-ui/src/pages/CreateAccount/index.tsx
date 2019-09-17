@@ -1,8 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-// @ts-ignore
 import { Account } from 'chainx.js';
-// @ts-ignore
 import shuffle from 'lodash.shuffle';
 import './createAccount.scss';
 import StaticWarning from '../../components/StaticWarning';
@@ -32,7 +30,7 @@ function CreateAccount(props: any) {
     index: index
   }));
 
-  const clearErrMsg = async () => {
+  const clearErrMsg = () => {
     setErrMsg('');
     return true;
   };

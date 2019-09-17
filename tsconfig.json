@@ -4,6 +4,8 @@
     "baseUrl": ".",
     "paths": {
       "@chainx/extension": ["packages/extension/src"],
+      "@chainx/extension-defaults": ["packages/extension-defaults/src"],
+      "@chainx/extension-defaults/*": ["packages/extension-defaults/src/*"],
       "@chainx/extension-ui": ["packages/extension-ui/src"],
       "@chainx/extension-ui/*": ["packages/extension-ui/src/*"]
     },

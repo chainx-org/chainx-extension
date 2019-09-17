@@ -10,6 +10,14 @@
     "chainx.js": "^2.21.0",
     "lodash.shuffle": "^4.2.0",
     "react-router": "^5.0.1",
-    "react-router-dom": "^5.0.1"
+    "react-router-dom": "^5.0.1",
+    "clipboard": "^2.0.4",
+    "redux": "^4.0.1"
+  },
+  "devDependencies": {
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.0",
+    "sass-resources-loader": "^2.0.1",
+    "css-loader": "^3.2.0"
   }
 }

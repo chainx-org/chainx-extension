@@ -33,8 +33,8 @@ function Home(props: any) {
     try {
       const toSign = await getToSign();
       if (toSign) {
-        // @ts-ignore
         props.history.push({
+          // @ts-ignore
           pathname: '/requestSign/' + toSign.id,
           query: toSign
         });

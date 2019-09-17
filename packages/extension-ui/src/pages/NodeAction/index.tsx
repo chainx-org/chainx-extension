@@ -27,13 +27,13 @@ function AddNode(props: any) {
       return;
     }
     const result = await addChainxNode(name, url).catch(error => {
-      setErrMsg(error.message)
-      console.log('occur error: ', error)
-      return
-    })
-    setErrMsg('')
-    console.log('result ', result)
-  }
+      setErrMsg(error.message);
+      console.log('occur error: ', error);
+      return;
+    });
+    setErrMsg('');
+    console.log('result ', result);
+  };
 
   const deleteNode = async (name: string, url: string) => {
     removeChainxNode(name, url)

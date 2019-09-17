@@ -1,13 +1,11 @@
-import React from 'react';
-import { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { useRedux, useOutsideClick, fetchFromWs } from '../../shared';
 import {
-  setChainxCurrentAccount,
-  setChainxNode,
-  removeChainxNode,
+  getAllChainxNodes,
   getCurrentChainxNode,
-  getAllChainxNodes
+  setChainxCurrentAccount,
+  setChainxNode
 } from '../../messaging';
 import { NodeInfo } from '@chainx/extension-ui/types';
 import Icon from '../../components/Icon';
@@ -26,7 +24,7 @@ function Header(props: any) {
   const [currentNode, setCurrentNode] = useState<NodeInfo>({
     name: 'chainx.org',
     url: '',
-    delay: '',
+    delay: ''
   });
   const [nodeList, setNodeList] = useState<NodeInfo[]>([]);
 
@@ -50,18 +48,19 @@ function Header(props: any) {
         url: item.url,
         method: 'chain_getBlock',
         timeOut: 7000
-      }).then((result = {}) => {
+      })
+        .then((result = {}) => {
           if (result.data) {
-            nodeListResult[index].delay = result.wastTime
+            nodeListResult[index].delay = result.wastTime;
           }
         })
         .catch(() => {
-          nodeListResult[index].delay = 'timeout' 
+          nodeListResult[index].delay = 'timeout';
         })
         .finally(() => {
-          setNodeList(nodeListResult)
-        })
-    })
+          setNodeList(nodeListResult);
+        });
+    });
   }
 
   async function getCurrentNode() {
@@ -70,17 +69,18 @@ function Header(props: any) {
       url: currentNodeResult.url,
       method: 'chain_getBlock',
       timeOut: 7000
-    }).then((result = {}) => {
+    })
+      .then((result = {}) => {
         if (result.data) {
-          currentNodeResult.delay = result.wastTime
+          currentNodeResult.delay = result.wastTime;
         }
       })
       .catch(() => {
-        currentNodeResult.delay = 'timeout'
+        currentNodeResult.delay = 'timeout';
       })
       .finally(() => {
         setCurrentNode(currentNodeResult);
-      })
+      });
   }
 
   async function setNode(url: string) {
@@ -98,7 +98,7 @@ function Header(props: any) {
     } else if (delay <= 300) {
       return 'green';
     } else {
-      return ''
+      return '';
     }
   }
 
@@ -128,7 +128,9 @@ function Header(props: any) {
                 setShowAccountArea(false);
               }}
             >
-              <span className={'dot ' + getDelayClass(currentNode.delay) + '-bg'}></span>
+              <span
+                className={'dot ' + getDelayClass(currentNode.delay) + '-bg'}
+              ></span>
               <span>{currentNode.name}</span>
             </div>
             <div
@@ -181,15 +183,22 @@ function Header(props: any) {
                       </div>
                     </div>
                     <span className={'delay ' + getDelayClass(item.delay)}>
-                      {item.delay ? item.delay === 'timeout' ? 'timeout' : item.delay + ' ms' : ''}
+                      {item.delay
+                        ? item.delay === 'timeout'
+                          ? 'timeout'
+                          : item.delay + ' ms'
+                        : ''}
                     </span>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="add-node" onClick={() => {
-              props.history.push('/addNode')
-            }}>
+            <div
+              className="add-node"
+              onClick={() => {
+                props.history.push('/addNode');
+              }}
+            >
               <Icon name="Add" className="add-node-icon" />
               <span>添加节点</span>
             </div>
