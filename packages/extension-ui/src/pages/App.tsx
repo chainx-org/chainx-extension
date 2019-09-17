@@ -8,7 +8,7 @@ import ImportAccount from './ImportAccount';
 import RequestSign from './RequestSign';
 import ShowPrivateKey from './ShowPrivateKey/index';
 import EnterPassword from './EnterPassword';
-import AddNode from './AddNode';
+import NodeAction from './NodeAction';
 import './index.scss';
 
 export default function App() {
@@ -26,7 +26,7 @@ export default function App() {
             <Route path="/requestSign/:id?" component={RequestSign} />
             <Route path="/showPrivateKey" component={ShowPrivateKey} />
             <Route path="/enterPassword" component={EnterPassword} />
-            <Route path="/addNode" component={AddNode} />
+            <Route path="/addNode" component={NodeAction} />
             <Redirect to={redirectUrl} />
           </Switch>
         </div>

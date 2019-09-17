@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { addChainxNode } from '../../messaging';
+import { addChainxNode, removeChainxNode } from '../../messaging';
 import ErrorMessage from '../../components/ErrorMessage';
-import './addNode.scss';
+import './nodeAction.scss';
 
 function AddNode(props: any) {
   const [name, setName] = useState('');
   const [url, setUrl] = useState('');
   const [errMsg, setErrMsg] = useState('');
+
+  const {
+    location: { query }
+  } = props;
+
+  const title = query && query.type === 'edit' ? '修改节点' : '添加节点'
 
   const check = () => {
     if (!name || !url) {
@@ -15,7 +21,7 @@ function AddNode(props: any) {
     }
     return true;
   };
-
+  
   const enter = async () => {
     if (!check()) {
       return;
@@ -29,9 +35,13 @@ function AddNode(props: any) {
     console.log('result ', result)
   }
 
+  const deleteNode = async (name: string, url: string) => {
+    removeChainxNode(name, url)
+  }
+
   return (
-    <div className="add-node-page">
-      <span className="title">添加节点</span>
+    <div className="node-action">
+      <span className="title">{title}</span>
       <input
         className="input"
         type="text"
@@ -58,6 +68,14 @@ function AddNode(props: any) {
       >
         Confirm
       </button>
+      {
+        query && query.type === 'edit' ? 
+        <button className="button button-white margin-top-16"
+          onClick={() => deleteNode(query.nodeInfo.name, query.nodeInfo.url)}
+        >Delete</button>
+        :
+        null
+      }
       {errMsg ? <ErrorMessage msg={errMsg} /> : null}
     </div>
   );
