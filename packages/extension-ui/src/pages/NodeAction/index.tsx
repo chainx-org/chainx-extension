@@ -39,12 +39,8 @@ function AddNode(props: any) {
     try {
       await addChainxNode(name, url);
       setErrMsg('');
-<<<<<<< HEAD
       await updateNodeStatus(setCurrentNode, setNodeList)
       props.history.push('/')
-=======
-      props.history.push('/');
->>>>>>> 05b0740538f2ca232c6a9ac2a06adbd7afcfd4bb
     } catch (error) {
       setErrMsg(error.message);
       console.log('occur error: ', error);
@@ -99,32 +95,13 @@ function AddNode(props: any) {
             Confirm
           </button>
         </>
-      ) : null}
-
-      {action === 'remove' ? (
-        <button
-          className="button button-white margin-top-16"
-          onClick={() => deleteNode(query.nodeInfo.name, query.nodeInfo.url)}
-        >
-          Delete
-        </button>
-<<<<<<< HEAD
-        </>
-        : null
-      }
-      
-      {
-        action === 'remove' ?
-        <button className="button button-white margin-top-16"
+      ) : 
+         <button className="button button-white margin-top-16"
           onClick={() => {
             deleteNode(query.nodeInfo.name, query.nodeInfo.url)
           }}
-        >Delete</button>
-        : null
+        >Delete</button>     
       }
-=======
-      ) : null}
->>>>>>> 05b0740538f2ca232c6a9ac2a06adbd7afcfd4bb
       {errMsg ? <ErrorMessage msg={errMsg} /> : null}
     </div>
   );
