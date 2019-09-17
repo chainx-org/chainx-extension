@@ -118,19 +118,20 @@ function Header(props: any) {
                   <div className="node-item-detail">
                     <div className="node-item-detail-url">
                       <span className="url">{item.url.slice(6)}</span>
-                      <div className="node-item-detail-edit"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          e.nativeEvent.stopImmediatePropagation()
-                          setShowNodeListArea(false)
+                      <div
+                        className="node-item-detail-edit"
+                        onClick={e => {
+                          e.stopPropagation();
+                          e.nativeEvent.stopImmediatePropagation();
+                          setShowNodeListArea(false);
                           const query = {
                             nodeInfo: item,
                             type: 'remove'
-                          }
+                          };
                           props.history.push({
                             pathname: '/addNode',
                             query: query
-                          })
+                          });
                         }}
                       >
                         <Icon name="Edit" />
