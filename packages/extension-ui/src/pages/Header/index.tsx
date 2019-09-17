@@ -160,7 +160,26 @@ function Header(props: any) {
                 >
                   <div className="node-item-active-flag"></div>
                   <div className="node-item-detail">
-                    <span className="url">{item.url.slice(6)}</span>
+                    <div className="node-item-detail-url">
+                      <span className="url">{item.url.slice(6)}</span>
+                      <div className="node-item-detail-edit"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          e.nativeEvent.stopImmediatePropagation()
+                          setShowNodeListArea(false)
+                          const query = {
+                            nodeInfo: item,
+                            type: 'edit'
+                          }
+                          props.history.push({
+                            pathname: '/addNode',
+                            query: query
+                          })
+                        }}
+                      >
+                        <Icon name="Edit" />
+                      </div>
+                    </div>
                     <span className={'delay ' + getDelayClass(item.delay)}>
                       {item.delay ? item.delay === 'timeout' ? 'timeout' : item.delay + ' ms' : ''}
                     </span>
