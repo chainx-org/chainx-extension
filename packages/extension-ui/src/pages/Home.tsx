@@ -53,6 +53,10 @@ function Home(props: any) {
     const clipboard = new ClipboardJS('.copy')
     clipboard.on('success', function () {
       setCopySuccess('Copied!')
+      setTimeout(() => 
+      { 
+        setCopySuccess('')
+      }, 2000)
     })
   }
 
