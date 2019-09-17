@@ -105,8 +105,8 @@ export async function getToSign() {
   return sendNotificationMessage(CHAINX_TRANSACTION_GET_TO_SIGN);
 }
 
-export async function rejectSign(id: Number) {
-  return sendNotificationMessage(CHAINX_TRANSACTION_SIGN_REJECT, id)
+export async function rejectSign(id: string) {
+  return sendNotificationMessage(CHAINX_TRANSACTION_SIGN_REJECT, { id })
 }
 
 export async function createChainxNode(name: string, url: string) {
