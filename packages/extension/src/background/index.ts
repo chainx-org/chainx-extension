@@ -7,6 +7,25 @@ import handle from './handler';
 import { keyring, nodes } from './store';
 import { setChainx } from './chainx';
 
+const promise = new Promise((resolve, reject) => {
+  extension.runtime.onInstalled.addListener(event => {
+    if (event.reason === 'install') {
+      nodes
+        .initNodes()
+        .then(() => {
+          console.log('Finish to init nodes.');
+          resolve();
+        })
+        .catch(() => {
+          console.error('Fail to init nodes.');
+          reject();
+        });
+    }
+  });
+
+  setTimeout(resolve, 500);
+});
+
 // listen to all messages and handle appropriately
 extension.runtime.onConnect.addListener((port): void => {
   // message and disconnect handlers
@@ -27,13 +46,15 @@ extension.runtime.onConnect.addListener((port): void => {
   );
 });
 
-Promise.all([keyring.loadAll(), nodes.initNodeAndLoadAll()])
-  .then(async () => {
-    if (nodes.currentNode) {
-      await setChainx(nodes.currentNode.url);
-    }
-    console.log('initialization completed');
-  })
-  .catch((error): void => {
-    console.error('initialization failed', error);
-  });
+promise.then(() => {
+  Promise.all([keyring.loadAll(), nodes.loadAll()])
+    .then(async () => {
+      if (nodes.currentNode) {
+        await setChainx(nodes.currentNode.url);
+      }
+      console.log('initialization completed');
+    })
+    .catch((error): void => {
+      console.error('initialization failed', error);
+    });
+});

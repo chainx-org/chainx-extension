@@ -42,7 +42,7 @@ class Nodes {
     this.currentNode = null;
   }
 
-  async initNodeAndLoadAll() {
+  async initNodes() {
     for (let node of initNodes) {
       try {
         await this.addNode(node.name, node.url);
@@ -52,8 +52,6 @@ class Nodes {
     }
 
     await this.setCurrentNode(initNodes[0].url);
-
-    return this.loadAll();
   }
 
   async loadAll(): Promise<ChainxNode[]> {
