@@ -4,10 +4,12 @@ export interface AccountInfo {
 }
 
 export interface SignTransactionRequest {
-  address: string,
-  module: string,
+  id: string,
+  address: string, // 用于确定是那个账户的请求
+  module: 'xAssets' | 'xStaking',
   method: string,
-  args: Array<any>
+  args: Array<any>,
+  password: string
 }
 
 export interface NodeInfo {
