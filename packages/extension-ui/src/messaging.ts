@@ -133,6 +133,10 @@ export async function setChainxNode(url: string) {
   return sendMessage(CHAINX_NODE_SELECT, { url });
 }
 
+export async function addChainxNode(name: string, url: string) {
+  return sendMessage(CHAINX_NODE_CREATE, { name, url});
+}
+
 export async function getCurrentChainxNode() {
   return sendMessage(CHAINX_NODE_CURRENT);
 }
