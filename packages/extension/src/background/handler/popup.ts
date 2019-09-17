@@ -13,25 +13,30 @@ import {
   CHAINX_NODE_SELECT,
   CHAINX_NODE_CURRENT,
   CHAINX_NODE_REMOVE
-// @ts-ignore
-} from "@chainx/extension-defaults";
-import { MessageRequest } from "./types";
+  // @ts-ignore
+} from '@chainx/extension-defaults';
+import { MessageRequest } from './types';
 import {
   createChainxAccount,
   createChainxAccountFromPrivateKey,
   createChainxNode,
   exportPrivateKey,
   getAllChainxAccount,
-  getAllChainxNodes, getChainxCurrentNode,
+  getAllChainxNodes,
+  getChainxCurrentNode,
   getCurrentChainxAccount,
-  removeChainxAccount, removeChainxNode,
+  removeChainxAccount,
+  removeChainxNode,
   setChainxCurrentAccount,
   setChainxCurrentNode,
   signChainxMessage,
   signTransaction
 } from './common';
 
-export default function handlePopup({ message, request }: MessageRequest): Promise<any> {
+export default function handlePopup({
+  message,
+  request
+}: MessageRequest): Promise<any> {
   switch (message) {
     case CHAINX_ACCOUNT_CREATE:
       return createChainxAccount(request);
@@ -63,5 +68,5 @@ export default function handlePopup({ message, request }: MessageRequest): Promi
       return removeChainxNode(request);
   }
 
-  return Promise.resolve()
+  return Promise.resolve();
 }

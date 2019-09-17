@@ -7,15 +7,15 @@ import ReactDOM from 'react-dom';
 
 import App from './pages/App';
 
-export default function createView (Entry: React.ComponentType, rootId: string = 'root'): void {
+export default function createView(
+  Entry: React.ComponentType,
+  rootId: string = 'root'
+): void {
   const rootElement = document.getElementById(rootId);
 
   if (!rootElement) {
     throw new Error(`Unable to find element with id '${rootId}'`);
   }
 
-  ReactDOM.render(
-    <App />,
-    rootElement
-  );
+  ReactDOM.render(<App />, rootElement);
 }

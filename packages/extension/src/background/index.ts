@@ -13,21 +13,27 @@ extension.runtime.onConnect.addListener((port): void => {
   port.onMessage.addListener((data): void => {
     const promise = handle(data, port);
 
-    promise.then(response => {
-      port.postMessage({ id: data.id, response });
-    }).catch((error): void => {
-      port.postMessage({ id: data.id, error: error.message });
-    })
+    promise
+      .then(response => {
+        port.postMessage({ id: data.id, response });
+      })
+      .catch((error): void => {
+        port.postMessage({ id: data.id, error: error.message });
+      });
   });
 
-  port.onDisconnect.addListener((): void => console.log(`Disconnected from ${port.name}`));
+  port.onDisconnect.addListener((): void =>
+    console.log(`Disconnected from ${port.name}`)
+  );
 });
 
-Promise.all([keyring.loadAll(), nodes.initNodeAndLoadAll()]).then(async () => {
-  if (nodes.currentNode) {
-    await setChainx(nodes.currentNode.url);
-  }
-  console.log('initialization completed');
-}).catch((error): void => {
-  console.error('initialization failed', error);
-})
+Promise.all([keyring.loadAll(), nodes.initNodeAndLoadAll()])
+  .then(async () => {
+    if (nodes.currentNode) {
+      await setChainx(nodes.currentNode.url);
+    }
+    console.log('initialization completed');
+  })
+  .catch((error): void => {
+    console.error('initialization failed', error);
+  });

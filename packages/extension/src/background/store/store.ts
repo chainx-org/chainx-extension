@@ -1,7 +1,7 @@
 import extension from 'extensionizer';
 
 class Store {
-  public all (cb: (key: string, value: any) => void): Promise<any> {
+  public all(cb: (key: string, value: any) => void): Promise<any> {
     return new Promise((resolve, reject) => {
       extension.storage.local.get(null, (result: any): void => {
         if (extension.runtime.lastError) {
@@ -13,13 +13,13 @@ class Store {
           cb(key, value);
         });
 
-        resolve()
+        resolve();
       });
-    })
+    });
   }
 
-  public get (key: string, cb: (value: any) => void): Promise<any> {
-    return new Promise(((resolve, reject) => {
+  public get(key: string, cb: (value: any) => void): Promise<any> {
+    return new Promise((resolve, reject) => {
       extension.storage.local.get([key], (result: any): void => {
         if (extension.runtime.lastError) {
           reject(extension.runtime.lastError);
@@ -29,10 +29,10 @@ class Store {
         cb(result[key]);
         resolve();
       });
-    }));
+    });
   }
 
-  public remove (key: string, cb?: () => void): Promise<any> {
+  public remove(key: string, cb?: () => void): Promise<any> {
     return new Promise((resolve, reject) => {
       extension.storage.local.remove(key, (): void => {
         if (extension.runtime.lastError) {
@@ -41,12 +41,12 @@ class Store {
         }
 
         cb && cb();
-        resolve()
+        resolve();
       });
     });
   }
 
-  public set (key: string, value: any, cb?: () => void): Promise<any> {
+  public set(key: string, value: any, cb?: () => void): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       // shortcut, don't save testing accounts in extension storage
       extension.storage.local.set({ [key]: value }, (): void => {

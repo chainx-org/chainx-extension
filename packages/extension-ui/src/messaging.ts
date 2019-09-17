@@ -1,5 +1,8 @@
-import extension from "extensionizer";
-import { AccountInfo, SignTransactionRequest } from "@chainx/extension-ui/types";
+import extension from 'extensionizer';
+import {
+  AccountInfo,
+  SignTransactionRequest
+} from '@chainx/extension-ui/types';
 import {
   CHAINX_ACCOUNT_ALL,
   CHAINX_ACCOUNT_CREATE,
@@ -19,8 +22,8 @@ import {
   CHAINX_TRANSACTION_SIGN,
   PORT_POPUP,
   PORT_NOTIFICATION
-// @ts-ignore
-} from "@chainx/extension-defaults";
+  // @ts-ignore
+} from '@chainx/extension-defaults';
 
 interface Handler {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -57,7 +60,11 @@ const messageHandler = (data): void => {
 port.onMessage.addListener(messageHandler);
 notificationPort.onMessage.addListener(messageHandler);
 
-function sendMessage(message: string, request: any = {}, subscriber?: (data: any) => void): Promise<any> {
+function sendMessage(
+  message: string,
+  request: any = {},
+  subscriber?: (data: any) => void
+): Promise<any> {
   return new Promise((resolve, reject): void => {
     const id = `chainx.popup.${Date.now()}.${++idCounter}`;
 
@@ -77,15 +84,30 @@ function sendNotificationMessage(message: string, request: any = {}) {
   });
 }
 
-export async function createAccount(name: string, password: string, mnemonic: string): Promise<boolean> {
+export async function createAccount(
+  name: string,
+  password: string,
+  mnemonic: string
+): Promise<boolean> {
   return sendMessage(CHAINX_ACCOUNT_CREATE, { name, password, mnemonic });
 }
 
-export async function createAccountFromPrivateKey(name: string, password: string, privateKey: string) {
-  return sendMessage(CHAINX_ACCOUNT_CREATE_FROM_PRIVATE, { name, privateKey, password });
+export async function createAccountFromPrivateKey(
+  name: string,
+  password: string,
+  privateKey: string
+) {
+  return sendMessage(CHAINX_ACCOUNT_CREATE_FROM_PRIVATE, {
+    name,
+    privateKey,
+    password
+  });
 }
 
-export async function exportChainxAccountPrivateKey(address: string, password: string) {
+export async function exportChainxAccountPrivateKey(
+  address: string,
+  password: string
+) {
   return sendMessage(CHAINX_ACCOUNT_EXPORT_PRIVATE, { address, password });
 }
 
@@ -93,8 +115,16 @@ export async function getAllAccounts(): Promise<AccountInfo[]> {
   return sendMessage(CHAINX_ACCOUNT_ALL);
 }
 
-export async function signMessage(address: string, message: string, password: string) {
-  return sendMessage(CHAINX_ACCOUNT_SIGN_MESSAGE, { address, message, password });
+export async function signMessage(
+  address: string,
+  message: string,
+  password: string
+) {
+  return sendMessage(CHAINX_ACCOUNT_SIGN_MESSAGE, {
+    address,
+    message,
+    password
+  });
 }
 
 export async function signTransaction(request: SignTransactionRequest) {
@@ -106,15 +136,15 @@ export async function getToSign() {
 }
 
 export async function rejectSign(id: string) {
-  return sendNotificationMessage(CHAINX_TRANSACTION_SIGN_REJECT, { id })
+  return sendNotificationMessage(CHAINX_TRANSACTION_SIGN_REJECT, { id });
 }
 
 export async function createChainxNode(name: string, url: string) {
-  return sendMessage(CHAINX_NODE_CREATE, { name, url })
+  return sendMessage(CHAINX_NODE_CREATE, { name, url });
 }
 
 export async function getAllChainxNodes() {
-  return sendMessage(CHAINX_NODE_ALL)
+  return sendMessage(CHAINX_NODE_ALL);
 }
 
 export async function setChainxCurrentAccount(address: string) {
@@ -134,7 +164,7 @@ export async function setChainxNode(url: string) {
 }
 
 export async function addChainxNode(name: string, url: string) {
-  return sendMessage(CHAINX_NODE_CREATE, { name, url});
+  return sendMessage(CHAINX_NODE_CREATE, { name, url });
 }
 
 export async function getCurrentChainxNode() {
