@@ -33,7 +33,7 @@
   "lint-staged": {
     "*.{ts,js,css}": [
       "yarn prettier:write",
-      "git add"
+      "git add ."
     ]
   }
 }
