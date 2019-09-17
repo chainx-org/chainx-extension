@@ -52,9 +52,13 @@ function Header(props: any) {
   return (
     <div className="header">
       <div className="container container-header">
-        <Link to="/">
-          <img className="logo" src={logo} alt="logo" />
-        </Link>
+        {
+          props.location.pathname.indexOf('requestSign') > -1 ?
+          <div><img className="logo" src={logo} alt="logo" /></div> :
+          <Link to='/'>
+            <img className="logo" src={logo} alt="logo" />
+          </Link>
+        }
         {
           props.history.location.pathname.indexOf('requestSign') > -1 ?
           <div className="center-title">

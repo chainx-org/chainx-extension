@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { signMessage, getCurrentChainxAccount } from '../../messaging'
+import { signTransaction, rejectSign, getCurrentChainxAccount } from '../../messaging'
 import { SignTransactionRequest } from '@chainx/extension-ui/types'
 import { useRedux } from '../../shared'
 import ErrorMessage from '../../components/ErrorMessage'
@@ -34,13 +34,6 @@ function RequestSign(props: any) {
   }
 
   const sign = async () => {
-    const request: SignTransactionRequest = {
-      address: 'string',
-      module: 'string',
-      method: 'string',
-      args: []
-    }
-
     if (!currentAccount.address) {
       setErrMsg(`Error: address is not exist`)
     }
@@ -48,10 +41,17 @@ function RequestSign(props: any) {
       return
     }
     try {
-      const result = await signMessage(currentAccount.address, 'message', pass)
+      const request: SignTransactionRequest = {
+        id: id,
+        address: query.address, // 用于确定是那个账户的请求
+        module: query.module,
+        method: query.mothod,
+        args: query.args,
+        password: pass
+      }
+      const result = await signTransaction()
       console.log('sign message ', result)
       setErrMsg('')
-      setSig(result)
     } catch (e) {
       setErrMsg(`Error: ${e.message}`)
     }
@@ -59,10 +59,11 @@ function RequestSign(props: any) {
 
   const removeCurrentSign = async () => {
     try {
-      console.log(props.match.params.id, props.location.query)
-      await signMessage(currentAccount.address, 'message', pass)
+      console.log('remove sign id: ', id)
+      await rejectSign(id)
     } catch (e) {
-      window.close()
+      console.log(e)
+      // window.close()
     }
   }
 
@@ -71,15 +72,15 @@ function RequestSign(props: any) {
       <div className="detail">
         <div className="detail-item">
           <span>操作</span>
-          <span>转账</span>
+          <span>{query.method}</span>
         </div>
         <div className="detail-item">
           <span>转账数量</span>
-          <span>1.00000000 PCX</span>
+          <span>{query.args[2]} PCX</span>
         </div>
         <div className="detail-item">
           <span>接收人地址</span>
-          <span>5PqyfFXGWKi75d5cKAqpkdbmWtVANYcMEbXCHLbpwDYiT1Ec</span>
+          <span>{query.args[0]}</span>
         </div>
       </div>
       <div className="submit-area">

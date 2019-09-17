@@ -9,7 +9,7 @@ function Home(props: any) {
   const ref = useRef<HTMLInputElement>(null)
   const [showAccountAction, setShowAccountAction] = useState(false)
   const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount', { address: '', name: '' })
-  const [setAccounts] = useRedux('accounts')
+  const [{}, setAccounts] = useRedux('accounts')
   const [copySuccess, setCopySuccess] = useState('')
 
   useEffect(() => {
