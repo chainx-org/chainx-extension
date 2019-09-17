@@ -12,11 +12,15 @@
   },
   "scripts": {
     "build": "NODE_ENV=production polkadot-dev-build-ts",
-    "watch": "cd packages/extension && webpack --config webpack.config.js --watch"
+    "watch": "cd packages/extension && webpack --config webpack.config.js --watch",
+    "prettier:base": "prettier --parser typescript --single-quote",
+    "prettier:check": "yarn prettier:base --list-different \"packages/*/src/**/*.{ts,tsx}\"",
+    "prettier:write": "yarn prettier:base --write \"packages/*/src/**/*.{ts,tsx}\""
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@polkadot/dev-react": "^0.31.0-beta.3",
-    "@polkadot/ts": "^0.1.64"
+    "@polkadot/ts": "^0.1.64",
+    "prettier": "^1.18.2"
   }
 }
