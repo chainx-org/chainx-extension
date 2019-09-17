@@ -24,7 +24,7 @@ function Header(props: any) {
   const [currentNode, setCurrentNode] = useState<NodeInfo>({
     name: 'chainx.org',
     url: '',
-    delay: '',
+    delay: ''
   });
   const [nodeList, setNodeList] = useState<NodeInfo[]>([]);
 
@@ -48,18 +48,19 @@ function Header(props: any) {
         url: item.url,
         method: 'chain_getBlock',
         timeOut: 7000
-      }).then((result = {}) => {
+      })
+        .then((result = {}) => {
           if (result.data) {
-            nodeListResult[index].delay = result.wastTime
+            nodeListResult[index].delay = result.wastTime;
           }
         })
         .catch(() => {
-          nodeListResult[index].delay = 'timeout' 
+          nodeListResult[index].delay = 'timeout';
         })
         .finally(() => {
-          setNodeList(nodeListResult)
-        })
-    })
+          setNodeList(nodeListResult);
+        });
+    });
   }
 
   async function getCurrentNode() {
@@ -68,17 +69,18 @@ function Header(props: any) {
       url: currentNodeResult.url,
       method: 'chain_getBlock',
       timeOut: 7000
-    }).then((result = {}) => {
+    })
+      .then((result = {}) => {
         if (result.data) {
-          currentNodeResult.delay = result.wastTime
+          currentNodeResult.delay = result.wastTime;
         }
       })
       .catch(() => {
-        currentNodeResult.delay = 'timeout'
+        currentNodeResult.delay = 'timeout';
       })
       .finally(() => {
         setCurrentNode(currentNodeResult);
-      })
+      });
   }
 
   async function setNode(url: string) {
@@ -96,7 +98,7 @@ function Header(props: any) {
     } else if (delay <= 300) {
       return 'green';
     } else {
-      return ''
+      return '';
     }
   }
 
@@ -126,7 +128,9 @@ function Header(props: any) {
                 setShowAccountArea(false);
               }}
             >
-              <span className={'dot ' + getDelayClass(currentNode.delay) + '-bg'}></span>
+              <span
+                className={'dot ' + getDelayClass(currentNode.delay) + '-bg'}
+              ></span>
               <span>{currentNode.name}</span>
             </div>
             <div
@@ -160,7 +164,11 @@ function Header(props: any) {
                   <div className="node-item-detail">
                     <span className="url">{item.url.slice(6)}</span>
                     <span className={'delay ' + getDelayClass(item.delay)}>
-                      {item.delay ? item.delay === 'timeout' ? 'timeout' : item.delay + ' ms' : ''}
+                      {item.delay
+                        ? item.delay === 'timeout'
+                          ? 'timeout'
+                          : item.delay + ' ms'
+                        : ''}
                     </span>
                   </div>
                 </div>
