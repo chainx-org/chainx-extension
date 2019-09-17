@@ -1,5 +1,5 @@
 import extension from "extensionizer";
-import { AccountInfo } from "@chainx/extension-ui/types";
+import { AccountInfo, SignTransactionRequest } from "@chainx/extension-ui/types";
 import {
   CHAINX_ACCOUNT_ALL,
   CHAINX_ACCOUNT_CREATE,
@@ -97,16 +97,16 @@ export async function signMessage(address: string, message: string, password: st
   return sendMessage(CHAINX_ACCOUNT_SIGN_MESSAGE, { address, message, password });
 }
 
-export async function signTransaction() {
-  return sendNotificationMessage(CHAINX_TRANSACTION_SIGN)
+export async function signTransaction(request: SignTransactionRequest) {
+  return sendNotificationMessage(CHAINX_TRANSACTION_SIGN, request);
 }
 
 export async function getToSign() {
   return sendNotificationMessage(CHAINX_TRANSACTION_GET_TO_SIGN);
 }
 
-export async function rejectSign(id: Number) {
-  return sendNotificationMessage(CHAINX_TRANSACTION_SIGN_REJECT, id)
+export async function rejectSign(id: string) {
+  return sendNotificationMessage(CHAINX_TRANSACTION_SIGN_REJECT, { id })
 }
 
 export async function createChainxNode(name: string, url: string) {

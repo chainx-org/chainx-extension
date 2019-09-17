@@ -6,7 +6,6 @@ import ErrorMessage from '../../components/ErrorMessage'
 import './requestSign.scss'
 
 function RequestSign(props: any) {
-  const [sig, setSig] = useState('')
   const [pass, setPass] = useState('')
   const [errMsg, setErrMsg] = useState('')
   const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount', { address: '', name: '' })
@@ -45,7 +44,7 @@ function RequestSign(props: any) {
         id: id,
         address: query.address,
         module: query.module,
-        method: query.mothod,
+        method: query.method,
         args: query.args,
         password: pass
       }
@@ -109,7 +108,6 @@ function RequestSign(props: any) {
           }}>签名
           </button>
         </div>
-        <span className="result">sign result: {sig}</span>
         <ErrorMessage msg={errMsg}/>
       </div>
     </div>
