@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { useOutsideClick, useRedux } from '../../shared';
-import { getAllChainxNodes, getCurrentChainxNode, setChainxCurrentAccount, setChainxNode } from '../../messaging';
+import {
+  getAllChainxNodes,
+  getCurrentChainxNode,
+  setChainxCurrentAccount,
+  setChainxNode
+} from '../../messaging';
 import { NodeInfo } from '@chainx/extension-ui/types';
 import Icon from '../../components/Icon';
 import DotInCenterStr from '../../components/DotInCenterStr';
@@ -111,9 +116,12 @@ function Header(props: any) {
                 </div>
               ))}
             </div>
-            <div className="add-node" onClick={() => {
-              props.history.push('/addNode')
-            }}>
+            <div
+              className="add-node"
+              onClick={() => {
+                props.history.push('/addNode');
+              }}
+            >
               <Icon name="Add" className="add-node-icon" />
               <span>添加节点</span>
             </div>
