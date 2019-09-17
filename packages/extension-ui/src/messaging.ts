@@ -171,6 +171,6 @@ export async function getCurrentChainxNode() {
   return sendMessage(CHAINX_NODE_CURRENT);
 }
 
-export async function removeChainxNode(url: string) {
-  return sendMessage(CHAINX_NODE_REMOVE, { url });
+export async function removeChainxNode(name: string, url: string) {
+  return sendMessage(CHAINX_NODE_REMOVE, { name, url });
 }
