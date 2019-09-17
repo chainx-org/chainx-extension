@@ -25,13 +25,12 @@ function Home(props: any) {
   async function getUnapprovedTxs() {
     try {
       const toSign = await getToSign();
-      console.log('to sign object: ', toSign)
       if (toSign) {
         // @ts-ignore
         props.history.push({ pathname: '/requestSign/' + toSign.id, query: toSign })
       }
     } catch (error) {
-      console.log('error occurs ', error)
+      console.log('sign request error occurs ', error)
     }
   }
 
@@ -102,7 +101,6 @@ function Home(props: any) {
             <span className="copy-text">Copy</span>
           </button>
           <span>{copySuccess}</span>
-          <button onClick={() => getUnapprovedTxs().then(d => console.log(d))}>Test</button>
         </div>
         :
         <div className="container container-column container-no-account">
