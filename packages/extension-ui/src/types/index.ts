@@ -15,4 +15,5 @@ export interface SignTransactionRequest {
 export interface NodeInfo {
   name: string;
   url: string;
+  delay: string;
 }
