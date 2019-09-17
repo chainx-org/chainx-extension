@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react"
 import { useOutsideClick, useRedux } from '../shared'
 import ClipboardJS from 'clipboard'
 import { getAllAccounts, getCurrentChainxAccount, getToSign } from '../messaging'
-// @ts-ignore
 import Icon from '../components/Icon'
 import "./index.scss"
 
