@@ -45,11 +45,11 @@ function RequestSign(props: any) {
         id: id,
         address: query.address, // 用于确定是那个账户的请求
         module: query.module,
-        method: query.mothod,
+        method: query.method,
         args: query.args,
         password: pass
       }
-      const result = await signTransaction()
+      const result = await signTransaction(request);
       console.log('sign message ', result)
       setErrMsg('')
     } catch (e) {
