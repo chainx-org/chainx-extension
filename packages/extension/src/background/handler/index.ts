@@ -6,7 +6,6 @@ import {
   PORT_POPUP,
   PORT_CONTENT,
   PORT_NOTIFICATION
-  // @ts-ignore
 } from '@chainx/extension-defaults';
 
 export default function(

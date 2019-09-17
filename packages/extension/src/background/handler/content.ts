@@ -3,7 +3,6 @@ import { getChainx } from '../chainx';
 import { getChainxAccountByAddress, getCurrentChainxAccount } from './common';
 import { tx } from '../store';
 import notificationManager from '../notification-manager';
-// @ts-ignore
 import {
   CHAINX_ACCOUNT_CURRENT,
   CHAINX_TRANSACTION_SIGN_REQUEST

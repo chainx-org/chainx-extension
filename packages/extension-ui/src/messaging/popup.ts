@@ -14,7 +14,6 @@ import {
   CHAINX_ACCOUNT_ALL,
   CHAINX_ACCOUNT_CREATE,
   CHAINX_ACCOUNT_CREATE_FROM_PRIVATE
-  // @ts-ignore
 } from '@chainx/extension-defaults';
 import {
   handlers,

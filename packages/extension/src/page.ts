@@ -1,4 +1,3 @@
-// @ts-ignore
 import { CHAINX_TRANSACTION_SIGN_REQUEST } from '@chainx/extension-defaults';
 
 window.addEventListener('message', ({ source, data }): void => {

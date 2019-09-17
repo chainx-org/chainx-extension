@@ -4,7 +4,6 @@ import {
   CHAINX_TRANSACTION_GET_TO_SIGN,
   CHAINX_TRANSACTION_SIGN,
   CHAINX_TRANSACTION_SIGN_REJECT
-  // @ts-ignore
 } from '@chainx/extension-defaults';
 import { tx } from '../store';
 import { handlers } from './content';
