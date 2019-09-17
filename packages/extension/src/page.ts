@@ -18,7 +18,6 @@ window.addEventListener('message', ({ source, data }): void => {
   } else {
     handler.resolve(data.response);
   }
-
 });
 
 const handlers: any = {};
@@ -41,14 +40,19 @@ async function enable(): Promise<any> {
 async function sign(address: string): Promise<any> {
   return await sendMessage(CHAINX_TRANSACTION_SIGN_REQUEST, {
     address,
-    module: "xAssets",
-    method: "transfer",
-    args: ["5PqoAuvnFAdPMYysQ6aMZKeN5fS8kN3pwuUKpkyFaKCp4HwC", "PCX", 1000, "memo"]
-  })
+    module: 'xAssets',
+    method: 'transfer',
+    args: [
+      '5PqoAuvnFAdPMYysQ6aMZKeN5fS8kN3pwuUKpkyFaKCp4HwC',
+      'PCX',
+      1000,
+      'memo'
+    ]
+  });
 }
 
 // @ts-ignore
 window.chainxProvider = {
   enable,
   sign
-}
+};

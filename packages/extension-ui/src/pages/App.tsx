@@ -1,18 +1,18 @@
-import React from "react"
-import { BrowserRouter as Router } from "react-router-dom"
-import { Redirect, Route, Switch } from "react-router"
-import Home from './Home'
-import Header from './Header'
-import CreateAccount from './CreateAccount'
-import ImportAccount from './ImportAccount'
-import RequestSign from './RequestSign'
-import ShowPrivateKey from './ShowPrivateKey/index'
-import EnterPassword from './EnterPassword'
-import AddNode from './AddNode'
-import "./index.scss"
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router';
+import Home from './Home';
+import Header from './Header';
+import CreateAccount from './CreateAccount';
+import ImportAccount from './ImportAccount';
+import RequestSign from './RequestSign';
+import ShowPrivateKey from './ShowPrivateKey/index';
+import EnterPassword from './EnterPassword';
+import AddNode from './AddNode';
+import './index.scss';
 
 export default function App() {
-  let redirectUrl: any = '/'
+  let redirectUrl: any = '/';
 
   return (
     <Router>

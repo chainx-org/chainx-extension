@@ -1,43 +1,52 @@
-import React, { useState, useEffect } from 'react'
-import { signTransaction, rejectSign, getCurrentChainxAccount } from '../../messaging'
-import { SignTransactionRequest } from '@chainx/extension-ui/types'
-import { useRedux } from '../../shared'
-import ErrorMessage from '../../components/ErrorMessage'
-import './requestSign.scss'
+import React, { useState, useEffect } from 'react';
+import {
+  signTransaction,
+  rejectSign,
+  getCurrentChainxAccount
+} from '../../messaging';
+import { SignTransactionRequest } from '@chainx/extension-ui/types';
+import { useRedux } from '../../shared';
+import ErrorMessage from '../../components/ErrorMessage';
+import './requestSign.scss';
 
 function RequestSign(props: any) {
-  const [pass, setPass] = useState('')
-  const [errMsg, setErrMsg] = useState('')
-  const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount', { address: '', name: '' })
+  const [pass, setPass] = useState('');
+  const [errMsg, setErrMsg] = useState('');
+  const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount', {
+    address: '',
+    name: ''
+  });
 
-  const { 
-    match: { params: { id } },
+  const {
+    match: {
+      params: { id }
+    },
     location: { query }
-  } = props
+  } = props;
 
   useEffect(() => {
-    getCurrentAccount()
-  }, [])
+    getCurrentAccount();
+  }, []);
 
   const getCurrentAccount = async () => {
-    const result = await getCurrentChainxAccount()
-    setCurrentAccount({ currentAccount: result })
-  }
+    const result = await getCurrentChainxAccount();
+    setCurrentAccount({ currentAccount: result });
+  };
 
   const check = () => {
     if (!pass) {
-      setErrMsg('password is required')
-      return false
+      setErrMsg('password is required');
+      return false;
     }
-    return true
-  }
+    return true;
+  };
 
   const sign = async () => {
     if (!currentAccount || !currentAccount.address) {
-      setErrMsg(`Error: address is not exist`)
+      setErrMsg(`Error: address is not exist`);
     }
     if (!check()) {
-      return
+      return;
     }
     try {
       const request: SignTransactionRequest = {
@@ -47,24 +56,24 @@ function RequestSign(props: any) {
         method: query.method,
         args: query.args,
         password: pass
-      }
-      const result = await signTransaction(request)
-      console.log('sign message ', result)
-      setErrMsg('')
+      };
+      const result = await signTransaction(request);
+      console.log('sign message ', result);
+      setErrMsg('');
     } catch (e) {
-      setErrMsg(`Error: ${e.message}`)
+      setErrMsg(`Error: ${e.message}`);
     }
-  }
+  };
 
   const removeCurrentSign = async () => {
     try {
-      console.log('remove sign id: ', id)
-      await rejectSign(id)
+      console.log('remove sign id: ', id);
+      await rejectSign(id);
     } catch (e) {
-      console.log(e)
+      console.log(e);
       // window.close()
     }
-  }
+  };
 
   return (
     <div className="container request-sign">
@@ -90,28 +99,36 @@ function RequestSign(props: any) {
           value={pass}
           onChange={e => setPass(e.target.value)}
           onKeyPress={event => {
-            if (event.key === "Enter") {
-              sign()
+            if (event.key === 'Enter') {
+              sign();
             }
           }}
           className="input"
           type="password"
-          placeholder='密码'
+          placeholder="密码"
         />
         <div className="button-area margin-top-40">
-          <button className="button button-white-half" onClick={() => {
-            removeCurrentSign()
-          }}>取消
+          <button
+            className="button button-white-half"
+            onClick={() => {
+              removeCurrentSign();
+            }}
+          >
+            取消
           </button>
-          <button className="button button-yellow-half" onClick={() => {
-            sign()
-          }}>签名
+          <button
+            className="button button-yellow-half"
+            onClick={() => {
+              sign();
+            }}
+          >
+            签名
           </button>
         </div>
-        <ErrorMessage msg={errMsg}/>
+        <ErrorMessage msg={errMsg} />
       </div>
     </div>
-  )
+  );
 }
 
-export default RequestSign
+export default RequestSign;

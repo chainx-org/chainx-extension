@@ -1,4 +1,4 @@
-import { ChainxSignRequest } from "../handler/types";
+import { ChainxSignRequest } from '../handler/types';
 
 class Transaction {
   toSign: ChainxSignRequest | null;

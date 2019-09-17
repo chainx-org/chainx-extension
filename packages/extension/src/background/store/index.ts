@@ -1,9 +1,5 @@
-import keyring from "./keyring";
-import nodes from "./nodes";
-import tx from "./tx";
+import keyring from './keyring';
+import nodes from './nodes';
+import tx from './tx';
 
-export {
-  keyring,
-  nodes,
-  tx
-}
+export { keyring, nodes, tx };
