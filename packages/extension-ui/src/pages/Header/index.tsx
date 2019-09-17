@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { useRedux, useOutsideClick, fetchFromWs } from '../../shared';
+import { updateNodeStatus, useRedux, useOutsideClick } from '../../shared';
 import {
-  getAllChainxNodes,
-  getCurrentChainxNode,
   setChainxCurrentAccount,
   setChainxNode
 } from '../../messaging';
@@ -21,16 +19,15 @@ function Header(props: any) {
   const [showAccountArea, setShowAccountArea] = useState(false);
   const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount');
   const [{ accounts }] = useRedux('accounts');
-  const [currentNode, setCurrentNode] = useState<NodeInfo>({
-    name: 'chainx.org',
+  const [{ currentNode }, setCurrentNode] = useRedux<NodeInfo>('currentNode', {
+    name: '',
     url: '',
     delay: ''
   });
-  const [nodeList, setNodeList] = useState<NodeInfo[]>([]);
+  const [{ nodeList }, setNodeList] = useRedux<NodeInfo[]>('nodeList');
 
   useEffect(() => {
-    getCurrentNode();
-    getNodeList();
+    updateNodeStatus(setCurrentNode, setNodeList)
   }, []);
 
   useOutsideClick(refNodeList, () => {
@@ -41,52 +38,9 @@ function Header(props: any) {
     setShowAccountArea(false);
   });
 
-  async function getNodeList() {
-    const nodeListResult = await getAllChainxNodes();
-    nodeListResult.map((item: NodeInfo, index) => {
-      fetchFromWs({
-        url: item.url,
-        method: 'chain_getBlock',
-        timeOut: 7000
-      })
-        .then((result = {}) => {
-          if (result.data) {
-            nodeListResult[index].delay = result.wastTime;
-          }
-        })
-        .catch(() => {
-          nodeListResult[index].delay = 'timeout';
-        })
-        .finally(() => {
-          setNodeList(nodeListResult);
-        });
-    });
-  }
-
-  async function getCurrentNode() {
-    const currentNodeResult = await getCurrentChainxNode();
-    fetchFromWs({
-      url: currentNodeResult.url,
-      method: 'chain_getBlock',
-      timeOut: 7000
-    })
-      .then((result = {}) => {
-        if (result.data) {
-          currentNodeResult.delay = result.wastTime;
-        }
-      })
-      .catch(() => {
-        currentNodeResult.delay = 'timeout';
-      })
-      .finally(() => {
-        setCurrentNode(currentNodeResult);
-      });
-  }
-
   async function setNode(url: string) {
     await setChainxNode(url);
-    getCurrentNode();
-    getNodeList();
+    updateNodeStatus(setCurrentNode, setNodeList)
     setShowNodeListArea(false);
   }
 
@@ -129,9 +83,9 @@ function Header(props: any) {
               }}
             >
               <span
-                className={'dot ' + getDelayClass(currentNode.delay) + '-bg'}
+                className={'dot ' + getDelayClass(currentNode && currentNode.delay) + '-bg'}
               ></span>
-              <span>{currentNode.name}</span>
+              <span>{currentNode && currentNode.name}</span>
             </div>
             <div
               ref={refAccountList}
@@ -145,7 +99,7 @@ function Header(props: any) {
             </div>
           </div>
         )}
-        {showNodeListArea && !showAccountArea ? (
+        {showNodeListArea && !showAccountArea && currentNode && nodeList.length > 0 ? (
           <div className="node-list-area">
             <div className="node-list">
               {nodeList.map(item => (

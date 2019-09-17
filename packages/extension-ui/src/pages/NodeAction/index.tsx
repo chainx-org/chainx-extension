@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { addChainxNode, removeChainxNode } from '../../messaging';
+import { addChainxNode, removeChainxNode, getAllChainxNodes } from '../../messaging';
 import ErrorMessage from '../../components/ErrorMessage';
+import { useRedux, fetchFromWs, updateNodeStatus } from '../../shared';
 import './nodeAction.scss';
 
 function AddNode(props: any) {
   const [name, setName] = useState('');
   const [url, setUrl] = useState('');
   const [errMsg, setErrMsg] = useState('');
-
+  const [{}, setCurrentNode] = useRedux('currentNode');
+  const [{nodeList}, setNodeList] = useRedux('nodeList');
   const {
     location: { query }
   } = props;
@@ -37,6 +39,7 @@ function AddNode(props: any) {
     try {
       await addChainxNode(name, url)
       setErrMsg('');
+      await updateNodeStatus(setCurrentNode, setNodeList)
       props.history.push('/')
     } catch (error) {
       setErrMsg(error.message);
@@ -45,9 +48,14 @@ function AddNode(props: any) {
   };
 
   const deleteNode = async (name: string, url: string) => {
+    if (nodeList.length < 2) {
+      setErrMsg('can not remove the last node');
+      return
+    }
     try {
-      removeChainxNode(name, url)
+      await removeChainxNode(name, url)
       setErrMsg('');
+      await updateNodeStatus(setCurrentNode, setNodeList)
       props.history.push('/')
     } catch (error) {
       setErrMsg(error.message);
@@ -94,7 +102,9 @@ function AddNode(props: any) {
       {
         action === 'remove' ?
         <button className="button button-white margin-top-16"
-          onClick={() => deleteNode(query.nodeInfo.name, query.nodeInfo.url)}
+          onClick={() => {
+            deleteNode(query.nodeInfo.name, query.nodeInfo.url)
+          }}
         >Delete</button>
         : null
       }
