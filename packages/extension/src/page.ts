@@ -1,6 +1,5 @@
 // @ts-ignore
-import { CHAINX_TRANSACTION_SIGN } from '@chainx/extension-defaults';
-
+import { CHAINX_TRANSACTION_SIGN_REQUEST } from '@chainx/extension-defaults';
 
 window.addEventListener('message', ({ source, data }): void => {
   // only allow messages from our window, by the inject
@@ -40,7 +39,7 @@ async function enable(): Promise<any> {
 }
 
 async function sign(address: string): Promise<any> {
-  return await sendMessage(CHAINX_TRANSACTION_SIGN, {
+  return await sendMessage(CHAINX_TRANSACTION_SIGN_REQUEST, {
     address,
     module: "xAssets",
     method: "transfer",

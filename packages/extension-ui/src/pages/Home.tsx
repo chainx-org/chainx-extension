@@ -14,9 +14,9 @@ function Home(props: any) {
   const [copySuccess, setCopySuccess] = useState('')
 
   useEffect(() => {
-    setCopyEvent()
-    getAccountStatus()
-    getUnapprovedTxs()
+    setCopyEvent();
+    getAccountStatus();
+    getUnapprovedTxs();
   }, [])
 
   useOutsideClick(ref, () => {
@@ -25,9 +25,10 @@ function Home(props: any) {
 
   async function getUnapprovedTxs() {
     try {
-      const toSign = await getToSign()
+      const toSign = await getToSign();
       console.log('to sign object: ', toSign)
       if (toSign) {
+        // @ts-ignore
         props.history.push({ pathname: '/requestSign/' + toSign.id, query: toSign })
       }
     } catch (error) {
