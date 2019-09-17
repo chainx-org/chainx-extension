@@ -1,14 +1,7 @@
-import React from 'react';
-import { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { useRedux, useOutsideClick } from '../../shared';
-import {
-  setChainxCurrentAccount,
-  setChainxNode,
-  removeChainxNode,
-  getCurrentChainxNode,
-  getAllChainxNodes
-} from '../../messaging';
+import { useOutsideClick, useRedux } from '../../shared';
+import { getAllChainxNodes, getCurrentChainxNode, setChainxCurrentAccount, setChainxNode } from '../../messaging';
 import { NodeInfo } from '@chainx/extension-ui/types';
 import Icon from '../../components/Icon';
 import DotInCenterStr from '../../components/DotInCenterStr';
