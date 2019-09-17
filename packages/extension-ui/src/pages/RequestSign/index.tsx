@@ -34,7 +34,7 @@ function RequestSign(props: any) {
   }
 
   const sign = async () => {
-    if (!currentAccount.address) {
+    if (!currentAccount || !currentAccount.address) {
       setErrMsg(`Error: address is not exist`)
     }
     if (!check()) {
@@ -43,13 +43,13 @@ function RequestSign(props: any) {
     try {
       const request: SignTransactionRequest = {
         id: id,
-        address: query.address, // 用于确定是那个账户的请求
+        address: query.address,
         module: query.module,
         method: query.mothod,
         args: query.args,
         password: pass
       }
-      const result = await signTransaction()
+      const result = await signTransaction(request)
       console.log('sign message ', result)
       setErrMsg('')
     } catch (e) {
