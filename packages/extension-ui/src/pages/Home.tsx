@@ -1,9 +1,7 @@
-
-import React, { useEffect, useRef } from "react"
-import { useState } from "react"
-import { useRedux, useOutsideClick } from '../shared'
+import React, { useEffect, useRef, useState } from "react"
+import { useOutsideClick, useRedux } from '../shared'
 import ClipboardJS from 'clipboard'
-import { getCurrentChainxAccount, getAllAccounts, getToSign } from '../messaging'
+import { getAllAccounts, getCurrentChainxAccount, getToSign } from '../messaging'
 // @ts-ignore
 import Icon from '../components/Icon'
 import "./index.scss"
@@ -11,8 +9,8 @@ import "./index.scss"
 function Home(props: any) {
   const ref = useRef<HTMLInputElement>(null)
   const [showAccountAction, setShowAccountAction] = useState(false)
-  const [{currentAccount}, setCurrentAccount] = useRedux('currentAccount', { address: '', name: ''})
-  const [{accounts}, setAccounts] = useRedux('accounts')
+  const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount', { address: '', name: '' })
+  const [setAccounts] = useRedux('accounts')
   const [copySuccess, setCopySuccess] = useState('')
 
   useEffect(() => {
@@ -30,7 +28,7 @@ function Home(props: any) {
       const toSign = await getToSign()
       console.log('to sign object: ', toSign)
       if (toSign) {
-        props.history.push({ pathname: '/requestSign/' + toSign.id, query: toSign})
+        props.history.push({ pathname: '/requestSign/' + toSign.id, query: toSign })
       }
     } catch (error) {
       console.log('error occurs ', error)
@@ -43,7 +41,7 @@ function Home(props: any) {
   }
 
   async function getCurrentAccount() {
-    const result =  await getCurrentChainxAccount()
+    const result = await getCurrentChainxAccount()
     setCurrentAccount({ currentAccount: result })
   }
 
@@ -54,67 +52,71 @@ function Home(props: any) {
 
   function setCopyEvent() {
     const clipboard = new ClipboardJS('.copy')
-    clipboard.on('success', function() {
+    clipboard.on('success', function () {
       setCopySuccess('Copied!')
     })
   }
 
   async function operateAccount(type: string) {
     if (currentAccount.address) {
-      props.history.push({ pathname: '/enterPassword', query: 
-        { 
-          address: currentAccount.address,
-          type: type
-        }})
+      props.history.push({
+        pathname: '/enterPassword', query:
+          {
+            address: currentAccount.address,
+            type: type
+          }
+      })
     }
     setShowAccountAction(false)
   }
 
   return (
     <>
-      { 
-        currentAccount ? 
-        <div className="container-account">
-          <div className="account-title">
-            <span className="name">{currentAccount.name}</span>
-            <div ref={ref} className="arrow"  onClick={() => {
-              setShowAccountAction(!showAccountAction)
-            }}
-            >
-              <Icon className="arrow-icon" name="Arrowdown" />
-            </div>
-            {
-              showAccountAction ?
-              <div className="account-action">
-                <span onClick={() => operateAccount('export')}>Export PrivateKey</span>
-                <span onClick={() => operateAccount('remove')}>Forget Account</span>
+      {
+        currentAccount ?
+          <div className="container-account">
+            <div className="account-title">
+              <span className="name">{currentAccount.name}</span>
+              <div ref={ref} className="arrow" onClick={() => {
+                setShowAccountAction(!showAccountAction)
+              }}
+              >
+                <Icon className="arrow-icon" name="Arrowdown"/>
               </div>
-              : null
-            }
+              {
+                showAccountAction ?
+                  <div className="account-action">
+                    <span onClick={() => operateAccount('export')}>Export PrivateKey</span>
+                    <span onClick={() => operateAccount('remove')}>Forget Account</span>
+                  </div>
+                  : null
+              }
+            </div>
+            <div className="account-address">
+              <span>{currentAccount.address}</span>
+            </div>
+            <button className="copy"
+                    data-clipboard-text={currentAccount.address}
+            >
+              <Icon className="copy-icon" name="copy"/>
+              <span className="copy-text">Copy</span>
+            </button>
+            <span>{copySuccess}</span>
+            <button onClick={() => getUnapprovedTxs().then(d => console.log(d))}>Test</button>
           </div>
-          <div className="account-address">
-            <span>{currentAccount.address}</span>
-          </div> 
-          <button className="copy"
-            data-clipboard-text={currentAccount.address}
-          >
-            <Icon className="copy-icon" name="copy" />
-            <span className="copy-text">Copy</span>
-          </button>
-          <span>{copySuccess}</span>
-          <button onClick={() => getUnapprovedTxs().then(d => console.log(d))}>Test</button>
-        </div>
-        :
-        <div className="container container-column container-no-account">
-          <button className="button button-white button-new-account" onClick={() =>
-            props.history.push('/createAccount')
-          }>新增账户
-          </button>
-          <button className="button button-white button-import-account" onClick={() => 
-            props.history.push('/importAccount')
-          }>导入账户</button>import useOutsideClick from '../shared/useClickOutside';
+          :
+          <div className="container container-column container-no-account">
+            <button className="button button-white button-new-account" onClick={() =>
+              props.history.push('/createAccount')
+            }>新增账户
+            </button>
+            <button className="button button-white button-import-account" onClick={() =>
+              props.history.push('/importAccount')
+            }>导入账户
+            </button>
+            import useOutsideClick from '../shared/useClickOutside';
 
-        </div>
+          </div>
       }
     </>
   )
