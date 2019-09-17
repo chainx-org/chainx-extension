@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { useOutsideClick, useRedux } from '../../shared';
+import { useRedux, useOutsideClick, fetchFromWs } from '../../shared';
 import {
   getAllChainxNodes,
   getCurrentChainxNode,
@@ -22,13 +22,15 @@ function Header(props: any) {
   const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount');
   const [{ accounts }] = useRedux('accounts');
   const [currentNode, setCurrentNode] = useState<NodeInfo>({
-    name: '',
-    url: ''
+    name: 'chainx.org',
+    url: '',
+    delay: '',
   });
   const [nodeList, setNodeList] = useState<NodeInfo[]>([]);
 
   useEffect(() => {
-    getNodeStatus();
+    getCurrentNode();
+    getNodeList();
   }, []);
 
   useOutsideClick(refNodeList, () => {
@@ -39,17 +41,63 @@ function Header(props: any) {
     setShowAccountArea(false);
   });
 
-  async function getNodeStatus() {
-    const currentNodeResult = await getCurrentChainxNode();
+  async function getNodeList() {
     const nodeListResult = await getAllChainxNodes();
-    setCurrentNode(currentNodeResult);
-    setNodeList(nodeListResult);
+    nodeListResult.map((item: NodeInfo, index) => {
+      fetchFromWs({
+        url: item.url,
+        method: 'chain_getBlock',
+        timeOut: 7000
+      }).then((result = {}) => {
+          if (result.data) {
+            nodeListResult[index].delay = result.wastTime
+          }
+        })
+        .catch(() => {
+          nodeListResult[index].delay = 'timeout' 
+        })
+        .finally(() => {
+          setNodeList(nodeListResult)
+        })
+    })
+  }
+
+  async function getCurrentNode() {
+    const currentNodeResult = await getCurrentChainxNode();
+    fetchFromWs({
+      url: currentNodeResult.url,
+      method: 'chain_getBlock',
+      timeOut: 7000
+    }).then((result = {}) => {
+        if (result.data) {
+          currentNodeResult.delay = result.wastTime
+        }
+      })
+      .catch(() => {
+        currentNodeResult.delay = 'timeout'
+      })
+      .finally(() => {
+        setCurrentNode(currentNodeResult);
+      })
   }
 
   async function setNode(url: string) {
     await setChainxNode(url);
-    await getNodeStatus();
+    getCurrentNode();
+    getNodeList();
     setShowNodeListArea(false);
+  }
+
+  function getDelayClass(delay: Number | string): string {
+    if (delay === 'timeout') {
+      return 'red';
+    } else if (delay > 300) {
+      return 'yellow';
+    } else if (delay <= 300) {
+      return 'green';
+    } else {
+      return ''
+    }
   }
 
   return (
@@ -78,7 +126,7 @@ function Header(props: any) {
                 setShowAccountArea(false);
               }}
             >
-              <span className="dot"></span>
+              <span className={'dot ' + getDelayClass(currentNode.delay) + '-bg'}></span>
               <span>{currentNode.name}</span>
             </div>
             <div
@@ -111,7 +159,9 @@ function Header(props: any) {
                   <div className="node-item-active-flag"></div>
                   <div className="node-item-detail">
                     <span className="url">{item.url.slice(6)}</span>
-                    <span className="delay">44ms</span>
+                    <span className={'delay ' + getDelayClass(item.delay)}>
+                      {item.delay ? item.delay === 'timeout' ? 'timeout' : item.delay + ' ms' : ''}
+                    </span>
                   </div>
                 </div>
               ))}
