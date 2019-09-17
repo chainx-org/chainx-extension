@@ -66,15 +66,6 @@ function Header(props: any) {
           </div>
           :
           <div className="right">
-            <div onClick={() => 
-              chrome.windows.create({
-                url: 'notification.html', 
-                type: 'popup', 
-                width: 360, 
-                height: 620,
-                left: 460 || Math.round(window.screenX + (window.outerWidth / 2) - 180)
-              })
-            }>Sign</div>
             <div ref={refNodeList} className="current-node" onClick={() => {
               setShowNodeListArea(!showNodeListArea)
               setShowAccountArea(false)
