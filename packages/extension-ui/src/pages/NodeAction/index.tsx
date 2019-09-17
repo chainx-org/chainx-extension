@@ -12,7 +12,15 @@ function AddNode(props: any) {
     location: { query }
   } = props;
 
-  const title = query && query.type === 'edit' ? '修改节点' : '添加节点'
+  let action = ''
+  let title = '添加节点'
+  if (query && query.type === 'edit') {
+    action = 'edit'
+    title = '修改节点'
+  } else if (query && query.type === 'remove') {
+    action = 'remove'
+    title = '删除节点'
+  }
 
   const check = () => {
     if (!name || !url) {
@@ -26,55 +34,69 @@ function AddNode(props: any) {
     if (!check()) {
       return;
     }
-    const result = await addChainxNode(name, url).catch(error => {
+    try {
+      await addChainxNode(name, url)
+      setErrMsg('');
+      props.history.push('/')
+    } catch (error) {
       setErrMsg(error.message);
       console.log('occur error: ', error);
-      return;
-    });
-    setErrMsg('');
-    console.log('result ', result);
+    }
   };
 
   const deleteNode = async (name: string, url: string) => {
-    removeChainxNode(name, url)
+    try {
+      removeChainxNode(name, url)
+      setErrMsg('');
+      props.history.push('/')
+    } catch (error) {
+      setErrMsg(error.message);
+      console.log('occur error: ', error);
+    }
   }
 
   return (
     <div className="node-action">
       <span className="title">{title}</span>
-      <input
-        className="input"
-        type="text"
-        value={name}
-        onChange={e => setName(e.target.value)}
-        placeholder="名称（12字符以内）"
-      />
-      <span className="node-url">节点地址（提供核心资产数据）</span>
-      <input
-        className="input"
-        type="text"
-        value={url}
-        onChange={e => setUrl(e.target.value)}
-        onKeyPress={event => {
-          if (event.key === 'Enter') {
-            enter();
-          }
-        }}
-        placeholder="wss://w1.chainx.org/ws"
-      />
-      <button
-        className="button button-yellow margin-top-40"
-        onClick={() => enter()}
-      >
-        Confirm
-      </button>
       {
-        query && query.type === 'edit' ? 
+        action !== 'remove' ?
+        <>
+        <input
+          className="input"
+          type="text"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          placeholder="名称（12字符以内）"
+        />
+        <span className="node-url">节点地址（提供核心资产数据）</span>
+        <input
+          className="input"
+          type="text"
+          value={url}
+          onChange={e => setUrl(e.target.value)}
+          onKeyPress={event => {
+            if (event.key === 'Enter') {
+              enter();
+            }
+          }}
+          placeholder="wss://w1.chainx.org/ws"
+        />
+        <button
+          className="button button-yellow margin-top-40"
+          onClick={() => enter()}
+        >
+          Confirm
+        </button>
+        </>
+        : null
+      }
+      
+      {
+        action === 'remove' ?
         <button className="button button-white margin-top-16"
           onClick={() => deleteNode(query.nodeInfo.name, query.nodeInfo.url)}
         >Delete</button>
-        :
-        null
+        : null
       }
       {errMsg ? <ErrorMessage msg={errMsg} /> : null}
     </div>

@@ -171,7 +171,7 @@ function Header(props: any) {
                           setShowNodeListArea(false)
                           const query = {
                             nodeInfo: item,
-                            type: 'edit'
+                            type: 'remove'
                           }
                           props.history.push({
                             pathname: '/addNode',
