@@ -86,7 +86,7 @@ async function signTransaction(request: ChainxCallRequest, password: string) {
     return Promise.reject({ message: 'Invalid address' });
   }
 
-  const account = Account.fromKeyStore(item.keyStore, password);
+  const account = Account.fromKeyStore(item.keystore, password);
   const submittable = call(...args);
   const nonce = await submittable.getNonce(account.publicKey());
   submittable.sign(account, { nonce: nonce.toNumber() });
