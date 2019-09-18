@@ -37,6 +37,10 @@ export default function handlePopup({
       return createChainxAccount(request);
     case CHAINX_ACCOUNT_ALL:
       return getAllChainxAccount();
+    case CHAINX_ACCOUNT_REMOVE:
+      return removeChainxAccount(request);
+    case CHAINX_ACCOUNT_SELECT:
+      return setChainxCurrentAccount(request);
     case CHAINX_ACCOUNT_SIGN_MESSAGE:
       return signChainxMessage(request);
     case CHAINX_TRANSACTION_SIGN:
@@ -45,12 +49,8 @@ export default function handlePopup({
       return createChainxNode(request);
     case CHAINX_NODE_ALL:
       return getAllChainxNodes();
-    case CHAINX_ACCOUNT_SELECT:
-      return setChainxCurrentAccount(request);
     case CHAINX_ACCOUNT_CURRENT:
       return getCurrentChainxAccount();
-    case CHAINX_ACCOUNT_REMOVE:
-      return removeChainxAccount(request);
     case CHAINX_NODE_SELECT:
       return setChainxCurrentNode(request);
     case CHAINX_NODE_CURRENT:

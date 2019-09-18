@@ -6,7 +6,6 @@ import {
   SignTransactionRequest
 } from '../types';
 import keyring, { KeyStore } from '../store/keyring';
-// @ts-ignore
 import { u8aToHex } from '@chainx/util';
 import nodes from '../store/nodes';
 
@@ -16,11 +15,9 @@ export async function createChainxAccount(
   return await keyring.addAccount(request);
 }
 
-export async function setChainxCurrentAccount({
-  address
-}: {
-  address: string;
-}): Promise<AccountInfo | null> {
+export async function setChainxCurrentAccount(
+  address: string
+): Promise<AccountInfo | null> {
   return await keyring.setCurrentAccount(address);
 }
 

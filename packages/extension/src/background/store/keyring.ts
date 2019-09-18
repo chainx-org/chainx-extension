@@ -1,6 +1,4 @@
-// @ts-ignore
 import { Account } from 'chainx.js';
-// @ts-ignore
 import store from './store';
 import { ChainxAccountCreateRequest } from '../types';
 
@@ -40,16 +38,6 @@ class Keyring {
     await store.set(CURRENT_ACCOUNT_KEY, request.address);
     await this.loadAll();
     return this.currentAccount;
-  }
-
-  async exportPrivateKey(address: string, password: string): Promise<string> {
-    const account = this.accounts.find(item => item.address === address);
-    if (!account) {
-      return Promise.reject({ message: 'address not exist' });
-    }
-
-    const chainxAccount = Account.fromKeyStore(account.keystore, password);
-    return chainxAccount.privateKey();
   }
 
   getCurrentAccount() {
