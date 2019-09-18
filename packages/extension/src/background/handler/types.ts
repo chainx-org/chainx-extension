@@ -5,7 +5,7 @@ export interface MessageRequest {
   request: any;
 }
 
-export interface ChainxSignRequest {
+export interface ChainxCallRequest {
   id: string;
   address: string; // 用于确定是那个账户的请求
   module: 'xAssets' | 'xStaking';

@@ -1,4 +1,7 @@
-import { CHAINX_TRANSACTION_SIGN_REQUEST } from '@chainx/extension-defaults';
+import {
+  CHAINX_TRANSACTION_CALL_REQUEST,
+  CHAINX_TRANSACTION_SIGN_REQUEST
+} from '@chainx/extension-defaults';
 
 window.addEventListener('message', ({ source, data }): void => {
   // only allow messages from our window, by the inject
@@ -50,8 +53,23 @@ async function sign(address: string): Promise<any> {
   });
 }
 
+async function call(
+  address: string,
+  module: string,
+  method: string,
+  args: Array<any>
+) {
+  return await sendMessage(CHAINX_TRANSACTION_CALL_REQUEST, {
+    address,
+    module,
+    method,
+    args
+  });
+}
+
 // @ts-ignore
 window.chainxProvider = {
   enable,
-  sign
+  sign,
+  call
 };

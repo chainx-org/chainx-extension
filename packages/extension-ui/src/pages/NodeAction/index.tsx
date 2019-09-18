@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-import { addChainxNode, removeChainxNode, getAllChainxNodes } from '../../messaging';
+import {
+  addChainxNode,
+  removeChainxNode,
+  getAllChainxNodes
+} from '../../messaging';
 import ErrorMessage from '../../components/ErrorMessage';
 import { useRedux, fetchFromWs, updateNodeStatus } from '../../shared';
 import './nodeAction.scss';
@@ -9,7 +13,7 @@ function AddNode(props: any) {
   const [url, setUrl] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [{}, setCurrentNode] = useRedux('currentNode');
-  const [{nodeList}, setNodeList] = useRedux('nodeList');
+  const [{ nodeList }, setNodeList] = useRedux('nodeList');
   const {
     location: { query }
   } = props;
@@ -39,8 +43,8 @@ function AddNode(props: any) {
     try {
       await addChainxNode(name, url);
       setErrMsg('');
-      await updateNodeStatus(setCurrentNode, setNodeList)
-      props.history.push('/')
+      await updateNodeStatus(setCurrentNode, setNodeList);
+      props.history.push('/');
     } catch (error) {
       setErrMsg(error.message);
       console.log('occur error: ', error);
@@ -50,13 +54,13 @@ function AddNode(props: any) {
   const deleteNode = async (name: string, url: string) => {
     if (nodeList.length < 2) {
       setErrMsg('can not remove the last node');
-      return
+      return;
     }
     try {
-      await removeChainxNode(name, url)
+      await removeChainxNode(name, url);
       setErrMsg('');
-      await updateNodeStatus(setCurrentNode, setNodeList)
-      props.history.push('/')
+      await updateNodeStatus(setCurrentNode, setNodeList);
+      props.history.push('/');
     } catch (error) {
       setErrMsg(error.message);
       console.log('occur error: ', error);
@@ -95,13 +99,16 @@ function AddNode(props: any) {
             Confirm
           </button>
         </>
-      ) : 
-         <button className="button button-white margin-top-16"
+      ) : (
+        <button
+          className="button button-white margin-top-16"
           onClick={() => {
-            deleteNode(query.nodeInfo.name, query.nodeInfo.url)
+            deleteNode(query.nodeInfo.name, query.nodeInfo.url);
           }}
-        >Delete</button>     
-      }
+        >
+          Delete
+        </button>
+      )}
       {errMsg ? <ErrorMessage msg={errMsg} /> : null}
     </div>
   );

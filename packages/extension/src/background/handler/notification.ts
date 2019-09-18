@@ -1,4 +1,4 @@
-import { ChainxSignRequest, MessageRequest } from './types';
+import { ChainxCallRequest, MessageRequest } from './types';
 import { Account } from 'chainx.js';
 import {
   CHAINX_TRANSACTION_GET_TO_SIGN,
@@ -26,7 +26,7 @@ export default function handleNotification({
   return Promise.resolve();
 }
 
-export async function rejectSignTransaction({ id }: ChainxSignRequest) {
+export async function rejectSignTransaction({ id }: ChainxCallRequest) {
   const handler = handlers[id];
   if (!tx.toSign) {
     if (handler) {
@@ -51,7 +51,7 @@ export async function rejectSignTransaction({ id }: ChainxSignRequest) {
   return;
 }
 
-async function signTransaction(request: ChainxSignRequest, password: string) {
+async function signTransaction(request: ChainxCallRequest, password: string) {
   const handler = handlers[request.id];
   if (!tx.toSign) {
     if (handler) {

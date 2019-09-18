@@ -1,13 +1,13 @@
-import { ChainxSignRequest } from '../handler/types';
+import { ChainxCallRequest } from '../handler/types';
 
 class Transaction {
-  toSign: ChainxSignRequest | null;
+  toSign: ChainxCallRequest | null;
 
   constructor() {
     this.toSign = null;
   }
 
-  setToSign(request: ChainxSignRequest | null) {
+  setToSign(request: ChainxCallRequest | null) {
     this.toSign = request;
     return this.toSign;
   }

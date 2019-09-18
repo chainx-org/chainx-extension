@@ -1,10 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { updateNodeStatus, useRedux, useOutsideClick } from '../../shared';
-import {
-  setChainxCurrentAccount,
-  setChainxNode
-} from '../../messaging';
+import { setChainxCurrentAccount, setChainxNode } from '../../messaging';
 import { NodeInfo } from '@chainx/extension-ui/types';
 import Icon from '../../components/Icon';
 import DotInCenterStr from '../../components/DotInCenterStr';
@@ -27,7 +24,7 @@ function Header(props: any) {
   const [{ nodeList }, setNodeList] = useRedux<NodeInfo[]>('nodeList');
 
   useEffect(() => {
-    updateNodeStatus(setCurrentNode, setNodeList)
+    updateNodeStatus(setCurrentNode, setNodeList);
   }, []);
 
   useOutsideClick(refNodeList, () => {
@@ -40,7 +37,7 @@ function Header(props: any) {
 
   async function setNode(url: string) {
     await setChainxNode(url);
-    updateNodeStatus(setCurrentNode, setNodeList)
+    updateNodeStatus(setCurrentNode, setNodeList);
     setShowNodeListArea(false);
   }
 
@@ -83,7 +80,11 @@ function Header(props: any) {
               }}
             >
               <span
-                className={'dot ' + getDelayClass(currentNode && currentNode.delay) + '-bg'}
+                className={
+                  'dot ' +
+                  getDelayClass(currentNode && currentNode.delay) +
+                  '-bg'
+                }
               ></span>
               <span>{currentNode && currentNode.name}</span>
             </div>
@@ -99,7 +100,10 @@ function Header(props: any) {
             </div>
           </div>
         )}
-        {showNodeListArea && !showAccountArea && currentNode && nodeList.length > 0 ? (
+        {showNodeListArea &&
+        !showAccountArea &&
+        currentNode &&
+        nodeList.length > 0 ? (
           <div className="node-list-area">
             <div className="node-list">
               {nodeList.map(item => (

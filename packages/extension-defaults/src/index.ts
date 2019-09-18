@@ -17,6 +17,8 @@ export const CHAINX_ACCOUNT_SIGN_MESSAGE = 'chainx.accounts.sign.message';
 export const CHAINX_TRANSACTION_SIGN = 'chainx.transaction.sign';
 export const CHAINX_TRANSACTION_SIGN_REQUEST =
   'chainx.transaction.sign.request';
+export const CHAINX_TRANSACTION_CALL_REQUEST =
+  'chainx.transaction.call.request';
 export const CHAINX_TRANSACTION_GET_TO_SIGN = 'chainx.transaction.get.to.sign';
 export const CHAINX_TRANSACTION_SIGN_REJECT = 'chainx.transaction.sign.reject';
 export const CHAINX_NODE_CREATE = 'chainx.nodes.create';

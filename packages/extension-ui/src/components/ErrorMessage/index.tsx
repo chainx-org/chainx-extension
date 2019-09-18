@@ -1,5 +1,5 @@
-import React from 'react'
-import './index.scss'
+import React from 'react';
+import './index.scss';
 
 function ErrorMessage(props) {
   const { msg } = props;
@@ -8,7 +8,7 @@ function ErrorMessage(props) {
     <div className="error-message">
       <span>{msg}</span>
     </div>
-  )
+  );
 }
 
-export default ErrorMessage
+export default ErrorMessage;
