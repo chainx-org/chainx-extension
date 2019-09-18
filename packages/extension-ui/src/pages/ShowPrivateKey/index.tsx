@@ -1,6 +1,6 @@
 import React from 'react';
 import './showPrivateKey.scss';
-import StaticWarning from '../../components/StaticWarning/index';
+import StaticWarning from '../../components/StaticWarning';
 
 function ShowPrivateKey(props: any) {
   return (

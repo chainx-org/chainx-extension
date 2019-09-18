@@ -9,8 +9,8 @@ function getDotInCenterStr(value) {
 }
 
 function DotInCenterStr(props) {
-  const { value, length = 5 } = props;
-  const simpleStr = getDotInCenterStr(value, length);
+  const { value } = props;
+  const simpleStr = getDotInCenterStr(value);
 
   return <span>{simpleStr}</span>;
 }
