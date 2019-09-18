@@ -1,25 +1,21 @@
 import {
   CHAINX_ACCOUNT_ALL,
   CHAINX_ACCOUNT_CREATE,
-  CHAINX_ACCOUNT_SIGN_MESSAGE,
-  CHAINX_TRANSACTION_SIGN,
-  CHAINX_NODE_CREATE,
-  CHAINX_NODE_ALL,
-  CHAINX_ACCOUNT_SELECT,
   CHAINX_ACCOUNT_CURRENT,
   CHAINX_ACCOUNT_REMOVE,
-  CHAINX_ACCOUNT_CREATE_FROM_PRIVATE,
-  CHAINX_ACCOUNT_EXPORT_PRIVATE,
-  CHAINX_NODE_SELECT,
+  CHAINX_ACCOUNT_SELECT,
+  CHAINX_ACCOUNT_SIGN_MESSAGE,
+  CHAINX_NODE_ALL,
+  CHAINX_NODE_CREATE,
   CHAINX_NODE_CURRENT,
-  CHAINX_NODE_REMOVE
+  CHAINX_NODE_REMOVE,
+  CHAINX_NODE_SELECT,
+  CHAINX_TRANSACTION_SIGN
 } from '@chainx/extension-defaults';
 import { MessageRequest } from './types';
 import {
   createChainxAccount,
-  createChainxAccountFromPrivateKey,
   createChainxNode,
-  exportPrivateKey,
   getAllChainxAccount,
   getAllChainxNodes,
   getChainxCurrentNode,
@@ -39,8 +35,6 @@ export default function handlePopup({
   switch (message) {
     case CHAINX_ACCOUNT_CREATE:
       return createChainxAccount(request);
-    case CHAINX_ACCOUNT_CREATE_FROM_PRIVATE:
-      return createChainxAccountFromPrivateKey(request);
     case CHAINX_ACCOUNT_ALL:
       return getAllChainxAccount();
     case CHAINX_ACCOUNT_SIGN_MESSAGE:
@@ -57,8 +51,6 @@ export default function handlePopup({
       return getCurrentChainxAccount();
     case CHAINX_ACCOUNT_REMOVE:
       return removeChainxAccount(request);
-    case CHAINX_ACCOUNT_EXPORT_PRIVATE:
-      return exportPrivateKey(request);
     case CHAINX_NODE_SELECT:
       return setChainxCurrentNode(request);
     case CHAINX_NODE_CURRENT:

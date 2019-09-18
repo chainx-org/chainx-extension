@@ -2,16 +2,17 @@
 import { Account } from 'chainx.js';
 // @ts-ignore
 import store from './store';
+import { ChainxAccountCreateRequest } from '../types';
 
 export interface KeyStore {
   name: string;
   address: string;
-  keyStore: object;
+  keystore: object;
 }
 
 interface StoreItem {
   address: string;
-  keyStore: object;
+  keystore: object;
 }
 
 export const ACCOUNT_PREFIX = 'account_';
@@ -26,55 +27,19 @@ class Keyring {
     this.currentAccount = null;
   }
 
-  async _addAccount(
-    name: string,
-    account: Account,
-    password: string
-  ): Promise<any> {
-    const nameExist = this.accounts.findIndex(item => item.name === name) >= 0;
-    if (nameExist) {
-      return Promise.reject({ message: 'name already exist' });
-    }
-
-    const address = account.address();
-    const addressExist =
-      this.accounts.findIndex(item => item.address === address) >= 0;
-    if (addressExist) {
-      return Promise.reject({ message: 'address already exist' });
-    }
-
-    const keyStore = account.encrypt(password);
-
+  async addAccount(request: ChainxAccountCreateRequest) {
     const item: StoreItem = {
-      address,
-      keyStore
+      address: request.address,
+      keystore: request.keystore
     };
 
     await store.set(`${ACCOUNT_PREFIX}${name}`, item, (): void => {
       this.accounts.push({ name, ...item });
     });
-    await store.set(CURRENT_ACCOUNT_KEY, address);
+
+    await store.set(CURRENT_ACCOUNT_KEY, request.address);
     await this.loadAll();
-
     return this.currentAccount;
-  }
-
-  async addFromPrivateKey(
-    name: string,
-    privateKey: string,
-    password: string
-  ): Promise<any> {
-    const account = Account.from(privateKey);
-    return this._addAccount(name, account, password);
-  }
-
-  async addFromMnemonic(
-    name: string,
-    mnemonic: string,
-    password: string
-  ): Promise<any> {
-    const account = Account.from(mnemonic);
-    return this._addAccount(name, account, password);
   }
 
   async exportPrivateKey(address: string, password: string): Promise<string> {
@@ -83,7 +48,7 @@ class Keyring {
       return Promise.reject({ message: 'address not exist' });
     }
 
-    const chainxAccount = Account.fromKeyStore(account.keyStore, password);
+    const chainxAccount = Account.fromKeyStore(account.keystore, password);
     return chainxAccount.privateKey();
   }
 
@@ -104,16 +69,10 @@ class Keyring {
     return this.currentAccount;
   }
 
-  async removeAccount(address: string, password: string): Promise<any> {
+  async removeAccount(address: string): Promise<any> {
     const target = this.accounts.find(item => item.address === address);
     if (!target) {
       return Promise.reject({ message: 'address not exist' });
-    }
-
-    try {
-      Account.fromKeyStore(target.keyStore, password);
-    } catch (e) {
-      return Promise.reject({ message: 'Invalid password' });
     }
 
     await store.remove(`${ACCOUNT_PREFIX}${target.name}`);
@@ -158,7 +117,7 @@ class Keyring {
       return Promise.reject({ message: 'invalid account' });
     }
 
-    const signer = Account.fromKeyStore(account.keyStore, password);
+    const signer = Account.fromKeyStore(account.keystore, password);
     return signer.sign(message);
   }
 }

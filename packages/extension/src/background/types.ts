@@ -1,18 +1,13 @@
 export interface ChainxAccountCreateRequest {
   name: string;
-  password: string;
-  mnemonic: string;
-}
-
-export interface ChainxAccountCreateFromPrivateKeyRequest {
-  name: string;
-  password: string;
-  privateKey: string;
+  address: string;
+  keystore: object;
 }
 
 export interface AccountInfo {
   name: string;
   address: string;
+  keystore: object;
 }
 
 export interface ChainxSignMessageRequest {

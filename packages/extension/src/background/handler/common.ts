@@ -1,6 +1,5 @@
 import {
   AccountInfo,
-  ChainxAccountCreateFromPrivateKeyRequest,
   ChainxAccountCreateRequest,
   ChainxNode,
   ChainxSignMessageRequest,
@@ -11,28 +10,10 @@ import keyring, { KeyStore } from '../store/keyring';
 import { u8aToHex } from '@chainx/util';
 import nodes from '../store/nodes';
 
-export async function createChainxAccount({
-  name,
-  mnemonic,
-  password
-}: ChainxAccountCreateRequest): Promise<AccountInfo> {
-  const account = await keyring.addFromMnemonic(name, mnemonic, password);
-  return {
-    name: account.name,
-    address: account.address
-  };
-}
-
-export async function createChainxAccountFromPrivateKey({
-  name,
-  privateKey,
-  password
-}: ChainxAccountCreateFromPrivateKeyRequest) {
-  const account = await keyring.addFromPrivateKey(name, privateKey, password);
-  return {
-    name: account.name,
-    address: account.address
-  };
+export async function createChainxAccount(
+  request: ChainxAccountCreateRequest
+): Promise<AccountInfo | null> {
+  return await keyring.addAccount(request);
 }
 
 export async function setChainxCurrentAccount({
@@ -40,54 +21,19 @@ export async function setChainxCurrentAccount({
 }: {
   address: string;
 }): Promise<AccountInfo | null> {
-  const current = await keyring.setCurrentAccount(address);
-  if (current) {
-    return {
-      name: current.name,
-      address: current.address
-    };
-  }
-
-  return current;
-}
-
-export async function exportPrivateKey({
-  address,
-  password
-}: {
-  address: string;
-  password: string;
-}): Promise<string> {
-  return await keyring.exportPrivateKey(address, password);
+  return await keyring.setCurrentAccount(address);
 }
 
 export async function getCurrentChainxAccount(): Promise<AccountInfo | null> {
-  const account = keyring.getCurrentAccount();
-  if (!account) {
-    return null;
-  }
-
-  return {
-    name: account.name,
-    address: account.address
-  };
+  return keyring.getCurrentAccount();
 }
 
-export function removeChainxAccount({
-  address,
-  password
-}: {
-  address: string;
-  password: string;
-}): Promise<any> {
-  return keyring.removeAccount(address, password);
+export function removeChainxAccount(address: string): Promise<any> {
+  return keyring.removeAccount(address);
 }
 
 export async function getAllChainxAccount(): Promise<AccountInfo[]> {
-  return keyring.accounts.map(account => ({
-    name: account.name,
-    address: account.address
-  }));
+  return keyring.accounts;
 }
 
 export function getChainxAccountByAddress(address: string): KeyStore | null {
