@@ -1,6 +1,7 @@
 export interface AccountInfo {
   name: string;
   address: string;
+  keystore: Object;
 }
 
 export interface SignTransactionRequest {
