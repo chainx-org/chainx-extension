@@ -89,6 +89,7 @@ export async function getCurrentChainxAccount() {
   return sendMessage(CHAINX_ACCOUNT_CURRENT);
 }
 
+// Deprecated. Will be deleted soon.
 export async function exportChainxAccountPrivateKey(
   address: string,
   password: string
