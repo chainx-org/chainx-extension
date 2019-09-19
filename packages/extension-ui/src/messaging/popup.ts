@@ -4,7 +4,6 @@ import {
   CHAINX_ACCOUNT_ALL,
   CHAINX_ACCOUNT_CREATE,
   CHAINX_ACCOUNT_CURRENT,
-  CHAINX_ACCOUNT_EXPORT_PRIVATE,
   CHAINX_ACCOUNT_REMOVE,
   CHAINX_ACCOUNT_SELECT,
   CHAINX_ACCOUNT_SIGN_MESSAGE,
@@ -77,8 +76,8 @@ export async function getAllAccounts(): Promise<AccountInfo[]> {
   return sendMessage(CHAINX_ACCOUNT_ALL);
 }
 
-export async function removeChainxAccount(address: string, password: string) {
-  return sendMessage(CHAINX_ACCOUNT_REMOVE, { address, password });
+export async function removeChainxAccount(address: string) {
+  return sendMessage(CHAINX_ACCOUNT_REMOVE, { address });
 }
 
 export async function setChainxCurrentAccount(address: string) {
@@ -87,14 +86,6 @@ export async function setChainxCurrentAccount(address: string) {
 
 export async function getCurrentChainxAccount() {
   return sendMessage(CHAINX_ACCOUNT_CURRENT);
-}
-
-// Deprecated. Will be deleted soon.
-export async function exportChainxAccountPrivateKey(
-  address: string,
-  password: string
-) {
-  return sendMessage(CHAINX_ACCOUNT_EXPORT_PRIVATE, { address, password });
 }
 
 export async function createChainxNode(name: string, url: string) {
