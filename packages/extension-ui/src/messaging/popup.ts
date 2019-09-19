@@ -73,23 +73,12 @@ export async function createAccountFromPrivateKey(
   });
 }
 
-export async function exportChainxAccountPrivateKey(
-  address: string,
-  password: string
-) {
-  return sendMessage(CHAINX_ACCOUNT_EXPORT_PRIVATE, { address, password });
-}
-
 export async function getAllAccounts(): Promise<AccountInfo[]> {
   return sendMessage(CHAINX_ACCOUNT_ALL);
 }
 
-export async function createChainxNode(name: string, url: string) {
-  return sendMessage(CHAINX_NODE_CREATE, { name, url });
-}
-
-export async function getAllChainxNodes() {
-  return sendMessage(CHAINX_NODE_ALL);
+export async function removeChainxAccount(address: string, password: string) {
+  return sendMessage(CHAINX_ACCOUNT_REMOVE, { address, password });
 }
 
 export async function setChainxCurrentAccount(address: string) {
@@ -100,8 +89,19 @@ export async function getCurrentChainxAccount() {
   return sendMessage(CHAINX_ACCOUNT_CURRENT);
 }
 
-export async function removeChainxAccount(address: string, password: string) {
-  return sendMessage(CHAINX_ACCOUNT_REMOVE, { address, password });
+export async function exportChainxAccountPrivateKey(
+  address: string,
+  password: string
+) {
+  return sendMessage(CHAINX_ACCOUNT_EXPORT_PRIVATE, { address, password });
+}
+
+export async function createChainxNode(name: string, url: string) {
+  return sendMessage(CHAINX_NODE_CREATE, { name, url });
+}
+
+export async function getAllChainxNodes() {
+  return sendMessage(CHAINX_NODE_ALL);
 }
 
 export async function setChainxNode(url: string) {
