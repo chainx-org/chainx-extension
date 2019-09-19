@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import {
   signTransaction,
   rejectSign,
-  getCurrentChainxAccount
+  getCurrentChainxAccount,
+  getCurrentChainxNode,
 } from '../../messaging';
+import { setChainx } from '@chainx/extension/src/background/chainx';
 import { SignTransactionRequest } from '@chainx/extension-ui/types';
 import { useRedux } from '../../shared';
 import ErrorMessage from '../../components/ErrorMessage';
@@ -42,20 +44,38 @@ function RequestSign(props: any) {
   };
 
   const sign = async () => {
+    setErrMsg('')
     if (!currentAccount || !currentAccount.address) {
       setErrMsg(`Error: address is not exist`);
     }
     if (!check()) {
       return;
     }
+
+    const node = await getCurrentChainxNode();
+    const chainx = await setChainx(node.url);
+
+    const { id, address, module, method, args } = query;
+
+    const call = chainx.api.tx[module][method];
+
+    if (!call) {
+      setErrMsg('Invalid method')
+    }
+  
+    if (currentAccount.address !== address) {
+      setErrMsg('Invalid address');
+    }
+  
     try {
+      const account = chainx.account.fromKeyStore(currentAccount.keystore, pass);
+      const submittable = call(...args);
+      const nonce = await submittable.getNonce(account.publicKey());
+      submittable.sign(account, { nonce: nonce.toNumber() });
+      const hex = submittable.toHex();
       const request: SignTransactionRequest = {
         id: id,
-        address: query.address,
-        module: query.module,
-        method: query.method,
-        args: query.args,
-        password: pass
+        hex: hex,
       };
       const result = await signTransaction(request);
       console.log('sign message ', result);
@@ -107,6 +127,7 @@ function RequestSign(props: any) {
           type="password"
           placeholder="密码"
         />
+        <ErrorMessage msg={errMsg} />
         <div className="button-area margin-top-40">
           <button
             className="button button-white-half"
@@ -125,7 +146,6 @@ function RequestSign(props: any) {
             签名
           </button>
         </div>
-        <ErrorMessage msg={errMsg} />
       </div>
     </div>
   );
