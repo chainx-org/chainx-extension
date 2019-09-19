@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { Account } from 'chainx.js';
 import './enterPassword.scss';
 import {
   exportChainxAccountPrivateKey,
@@ -11,12 +12,12 @@ function EnterPassword(props: any) {
   const [pass, setPass] = useState('');
   const [errMsg, setErrMsg] = useState('');
 
-  async function exportPk(address: string, password: string) {
+  async function exportPk(keystore: Object, password: string) {
     try {
-      const result = await exportChainxAccountPrivateKey(address, password);
+      const pk = Account.fromKeyStore(keystore, password).privateKey()
       props.history.push({
         pathname: '/showPrivateKey',
-        query: { pk: result }
+        query: { pk: pk }
       });
     } catch (error) {
       setErrMsg(error.message);
@@ -24,9 +25,9 @@ function EnterPassword(props: any) {
     }
   }
 
-  async function removeAccount(address: string, password: string) {
+  async function removeAccount(address: string) {
     try {
-      await removeChainxAccount(address, password);
+      await removeChainxAccount(address);
       props.history.push('/');
     } catch (error) {
       setErrMsg(error.message);
@@ -37,11 +38,12 @@ function EnterPassword(props: any) {
   const enter = async function() {
     if (pass) {
       const address = props.location.query.address;
+      const keystore = props.location.query.keystore;
       const type = props.location.query.type;
       if (type === 'export') {
-        exportPk(address, pass);
+        exportPk(keystore, pass);
       } else if (type === 'remove') {
-        removeAccount(address, pass);
+        removeAccount(address);
       }
     }
   };
