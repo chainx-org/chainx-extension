@@ -14,7 +14,8 @@ function Home(props: any) {
   const [showAccountAction, setShowAccountAction] = useState(false);
   const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount', {
     address: '',
-    name: ''
+    name: '',
+    keystore: {}
   });
   const [{}, setAccounts] = useRedux('accounts');
   const [copySuccess, setCopySuccess] = useState('');
@@ -76,6 +77,7 @@ function Home(props: any) {
         pathname: '/enterPassword',
         query: {
           address: currentAccount.address,
+          keystore: currentAccount.keystore,
           type: type
         }
       });
