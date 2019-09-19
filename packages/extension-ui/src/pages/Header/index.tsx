@@ -17,7 +17,7 @@ function Header(props: any) {
   const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount');
   const [{ accounts }] = useRedux('accounts');
   const [{ currentNode }, setCurrentNode] = useRedux<NodeInfo>('currentNode', {
-    name: '',
+    name: 'w1.org',
     url: '',
     delay: ''
   });
