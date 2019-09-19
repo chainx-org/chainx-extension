@@ -32,10 +32,10 @@ class Keyring {
     };
 
     await store.set(
-      `${ACCOUNT_PREFIX}${name}`,
+      `${ACCOUNT_PREFIX}${request.name}`,
       item,
       (): void => {
-        this.accounts.push({ name, ...item });
+        this.accounts.push({ name: request.name, ...item });
       }
     );
 
