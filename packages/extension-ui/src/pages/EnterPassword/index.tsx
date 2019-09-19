@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Account } from 'chainx.js';
 import './enterPassword.scss';
 import {
-  exportChainxAccountPrivateKey,
   removeChainxAccount
 } from '../../messaging';
 import ErrorMessage from '../../components/ErrorMessage';
@@ -25,13 +24,14 @@ function EnterPassword(props: any) {
     }
   }
 
-  async function removeAccount(address: string) {
+  async function removeAccount(address: string, password: string, keystore: Object) {
     try {
+      Account.fromKeyStore(keystore, password)
       await removeChainxAccount(address);
       props.history.push('/');
     } catch (error) {
       setErrMsg(error.message);
-      console.log('export error', error.message);
+      console.log('remove error', error.message);
     }
   }
 
@@ -43,7 +43,7 @@ function EnterPassword(props: any) {
       if (type === 'export') {
         exportPk(keystore, pass);
       } else if (type === 'remove') {
-        removeAccount(address);
+        removeAccount(address, pass, keystore);
       }
     }
   };
