@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { createAccount, createAccountFromPrivateKey } from '../../messaging';
+import { Account } from 'chainx.js';
+import { createAccount } from '../../messaging';
 import ErrorMessage from '../ErrorMessage';
 import './index.scss';
 
 function NameAndPassword(props) {
-  const { type, secret, onSuccess } = props;
+  const { secret, onSuccess } = props;
   const [obj, setObj] = useState({ name: '', pass: '', repass: '' });
   const [errMsg, setErrMsg] = useState('');
 
   const check = () => {
-    console.log(obj);
     if (!obj.name || !obj.pass || !obj.repass) {
       setErrMsg('name and password are required');
       return false;
@@ -23,16 +23,15 @@ function NameAndPassword(props) {
   };
 
   const create = async () => {
-    console.log(type, secret);
     if (!check()) {
-      return;
+      return
     }
-    console.log('start create');
-    let handler = createAccount;
-    if (type === 'pk') {
-      handler = createAccountFromPrivateKey;
-    }
-    handler(obj.name, obj.pass, secret)
+
+    const account = Account.from(secret)
+    const keystore = account.encrypt(obj.pass)
+ 
+    console.log('account name ', obj.name)
+    createAccount(obj.name, account.address(), keystore)
       .then(_ => {
         onSuccess();
       })

@@ -51,6 +51,7 @@ function Home(props: any) {
 
   async function getCurrentAccount() {
     const result = await getCurrentChainxAccount();
+    console.log(result)
     setCurrentAccount({ currentAccount: result });
   }
 
