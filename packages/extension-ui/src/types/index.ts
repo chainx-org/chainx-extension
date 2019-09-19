@@ -5,11 +5,7 @@ export interface AccountInfo {
 
 export interface SignTransactionRequest {
   id: string;
-  address: string; // 用于确定是那个账户的请求
-  module: 'xAssets' | 'xStaking';
-  method: string;
-  args: Array<any>;
-  password: string;
+  hex: string; // 签名后交易原文
 }
 
 export interface NodeInfo {
