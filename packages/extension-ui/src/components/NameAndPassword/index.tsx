@@ -24,13 +24,13 @@ function NameAndPassword(props) {
 
   const create = async () => {
     if (!check()) {
-      return
+      return;
     }
 
-    const account = Account.from(secret)
-    const keystore = account.encrypt(obj.pass)
- 
-    console.log('account name ', obj.name)
+    const account = Account.from(secret);
+    const keystore = account.encrypt(obj.pass);
+
+    console.log('account name ', obj.name);
     createAccount(obj.name, account.address(), keystore)
       .then(_ => {
         onSuccess();
