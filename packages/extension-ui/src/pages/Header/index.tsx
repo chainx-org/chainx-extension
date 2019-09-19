@@ -85,7 +85,7 @@ function Header(props: any) {
                   getDelayClass(currentNode && currentNode.delay) +
                   '-bg'
                 }
-              ></span>
+              />
               <span>{currentNode && currentNode.name}</span>
             </div>
             <div
@@ -118,7 +118,7 @@ function Header(props: any) {
                     setNode(item.url);
                   }}
                 >
-                  <div className="node-item-active-flag"></div>
+                  <div className="node-item-active-flag" />
                   <div className="node-item-detail">
                     <div className="node-item-detail-url">
                       <span className="url">{item.url.slice(6)}</span>
@@ -205,7 +205,7 @@ function Header(props: any) {
                         props.history.push('/');
                       }}
                     >
-                      <div className="account-item-active-flag"></div>
+                      <div className="account-item-active-flag" />
                       <div className="account-item-detail">
                         <span className="name">{item.name}</span>
                         <DotInCenterStr value={item.address} />

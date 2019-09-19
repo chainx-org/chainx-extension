@@ -1,19 +1,19 @@
 import extension from 'extensionizer';
+import { Account } from 'chainx.js';
 import {
+  CHAINX_ACCOUNT_ALL,
+  CHAINX_ACCOUNT_CREATE,
   CHAINX_ACCOUNT_CURRENT,
+  CHAINX_ACCOUNT_EXPORT_PRIVATE,
   CHAINX_ACCOUNT_REMOVE,
   CHAINX_ACCOUNT_SELECT,
+  CHAINX_ACCOUNT_SIGN_MESSAGE,
   CHAINX_NODE_ALL,
   CHAINX_NODE_CREATE,
   CHAINX_NODE_CURRENT,
   CHAINX_NODE_REMOVE,
   CHAINX_NODE_SELECT,
-  PORT_POPUP,
-  CHAINX_ACCOUNT_SIGN_MESSAGE,
-  CHAINX_ACCOUNT_EXPORT_PRIVATE,
-  CHAINX_ACCOUNT_ALL,
-  CHAINX_ACCOUNT_CREATE,
-  CHAINX_ACCOUNT_CREATE_FROM_PRIVATE
+  PORT_POPUP
 } from '@chainx/extension-defaults';
 import {
   handlers,
@@ -27,13 +27,15 @@ port.onMessage.addListener(messageHandler);
 let idCounter = 0;
 
 export function sendMessage(message: string, request: any = {}): Promise<any> {
-  return new Promise((resolve, reject): void => {
-    const id = `chainx.popup.${Date.now()}.${++idCounter}`;
+  return new Promise(
+    (resolve, reject): void => {
+      const id = `chainx.popup.${Date.now()}.${++idCounter}`;
 
-    handlers[id] = { resolve, reject };
+      handlers[id] = { resolve, reject };
 
-    port.postMessage({ id, message, request });
-  });
+      port.postMessage({ id, message, request });
+    }
+  );
 }
 
 export async function signMessage(
@@ -61,10 +63,13 @@ export async function createAccountFromPrivateKey(
   password: string,
   privateKey: string
 ) {
-  return sendMessage(CHAINX_ACCOUNT_CREATE_FROM_PRIVATE, {
+  const account = Account.from(privateKey);
+  const keystore = account.encrypt(password);
+
+  return sendMessage(CHAINX_ACCOUNT_CREATE, {
     name,
-    privateKey,
-    password
+    address: account.address(),
+    keystore
   });
 }
 

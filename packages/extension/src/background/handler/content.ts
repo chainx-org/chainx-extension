@@ -54,7 +54,9 @@ async function requestSignTransaction({
 
   notificationManager.showPopup();
 
-  return new Promise((resolve, reject): void => {
-    handlers[id] = { resolve, reject };
-  });
+  return new Promise(
+    (resolve, reject): void => {
+      handlers[id] = { resolve, reject };
+    }
+  );
 }

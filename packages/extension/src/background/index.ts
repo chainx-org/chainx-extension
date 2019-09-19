@@ -27,24 +27,30 @@ const promise = new Promise((resolve, reject) => {
 });
 
 // listen to all messages and handle appropriately
-extension.runtime.onConnect.addListener((port): void => {
-  // message and disconnect handlers
-  port.onMessage.addListener((data): void => {
-    const promise = handle(data, port);
+extension.runtime.onConnect.addListener(
+  (port): void => {
+    // message and disconnect handlers
+    port.onMessage.addListener(
+      (data): void => {
+        const promise = handle(data, port);
 
-    promise
-      .then(response => {
-        port.postMessage({ id: data.id, response });
-      })
-      .catch((error): void => {
-        port.postMessage({ id: data.id, error: error.message });
-      });
-  });
+        promise
+          .then(response => {
+            port.postMessage({ id: data.id, response });
+          })
+          .catch(
+            (error): void => {
+              port.postMessage({ id: data.id, error: error.message });
+            }
+          );
+      }
+    );
 
-  port.onDisconnect.addListener((): void =>
-    console.log(`Disconnected from ${port.name}`)
-  );
-});
+    port.onDisconnect.addListener(
+      (): void => console.log(`Disconnected from ${port.name}`)
+    );
+  }
+);
 
 promise.then(() => {
   Promise.all([keyring.loadAll(), nodes.loadAll()])
@@ -54,7 +60,9 @@ promise.then(() => {
       }
       console.log('initialization completed');
     })
-    .catch((error): void => {
-      console.error('initialization failed', error);
-    });
+    .catch(
+      (error): void => {
+        console.error('initialization failed', error);
+      }
+    );
 });
