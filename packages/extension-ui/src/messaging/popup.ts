@@ -50,10 +50,10 @@ export async function signMessage(
 
 export async function createAccount(
   name: string,
-  password: string,
-  mnemonic: string
+  address: string,
+  keystore: object
 ): Promise<boolean> {
-  return sendMessage(CHAINX_ACCOUNT_CREATE, { name, password, mnemonic });
+  return sendMessage(CHAINX_ACCOUNT_CREATE, { name, address, keystore });
 }
 
 export async function createAccountFromPrivateKey(
