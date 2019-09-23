@@ -6,9 +6,6 @@ export const PORT_CONTENT = 'chainx-content';
 export const PORT_POPUP = 'chainx-popup';
 export const PORT_NOTIFICATION = 'chainx-notification';
 export const CHAINX_ACCOUNT_CREATE = 'chainx.accounts.create';
-export const CHAINX_ACCOUNT_CREATE_FROM_PRIVATE =
-  'chainx.accounts.create.private'; // 从私钥创建账户
-export const CHAINX_ACCOUNT_EXPORT_PRIVATE = 'chainx.accounts.export.private'; // 导出账户私钥
 export const CHAINX_ACCOUNT_ALL = 'chainx.accounts.all';
 export const CHAINX_ACCOUNT_SELECT = 'chainx.accounts.select'; // 设置目标账户
 export const CHAINX_ACCOUNT_CURRENT = 'chainx.accounts.current'; // 获取当前账户
