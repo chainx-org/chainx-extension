@@ -1,21 +1,20 @@
 import {
-  getAllChainxNodes,
-  setChainxCurrentAccount,
-  getCurrentChainxAccount,
-  removeChainxAccount,
-  setChainxNode,
   addChainxNode,
-  getCurrentChainxNode,
-  removeChainxNode,
-  createChainxNode,
-  signMessage,
-  exportChainxAccountPrivateKey,
-  getAllAccounts,
   createAccount,
-  createAccountFromPrivateKey
+  createAccountFromPrivateKey,
+  createChainxNode,
+  getAllAccounts,
+  getAllChainxNodes,
+  getCurrentChainxAccount,
+  getCurrentChainxNode,
+  removeChainxAccount,
+  removeChainxNode,
+  setChainxCurrentAccount,
+  setChainxNode,
+  signMessage
 } from './popup';
 
-import { signTransaction, getToSign, rejectSign } from './notification';
+import { getToSign, rejectSign, signTransaction } from './notification';
 
 export {
   getAllChainxNodes,
@@ -28,7 +27,6 @@ export {
   removeChainxNode,
   createChainxNode,
   signMessage,
-  exportChainxAccountPrivateKey,
   getAllAccounts,
   createAccount,
   createAccountFromPrivateKey,
