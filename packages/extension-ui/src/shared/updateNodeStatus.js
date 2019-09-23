@@ -1,51 +1,44 @@
 import { getCurrentChainxNode, getAllChainxNodes } from '../messaging'
 import fetchFromWs from './fetch'
 
+const TIMEOUT = 7000
+
 async function updateNodeStatus(setCurrentNode, setNodeList) {
   async function getNodeList() {
     const nodeListResult = await getAllChainxNodes();
-    nodeListResult.map((item, index) => {
-      fetchFromWs({
-        url: item.url,
-        method: 'chain_getBlock',
-        timeOut: 7000
-      })
-        .then((result = {}) => {
-          if (result.data) {
-            nodeListResult[index].delay = result.wastTime;
-          }
-        })
-        .catch(() => {
-          nodeListResult[index].delay = 'timeout';
-        })
-        .finally(() => {
-          setNodeList({ nodeList: nodeListResult });
-        });
-    });
+    setNodeList({ nodeList: nodeListResult });
+    return nodeListResult
   }
 
   async function getCurrentNode() {
     const currentNodeResult = await getCurrentChainxNode();
-    fetchFromWs({
-      url: currentNodeResult.url,
-      method: 'chain_getBlock',
-      timeOut: 7000
-    })
-      .then((result = {}) => {
-        if (result.data) {
-          currentNodeResult.delay = result.wastTime;
-        }
-      })
-      .catch(() => {
-        currentNodeResult.delay = 'timeout';
-      })
-      .finally(() => {
-        setCurrentNode({ currentNode: currentNodeResult });
-      });
+    setCurrentNode({ currentNode: currentNodeResult });
   }
 
-  await getNodeList()
+  async function getDelay(nodeList) {
+    nodeList.map((item, index) => {
+      fetchFromWs({
+        url: item.url,
+        method: 'chain_getBlock',
+        timeOut: TIMEOUT
+      })
+        .then((result = {}) => {
+          if (result.data) {
+            nodeList[index].delay = result.wastTime;
+          }
+        })
+        .catch(() => {
+          nodeList[index].delay = 'timeout';
+        })
+        .finally(() => {
+          setNodeList({ nodeList: nodeList});
+        });
+    }) 
+  }
+
   await getCurrentNode()
+  const nodeList = await getNodeList()
+  getDelay(nodeList)
 }
 
 export default updateNodeStatus
