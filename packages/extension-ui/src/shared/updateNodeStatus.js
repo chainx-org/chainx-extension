@@ -13,9 +13,10 @@ async function updateNodeStatus(setCurrentNode, setNodeList) {
   async function getCurrentNode() {
     const currentNodeResult = await getCurrentChainxNode();
     setCurrentNode({ currentNode: currentNodeResult });
+    return currentNodeResult
   }
 
-  async function getDelay(nodeList) {
+  async function getDelay(currentNode, nodeList) {
     nodeList.map((item, index) => {
       fetchFromWs({
         url: item.url,
@@ -31,14 +32,18 @@ async function updateNodeStatus(setCurrentNode, setNodeList) {
           nodeList[index].delay = 'timeout';
         })
         .finally(() => {
+          if (nodeList[index].url === currentNode.url) {
+            currentNode.delay = nodeList[index].delay;
+            setCurrentNode({ currentNode: currentNode });
+          }
           setNodeList({ nodeList: nodeList});
         });
     }) 
   }
 
-  await getCurrentNode()
+  const currentNode = await getCurrentNode()
   const nodeList = await getNodeList()
-  getDelay(nodeList)
+  getDelay(currentNode, nodeList)
 }
 
 export default updateNodeStatus
