@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import {
   addChainxNode,
   removeChainxNode,
-  getAllChainxNodes
 } from '../../messaging';
 import ErrorMessage from '../../components/ErrorMessage';
-import { useRedux, fetchFromWs, updateNodeStatus } from '../../shared';
+import { useRedux, updateNodeStatus } from '../../shared';
 import './nodeAction.scss';
 
 function AddNode(props: any) {
@@ -13,7 +12,7 @@ function AddNode(props: any) {
   const [url, setUrl] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [{}, setCurrentNode] = useRedux('currentNode');
-  const [{ nodeList }, setNodeList] = useRedux('nodeList');
+  const [{ nodeList }, setNodeList] = useRedux('nodeList', []);
   const {
     location: { query }
   } = props;
