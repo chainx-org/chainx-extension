@@ -21,7 +21,7 @@ function Header(props: any) {
     url: '',
     delay: ''
   });
-  const [{ nodeList }, setNodeList] = useRedux<NodeInfo[]>('nodeList');
+  const [{ nodeList }, setNodeList] = useRedux<NodeInfo[]>('nodeList', []);
 
   useEffect(() => {
     updateNodeStatus(setCurrentNode, setNodeList);
@@ -49,8 +49,16 @@ function Header(props: any) {
     } else if (delay <= 300) {
       return 'green';
     } else {
-      return '';
+      return 'green';
     }
+  }
+
+  function getDelayText(delay: Number | string) {
+    return delay
+      ? delay === 'timeout'
+        ? 'timeout'
+        : delay + ' ms'
+      : ''
   }
 
   return (
@@ -100,13 +108,10 @@ function Header(props: any) {
             </div>
           </div>
         )}
-        {showNodeListArea &&
-        !showAccountArea &&
-        currentNode &&
-        nodeList.length > 0 ? (
-          <div className="node-list-area">
+        {
+          <div className={(showNodeListArea ? '' : 'hide ') + 'node-list-area'}>
             <div className="node-list">
-              {nodeList.map(item => (
+              {nodeList && nodeList.map(item => (
                 <div
                   className={
                     item.name === currentNode.name
@@ -142,11 +147,9 @@ function Header(props: any) {
                       </div>
                     </div>
                     <span className={'delay ' + getDelayClass(item.delay)}>
-                      {item.delay
-                        ? item.delay === 'timeout'
-                          ? 'timeout'
-                          : item.delay + ' ms'
-                        : ''}
+                      {
+                        getDelayText(item.delay)
+                      }
                     </span>
                   </div>
                 </div>
@@ -162,7 +165,7 @@ function Header(props: any) {
               <span>添加节点</span>
             </div>
           </div>
-        ) : null}
+        }
         {showAccountArea && !showNodeListArea ? (
           <div className="account-area">
             <div className="action">

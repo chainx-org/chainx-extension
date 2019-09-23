@@ -50,6 +50,9 @@
     
   }
   .node-list-area {
+    &.hide {
+      display: none;
+    }
     position: absolute;
     top: 70px;
     left: 64px;
