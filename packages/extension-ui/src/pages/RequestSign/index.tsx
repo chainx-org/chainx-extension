@@ -3,7 +3,7 @@ import {
   signTransaction,
   rejectSign,
   getCurrentChainxAccount,
-  getCurrentChainxNode,
+  getCurrentChainxNode
 } from '../../messaging';
 import { setChainx } from '@chainx/extension/src/background/chainx';
 import { SignTransactionRequest } from '@chainx/extension-ui/types';
@@ -44,7 +44,7 @@ function RequestSign(props: any) {
   };
 
   const sign = async () => {
-    setErrMsg('')
+    setErrMsg('');
     if (!currentAccount || !currentAccount.address) {
       setErrMsg(`Error: address is not exist`);
     }
@@ -60,22 +60,25 @@ function RequestSign(props: any) {
     const call = chainx.api.tx[module][method];
 
     if (!call) {
-      setErrMsg('Invalid method')
+      setErrMsg('Invalid method');
     }
-  
+
     if (currentAccount.address !== address) {
       setErrMsg('Invalid address');
     }
-  
+
     try {
-      const account = chainx.account.fromKeyStore(currentAccount.keystore, pass);
+      const account = chainx.account.fromKeyStore(
+        currentAccount.keystore,
+        pass
+      );
       const submittable = call(...args);
       const nonce = await submittable.getNonce(account.publicKey());
       submittable.sign(account, { nonce: nonce.toNumber() });
       const hex = submittable.toHex();
       const request: SignTransactionRequest = {
         id: id,
-        hex: hex,
+        hex: hex
       };
       const result = await signTransaction(request);
       console.log('sign message ', result);

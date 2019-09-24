@@ -2,9 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { Account } from 'chainx.js';
 import './enterPassword.scss';
-import {
-  removeChainxAccount
-} from '../../messaging';
+import { removeChainxAccount } from '../../messaging';
 import ErrorMessage from '../../components/ErrorMessage';
 
 function EnterPassword(props: any) {
@@ -13,7 +11,7 @@ function EnterPassword(props: any) {
 
   async function exportPk(keystore: Object, password: string) {
     try {
-      const pk = Account.fromKeyStore(keystore, password).privateKey()
+      const pk = Account.fromKeyStore(keystore, password).privateKey();
       props.history.push({
         pathname: '/showPrivateKey',
         query: { pk: pk }
@@ -24,9 +22,13 @@ function EnterPassword(props: any) {
     }
   }
 
-  async function removeAccount(address: string, password: string, keystore: Object) {
+  async function removeAccount(
+    address: string,
+    password: string,
+    keystore: Object
+  ) {
     try {
-      Account.fromKeyStore(keystore, password)
+      Account.fromKeyStore(keystore, password);
       await removeChainxAccount(address);
       props.history.push('/');
     } catch (error) {
