@@ -21,6 +21,7 @@ function CreateAccount(props: any) {
   const [errMsg, setErrMsg] = useState('');
   const [mnemonic] = useState(Account.newMnemonic());
   const mnemonicList = mnemonic.split(' ');
+  const [wordSelectedList, setWordSelectedList] = useState(new Array(mnemonicList.length).fill(false))
   const [shuffleMnemonicList] = useState(shuffle(mnemonicList));
   const [validateMnemonicList, setValidateMnemonicList] = useState(
     new Array(12).fill('')
@@ -66,20 +67,26 @@ function CreateAccount(props: any) {
               <div
                 className={
                   'word-item word-item-click ' +
-                  (validateMnemonicList.indexOf(item) > -1
+                  (
+                    wordSelectedList[index]
                     ? 'word-item-selected'
-                    : '')
+                    : ''
+                  )
                 }
                 key={index}
                 onClick={() => {
-                  let replaceWord = item;
-                  let wordIndex = validateMnemonicList.indexOf('');
-                  if (validateMnemonicList.includes(item)) {
-                    wordIndex = validateMnemonicList.indexOf(item);
-                    replaceWord = '';
+                  const wordSelected = wordSelectedList[index]
+                  let wordIndex = validateMnemonicList.indexOf('')
+                  let replaceWord = item
+                  if (wordSelected) {
+                    // word has selected, remove last word
+                    wordIndex = 11 - Array.from(validateMnemonicList).reverse().indexOf(item)
+                    replaceWord = ''
                   }
-                  validateMnemonicList.splice(wordIndex, 1, replaceWord);
-                  setValidateMnemonicList(Array.from(validateMnemonicList));
+                  validateMnemonicList.splice(wordIndex, 1, replaceWord)
+                  setValidateMnemonicList(Array.from(validateMnemonicList))
+                  wordSelectedList.splice(index, 1, !wordSelected)
+                  setWordSelectedList(Array.from(wordSelectedList))
                 }}
               >
                 {item}
