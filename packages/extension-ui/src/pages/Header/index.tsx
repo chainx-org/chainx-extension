@@ -22,9 +22,10 @@ function Header(props: any) {
     delay: ''
   });
   const [{ nodeList }, setNodeList] = useRedux<NodeInfo[]>('nodeList', []);
+  const [{ delayList }, setDelayList] = useRedux('delayList', []);
 
   useEffect(() => {
-    updateNodeStatus(setCurrentNode, setNodeList);
+    updateNodeStatus(setCurrentNode, setNodeList, delayList, setDelayList);
   }, []);
 
   useOutsideClick(refNodeList, () => {
@@ -37,7 +38,7 @@ function Header(props: any) {
 
   async function setNode(url: string) {
     await setChainxNode(url);
-    updateNodeStatus(setCurrentNode, setNodeList);
+    updateNodeStatus(setCurrentNode, setNodeList, delayList, setDelayList);
     setShowNodeListArea(false);
   }
 
@@ -111,7 +112,7 @@ function Header(props: any) {
         {
           <div className={(showNodeListArea ? '' : 'hide ') + 'node-list-area'}>
             <div className="node-list">
-              {nodeList && nodeList.map(item => (
+              {nodeList && nodeList.map((item, index) => (
                 <div
                   className={
                     item.name === currentNode.name
@@ -146,9 +147,9 @@ function Header(props: any) {
                         <Icon name="Edit" />
                       </div>
                     </div>
-                    <span className={'delay ' + getDelayClass(item.delay)}>
+                    <span className={'delay ' + getDelayClass(delayList && delayList[index])}>
                       {
-                        getDelayText(item.delay)
+                        getDelayText(delayList && delayList[index])
                       }
                     </span>
                   </div>

@@ -13,6 +13,7 @@ function AddNode(props: any) {
   const [errMsg, setErrMsg] = useState('');
   const [{}, setCurrentNode] = useRedux('currentNode');
   const [{ nodeList }, setNodeList] = useRedux('nodeList', []);
+  const [{ delayList }, setDelayList] = useRedux('nodeList', []);
   const {
     location: { query }
   } = props;
@@ -42,7 +43,7 @@ function AddNode(props: any) {
     try {
       await addChainxNode(name, url);
       setErrMsg('');
-      await updateNodeStatus(setCurrentNode, setNodeList);
+      await updateNodeStatus(setCurrentNode, setNodeList, delayList, setDelayList);
       props.history.push('/');
     } catch (error) {
       setErrMsg(error.message);
@@ -58,7 +59,7 @@ function AddNode(props: any) {
     try {
       await removeChainxNode(name, url);
       setErrMsg('');
-      await updateNodeStatus(setCurrentNode, setNodeList);
+      await updateNodeStatus(setCurrentNode, setNodeList, delayList, setDelayList);
       props.history.push('/');
     } catch (error) {
       setErrMsg(error.message);

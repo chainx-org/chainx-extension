@@ -21,7 +21,7 @@ export default function useRedux(namespace, initState) {
       const state = store.getState();
       setData(predata => {
         // 浅比较，如果相等，则不改变对象的引用值，避免额外的渲染。
-        if (namespace === 'nodeList') {
+        if (namespace === 'delayList') {
           return state[namespace];
         }
         if (shallowCompare(predata, state[namespace])) {
