@@ -8,6 +8,8 @@ import {
 import keyring, { KeyStore } from '../store/keyring';
 import { u8aToHex } from '@chainx/util';
 import nodes from '../store/nodes';
+import { CHAINX_ACCOUNT_CURRENT_CHANGE } from '@chainx/extension-defaults';
+import { sendToContent } from '../message';
 
 export async function createChainxAccount(
   request: ChainxAccountCreateRequest
@@ -18,6 +20,14 @@ export async function createChainxAccount(
 export async function setChainxCurrentAccount(
   address: string
 ): Promise<AccountInfo | null> {
+  const currentAccount = keyring.getCurrentAccount();
+  if (!currentAccount || currentAccount.address !== address) {
+    sendToContent(CHAINX_ACCOUNT_CURRENT_CHANGE, {
+      from: currentAccount ? currentAccount.address : null,
+      to: address
+    });
+  }
+
   return await keyring.setCurrentAccount(address);
 }
 

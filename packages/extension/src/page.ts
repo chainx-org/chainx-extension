@@ -1,6 +1,7 @@
 import {
   CHAINX_TRANSACTION_CALL_REQUEST,
-  CHAINX_TRANSACTION_SIGN_REQUEST
+  CHAINX_TRANSACTION_SIGN_REQUEST,
+  CHAINX_ACCOUNT_CURRENT_CHANGE
 } from '@chainx/extension-defaults';
 
 window.addEventListener(
@@ -8,6 +9,12 @@ window.addEventListener(
   ({ source, data }): void => {
     // only allow messages from our window, by the inject
     if (source !== window || data.origin !== 'content') {
+      return;
+    }
+
+    if (data.message === CHAINX_ACCOUNT_CURRENT_CHANGE) {
+      console.log('will trigger account change callback, data:', data);
+      // TODO: trigger account change callback
       return;
     }
 

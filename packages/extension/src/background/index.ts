@@ -6,6 +6,7 @@ import extension from 'extensionizer';
 import handle from './handler';
 import { keyring, nodes } from './store';
 import { setChainx } from './chainx';
+import { registerPort } from './message';
 
 const promise = new Promise((resolve, reject) => {
   extension.runtime.onInstalled.addListener(event => {
@@ -29,6 +30,7 @@ const promise = new Promise((resolve, reject) => {
 // listen to all messages and handle appropriately
 extension.runtime.onConnect.addListener(
   (port): void => {
+    registerPort(port);
     // message and disconnect handlers
     port.onMessage.addListener(
       (data): void => {
