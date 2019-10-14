@@ -55,11 +55,7 @@ function Header(props: any) {
   }
 
   function getDelayText(delay: Number | string) {
-    return delay
-      ? delay === 'timeout'
-        ? 'timeout'
-        : delay + ' ms'
-      : ''
+    return delay ? (delay === 'timeout' ? 'timeout' : delay + ' ms') : '';
   }
 
   return (
@@ -112,49 +108,53 @@ function Header(props: any) {
         {
           <div className={(showNodeListArea ? '' : 'hide ') + 'node-list-area'}>
             <div className="node-list">
-              {nodeList && nodeList.map((item, index) => (
-                <div
-                  className={
-                    item.name === currentNode.name
-                      ? 'node-item active'
-                      : 'node-item'
-                  }
-                  key={item.name}
-                  onClick={() => {
-                    setNode(item.url);
-                  }}
-                >
-                  <div className="node-item-active-flag" />
-                  <div className="node-item-detail">
-                    <div className="node-item-detail-url">
-                      <span className="url">{item.url.slice(6)}</span>
-                      <div
-                        className="node-item-detail-edit"
-                        onClick={e => {
-                          e.stopPropagation();
-                          e.nativeEvent.stopImmediatePropagation();
-                          setShowNodeListArea(false);
-                          const query = {
-                            nodeInfo: item,
-                            type: 'remove'
-                          };
-                          props.history.push({
-                            pathname: '/addNode',
-                            query: query
-                          });
-                        }}
-                      >
-                        <Icon name="Edit" />
+              {nodeList &&
+                nodeList.map((item, index) => (
+                  <div
+                    className={
+                      item.name === currentNode.name
+                        ? 'node-item active'
+                        : 'node-item'
+                    }
+                    key={item.name}
+                    onClick={() => {
+                      setNode(item.url);
+                    }}
+                  >
+                    <div className="node-item-active-flag" />
+                    <div className="node-item-detail">
+                      <div className="node-item-detail-url">
+                        <span className="url">{item.url.slice(6)}</span>
+                        <div
+                          className="node-item-detail-edit"
+                          onClick={e => {
+                            e.stopPropagation();
+                            e.nativeEvent.stopImmediatePropagation();
+                            setShowNodeListArea(false);
+                            const query = {
+                              nodeInfo: item,
+                              type: 'remove'
+                            };
+                            props.history.push({
+                              pathname: '/addNode',
+                              query: query
+                            });
+                          }}
+                        >
+                          <Icon name="Edit" />
+                        </div>
                       </div>
+                      <span
+                        className={
+                          'delay ' +
+                          getDelayClass(delayList && delayList[index])
+                        }
+                      >
+                        {getDelayText(delayList && delayList[index])}
+                      </span>
                     </div>
-                    <span className={'delay ' + getDelayClass(delayList && delayList[index])}>
-                      {
-                        getDelayText(delayList && delayList[index])
-                      }
-                    </span>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
             <div
               className="add-node"

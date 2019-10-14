@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import {
-  addChainxNode,
-  removeChainxNode,
-} from '../../messaging';
+import { addChainxNode, removeChainxNode } from '../../messaging';
 import ErrorMessage from '../../components/ErrorMessage';
 import { useRedux, updateNodeStatus } from '../../shared';
 import './nodeAction.scss';
@@ -43,7 +40,12 @@ function AddNode(props: any) {
     try {
       await addChainxNode(name, url);
       setErrMsg('');
-      await updateNodeStatus(setCurrentNode, setNodeList, delayList, setDelayList);
+      await updateNodeStatus(
+        setCurrentNode,
+        setNodeList,
+        delayList,
+        setDelayList
+      );
       props.history.push('/');
     } catch (error) {
       setErrMsg(error.message);
@@ -59,7 +61,12 @@ function AddNode(props: any) {
     try {
       await removeChainxNode(name, url);
       setErrMsg('');
-      await updateNodeStatus(setCurrentNode, setNodeList, delayList, setDelayList);
+      await updateNodeStatus(
+        setCurrentNode,
+        setNodeList,
+        delayList,
+        setDelayList
+      );
       props.history.push('/');
     } catch (error) {
       setErrMsg(error.message);
