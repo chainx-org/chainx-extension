@@ -4,6 +4,8 @@ import {
   CHAINX_ACCOUNT_CURRENT_CHANGE
 } from '@chainx/extension-defaults';
 
+const accountChangeListeners: Array<any> = [];
+
 window.addEventListener(
   'message',
   ({ source, data }): void => {
@@ -13,6 +15,9 @@ window.addEventListener(
     }
 
     if (data.message === CHAINX_ACCOUNT_CURRENT_CHANGE) {
+      for (let listener of accountChangeListeners) {
+        listener(data.info);
+      }
       console.log('will trigger account change callback, data:', data);
       // TODO: trigger account change callback
       return;
@@ -79,9 +84,14 @@ async function call(
   });
 }
 
+function listenAccountChange(listener) {
+  accountChangeListeners.push(listener);
+}
+
 // @ts-ignore
 window.chainxProvider = {
   enable,
   sign,
-  call
+  call,
+  listenAccountChange
 };
