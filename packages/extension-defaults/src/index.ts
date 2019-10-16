@@ -23,4 +23,5 @@ export const CHAINX_NODE_CREATE = 'chainx.nodes.create';
 export const CHAINX_NODE_ALL = 'chainx.nodes.all';
 export const CHAINX_NODE_SELECT = 'chainx.nodes.select'; // 设置节点
 export const CHAINX_NODE_CURRENT = 'chainx.nodes.current'; // 获取当前节点
+export const CHAINX_NODE_CURRENT_CHANGE = 'chainx.nodes.current.change'; // 当前节点改变
 export const CHAINX_NODE_REMOVE = 'chainx.nodes.remove';

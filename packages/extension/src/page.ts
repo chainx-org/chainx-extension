@@ -3,10 +3,12 @@ import {
   CHAINX_TRANSACTION_SIGN_REQUEST,
   CHAINX_ACCOUNT_CURRENT_CHANGE,
   CHAINX_ACCOUNT_CURRENT,
-  CHAINX_NODE_CURRENT
+  CHAINX_NODE_CURRENT,
+  CHAINX_NODE_CURRENT_CHANGE
 } from '@chainx/extension-defaults';
 
 const accountChangeListeners: Array<any> = [];
+const nodeChangeListeners: Array<any> = [];
 
 window.addEventListener(
   'message',
@@ -18,6 +20,13 @@ window.addEventListener(
 
     if (data.message === CHAINX_ACCOUNT_CURRENT_CHANGE) {
       for (let listener of accountChangeListeners) {
+        listener(data.info);
+      }
+      return;
+    }
+
+    if (data.message === CHAINX_NODE_CURRENT_CHANGE) {
+      for (let listener of nodeChangeListeners) {
         listener(data.info);
       }
       return;
@@ -92,11 +101,16 @@ function listenAccountChange(listener) {
   accountChangeListeners.push(listener);
 }
 
+function listenNodeChange(listener) {
+  nodeChangeListeners.push(listener);
+}
+
 // @ts-ignore
 window.chainxProvider = {
   enable,
   sign,
   call,
   listenAccountChange,
+  listenNodeChange,
   getCurrentNode
 };

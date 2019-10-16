@@ -34,7 +34,7 @@ export const sendToContent = function(message: string, info: any = null) {
   const contentPorts = ports[PORT_CONTENT];
 
   if (contentPorts.length <= 0) {
-    console.error('no ports');
+    console.warn('no ports: currently no page connected to chainx extension');
   }
 
   for (let port of contentPorts) {

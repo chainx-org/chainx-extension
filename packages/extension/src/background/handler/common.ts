@@ -8,7 +8,10 @@ import {
 import keyring, { KeyStore } from '../store/keyring';
 import { u8aToHex } from '@chainx/util';
 import nodes from '../store/nodes';
-import { CHAINX_ACCOUNT_CURRENT_CHANGE } from '@chainx/extension-defaults';
+import {
+  CHAINX_ACCOUNT_CURRENT_CHANGE,
+  CHAINX_NODE_CURRENT_CHANGE
+} from '@chainx/extension-defaults';
 import { sendToContent } from '../message';
 
 export async function createChainxAccount(
@@ -83,7 +86,10 @@ export async function getAllChainxNodes(): Promise<ChainxNode[]> {
 }
 
 export async function setChainxCurrentNode({ url }: { url: string }) {
-  return nodes.setCurrentNode(url);
+  const pre = await nodes.getCurrentNode();
+  await nodes.setCurrentNode(url);
+  const now = await nodes.getCurrentNode();
+  sendToContent(CHAINX_NODE_CURRENT_CHANGE, { from: pre, to: now });
 }
 
 export async function getChainxCurrentNode() {
