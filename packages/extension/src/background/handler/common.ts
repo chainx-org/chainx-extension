@@ -20,15 +20,16 @@ export async function createChainxAccount(
 export async function setChainxCurrentAccount(
   address: string
 ): Promise<AccountInfo | null> {
-  const currentAccount = keyring.getCurrentAccount();
-  if (!currentAccount || currentAccount.address !== address) {
+  const preAccount = keyring.getCurrentAccount();
+  const currentAccount = await keyring.setCurrentAccount(address);
+  if (!preAccount || preAccount.address !== address) {
     sendToContent(CHAINX_ACCOUNT_CURRENT_CHANGE, {
-      from: currentAccount ? currentAccount.address : null,
-      to: address
+      from: preAccount || null,
+      to: currentAccount
     });
   }
 
-  return await keyring.setCurrentAccount(address);
+  return currentAccount;
 }
 
 export async function getCurrentChainxAccount(): Promise<AccountInfo | null> {
