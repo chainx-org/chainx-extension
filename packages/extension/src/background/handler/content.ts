@@ -1,10 +1,15 @@
 import { ChainxCallRequest, MessageRequest } from './types';
 import { getChainx } from '../chainx';
-import { getChainxAccountByAddress, getCurrentChainxAccount } from './common';
+import {
+  getChainxAccountByAddress,
+  getChainxCurrentNode,
+  getCurrentChainxAccount
+} from './common';
 import { tx } from '../store';
 import notificationManager from '../notification-manager';
 import {
   CHAINX_ACCOUNT_CURRENT,
+  CHAINX_NODE_CURRENT,
   CHAINX_TRANSACTION_CALL_REQUEST,
   CHAINX_TRANSACTION_SIGN_REQUEST
 } from '@chainx/extension-defaults';
@@ -22,6 +27,8 @@ export default async function handleContent({
     return getCurrentChainxAccount();
   } else if (message === CHAINX_TRANSACTION_CALL_REQUEST) {
     return requestSignTransaction({ id, ...request });
+  } else if (message === CHAINX_NODE_CURRENT) {
+    return await getChainxCurrentNode();
   }
 
   return true;

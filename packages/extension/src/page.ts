@@ -1,7 +1,9 @@
 import {
   CHAINX_TRANSACTION_CALL_REQUEST,
   CHAINX_TRANSACTION_SIGN_REQUEST,
-  CHAINX_ACCOUNT_CURRENT_CHANGE
+  CHAINX_ACCOUNT_CURRENT_CHANGE,
+  CHAINX_ACCOUNT_CURRENT,
+  CHAINX_NODE_CURRENT
 } from '@chainx/extension-defaults';
 
 const accountChangeListeners: Array<any> = [];
@@ -53,7 +55,11 @@ function sendMessage(message: any, request: any = null): Promise<any> {
 }
 
 async function enable(): Promise<any> {
-  return await sendMessage('chainx.accounts.current');
+  return await sendMessage(CHAINX_ACCOUNT_CURRENT);
+}
+
+async function getCurrentNode(): Promise<any> {
+  return await sendMessage(CHAINX_NODE_CURRENT);
 }
 
 async function sign(address: string): Promise<any> {
@@ -93,5 +99,6 @@ window.chainxProvider = {
   enable,
   sign,
   call,
-  listenAccountChange
+  listenAccountChange,
+  getCurrentNode
 };
