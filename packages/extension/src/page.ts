@@ -20,8 +20,6 @@ window.addEventListener(
       for (let listener of accountChangeListeners) {
         listener(data.info);
       }
-      console.log('will trigger account change callback, data:', data);
-      // TODO: trigger account change callback
       return;
     }
 
