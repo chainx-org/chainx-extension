@@ -4,6 +4,7 @@
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "@chainx/extension-defaults": "1.0.0",
+    "@chainx/ui": "^0.0.6",
     "@polkadot/react-identicon": "^0.42.0-beta.34",
     "@types/react-router": "^5.0.3",
     "@types/react-router-dom": "^4.3.4",
