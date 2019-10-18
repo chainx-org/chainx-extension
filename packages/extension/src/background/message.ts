@@ -29,6 +29,20 @@ export function registerPort(port) {
   console.log(ports);
 }
 
+export function unRegisterPort(port) {
+  if (port.name !== PORT_CONTENT) {
+    return;
+  }
+
+  const nowPorts = ports[PORT_CONTENT];
+  // @ts-ignore
+  const index = nowPorts.findIndex(p => p.sender.tab.id === port.sender.tab.id);
+  if (index < 0) {
+    return;
+  }
+  nowPorts.splice(index, 1);
+}
+
 export const sendToContent = function(message: string, info: any = null) {
   // @ts-ignore
   const contentPorts = ports[PORT_CONTENT];

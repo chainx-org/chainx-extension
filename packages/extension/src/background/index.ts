@@ -6,7 +6,7 @@ import extension from 'extensionizer';
 import handle from './handler';
 import { keyring, nodes } from './store';
 import { setChainx } from './chainx';
-import { registerPort } from './message';
+import { registerPort, unRegisterPort } from './message';
 
 const promise = new Promise((resolve, reject) => {
   extension.runtime.onInstalled.addListener(event => {
@@ -49,7 +49,10 @@ extension.runtime.onConnect.addListener(
     );
 
     port.onDisconnect.addListener(
-      (): void => console.log(`Disconnected from ${port.name}`)
+      (): void => {
+        console.log(`Disconnected from ${port.name}`);
+        unRegisterPort(port);
+      }
     );
   }
 );
