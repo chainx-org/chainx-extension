@@ -14,6 +14,7 @@ import { PrimaryButton, DefaultButton } from '@chainx/ui';
 import { setLoading } from '../../store/reducers/statusSlice';
 import { useDispatch } from 'react-redux';
 import Transfer from "./Transfer";
+import CommonTx from "./CommonTx";
 
 function RequestSign(props: any) {
   const dispatch = useDispatch();
@@ -30,6 +31,8 @@ function RequestSign(props: any) {
     },
     location: { query }
   } = props;
+
+  const { module, method } = query;
 
   useEffect(() => {
     getCurrentAccount();
@@ -106,9 +109,18 @@ function RequestSign(props: any) {
     }
   };
 
+  let txPanel: any = null;
+  if (module === 'xAssets' && method === 'transfer') {
+    txPanel = <Transfer query={query} />;
+  } else {
+    txPanel = <CommonTx query={query} />
+  }
+
   return (
     <div className="container request-sign">
-      <Transfer query={query} />
+      {
+        txPanel
+      }
       <div className="submit-area">
         <div className="title">
           <span>输入密码</span>
