@@ -13,8 +13,8 @@ import './requestSign.scss';
 import { PrimaryButton, DefaultButton } from '@chainx/ui';
 import { setLoading } from '../../store/reducers/statusSlice';
 import { useDispatch } from 'react-redux';
-import Transfer from "./Transfer";
-import CommonTx from "./CommonTx";
+import Transfer from './Transfer';
+import CommonTx from './CommonTx';
 
 function RequestSign(props: any) {
   const dispatch = useDispatch();
@@ -113,14 +113,12 @@ function RequestSign(props: any) {
   if (module === 'xAssets' && method === 'transfer') {
     txPanel = <Transfer query={query} />;
   } else {
-    txPanel = <CommonTx query={query} />
+    txPanel = <CommonTx query={query} />;
   }
 
   return (
     <div className="container request-sign">
-      {
-        txPanel
-      }
+      {txPanel}
       <div className="submit-area">
         <div className="title">
           <span>输入密码</span>

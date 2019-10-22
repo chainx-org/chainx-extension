@@ -8,6 +8,7 @@
     "@polkadot/react-identicon": "^0.42.0-beta.34",
     "@types/react-router": "^5.0.3",
     "@types/react-router-dom": "^4.3.4",
+    "bignumber.js": "^9.0.0",
     "chainx.js": "^2.21.0",
     "clipboard": "^2.0.4",
     "lodash.shuffle": "^4.2.0",
