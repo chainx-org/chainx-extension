@@ -11,8 +11,11 @@ import { useRedux } from '../../shared';
 import ErrorMessage from '../../components/ErrorMessage';
 import './requestSign.scss';
 import { PrimaryButton, DefaultButton } from '@chainx/ui';
+import { setLoading } from '../../store/reducers/statusSlice'
+import { useDispatch } from 'react-redux'
 
 function RequestSign(props: any) {
+  const dispatch = useDispatch();
   const [pass, setPass] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount', {
@@ -53,6 +56,7 @@ function RequestSign(props: any) {
       return;
     }
 
+    dispatch(setLoading(true));
     const node = await getCurrentChainxNode();
     const chainx = await setChainx(node.url);
 
@@ -84,7 +88,9 @@ function RequestSign(props: any) {
       const result = await signTransaction(request);
       console.log('sign message ', result);
       setErrMsg('');
+      dispatch(setLoading(false));
     } catch (e) {
+      dispatch(setLoading(false));
       setErrMsg(`Error: ${e.message}`);
     }
   };
