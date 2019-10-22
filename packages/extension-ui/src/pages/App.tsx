@@ -9,15 +9,24 @@ import RequestSign from './RequestSign';
 import ShowPrivateKey from './ShowPrivateKey/index';
 import EnterPassword from './EnterPassword';
 import NodeAction from './NodeAction';
+// @ts-ignore
+import spinner from '../assets/loading.gif';
 import './index.scss';
+import { useSelector } from 'react-redux';
 
 export default function App() {
   let redirectUrl: any = '/';
+  const loading = useSelector(state => state.status.loading);
 
   return (
     <Router>
       <React.Fragment>
         <Header props />
+        {loading && (
+          <div className="spinner">
+            <img src={spinner} alt="spinner" />
+          </div>
+        )}
         <div className="content">
           <Switch>
             <Route exact path="/" component={Home} />

@@ -10,10 +10,7 @@ import { SignTransactionRequest } from '@chainx/extension-ui/types';
 import { useRedux } from '../../shared';
 import ErrorMessage from '../../components/ErrorMessage';
 import './requestSign.scss';
-import {
-  PrimaryButton,
-  DefaultButton
-} from '@chainx/ui'
+import { PrimaryButton, DefaultButton } from '@chainx/ui';
 
 function RequestSign(props: any) {
   const [pass, setPass] = useState('');
@@ -136,8 +133,12 @@ function RequestSign(props: any) {
         />
         <ErrorMessage msg={errMsg} />
         <div className="button-area margin-top-40">
-          <DefaultButton size="large" onClick={() => removeCurrentSign()}>取消</DefaultButton>
-          <PrimaryButton size="large" onClick={() => sign()}>签名</PrimaryButton>
+          <DefaultButton size="large" onClick={() => removeCurrentSign()}>
+            取消
+          </DefaultButton>
+          <PrimaryButton size="large" onClick={() => sign()}>
+            签名
+          </PrimaryButton>
         </div>
       </div>
     </div>
