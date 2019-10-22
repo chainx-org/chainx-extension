@@ -11,8 +11,8 @@ import { useRedux } from '../../shared';
 import ErrorMessage from '../../components/ErrorMessage';
 import './requestSign.scss';
 import { PrimaryButton, DefaultButton } from '@chainx/ui';
-import { setLoading } from '../../store/reducers/statusSlice'
-import { useDispatch } from 'react-redux'
+import { setLoading } from '../../store/reducers/statusSlice';
+import { useDispatch } from 'react-redux';
 
 function RequestSign(props: any) {
   const dispatch = useDispatch();

@@ -12,12 +12,9 @@ const ManifestPlugin = require('webpack-extension-manifest-plugin');
 const pkgJson = require('./package.json');
 const manifest = require('./manifest.json');
 
-const packages = [
-  'extension-ui',
-  'extension-defaults'
-];
+const packages = ['extension-ui', 'extension-defaults'];
 
-function createWebpack ({ alias = {}, context }) {
+function createWebpack({ alias = {}, context }) {
   const ENV = process.env.NODE_ENV || 'development';
   const isProd = ENV === 'production';
 
@@ -61,7 +58,7 @@ function createWebpack ({ alias = {}, context }) {
               loader: require.resolve('url-loader'),
               options: {
                 limit: 10000,
-                name: 'static/[name].[ext]'
+                name: '/static/[name].[ext]'
               }
             }
           ]
@@ -79,8 +76,8 @@ function createWebpack ({ alias = {}, context }) {
           use: [
             'style-loader',
             'css-loader',
-            'sass-loader',
-            // { 
+            'sass-loader'
+            // {
             //   loader: 'sass-resources-loader',
             //   options: {
             //     resources: path.resolve(__dirname, '../extension-ui/src/index.scss')
@@ -119,7 +116,7 @@ function createWebpack ({ alias = {}, context }) {
           }
         }
       })
-    ].filter((entry) => entry),
+    ].filter(entry => entry),
     watch: !isProd
   };
 }
