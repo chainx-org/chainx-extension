@@ -13,6 +13,7 @@ import './requestSign.scss';
 import { PrimaryButton, DefaultButton } from '@chainx/ui';
 import { setLoading } from '../../store/reducers/statusSlice';
 import { useDispatch } from 'react-redux';
+import Transfer from "./Transfer";
 
 function RequestSign(props: any) {
   const dispatch = useDispatch();
@@ -107,20 +108,7 @@ function RequestSign(props: any) {
 
   return (
     <div className="container request-sign">
-      <div className="detail">
-        <div className="detail-item">
-          <span>操作</span>
-          <span>{query.method}</span>
-        </div>
-        <div className="detail-item">
-          <span>转账数量</span>
-          <span>{query.args[2]} PCX</span>
-        </div>
-        <div className="detail-item">
-          <span>接收人地址</span>
-          <span>{query.args[0]}</span>
-        </div>
-      </div>
+      <Transfer query={query} />
       <div className="submit-area">
         <div className="title">
           <span>输入密码</span>
