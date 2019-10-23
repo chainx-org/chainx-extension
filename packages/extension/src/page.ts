@@ -35,10 +35,16 @@ window.addEventListener(
     }
 
     if (data.message === CHAINX_TRANSACTION_SEND) {
-      // TODO: 调用回调函数，处理发送交易的返回结果
       const callback = callbackHandlers[data.id];
-      callback(data.info);
-      // TODO: 当处理完毕之后，应把callback从callbackHandlers中去掉
+      if (!callback) {
+        console.error('Not found callback', data);
+        return;
+      }
+
+      callback(data.response);
+      if (data.response.status && data.response.status.status === 'Finalized') {
+        delete callbackHandlers[data.id];
+      }
       return;
     }
 
