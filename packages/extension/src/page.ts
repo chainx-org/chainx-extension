@@ -4,11 +4,13 @@ import {
   CHAINX_ACCOUNT_CURRENT_CHANGE,
   CHAINX_ACCOUNT_CURRENT,
   CHAINX_NODE_CURRENT,
-  CHAINX_NODE_CURRENT_CHANGE
+  CHAINX_NODE_CURRENT_CHANGE,
+  CHAINX_TRANSACTION_SEND
 } from '@chainx/extension-defaults';
 
 const accountChangeListeners: Array<any> = [];
 const nodeChangeListeners: Array<any> = [];
+const callbackHandlers: Object = {};
 
 window.addEventListener(
   'message',
@@ -29,6 +31,14 @@ window.addEventListener(
       for (let listener of nodeChangeListeners) {
         listener(data.info);
       }
+      return;
+    }
+
+    if (data.message === CHAINX_TRANSACTION_SEND) {
+      // TODO: 调用回调函数，处理发送交易的返回结果
+      const callback = callbackHandlers[data.id];
+      callback(data.info);
+      // TODO: 当处理完毕之后，应把callback从callbackHandlers中去掉
       return;
     }
 
@@ -59,6 +69,17 @@ function sendMessage(message: any, request: any = null): Promise<any> {
       window.postMessage({ id, message, origin: 'page', request }, '*');
     }
   );
+}
+
+function sendMessageWithCallback(
+  message: string,
+  request: any = null,
+  callback: Function
+) {
+  const id = `chainx.page.${Date.now()}.${++idCounter}`;
+  callbackHandlers[id] = callback;
+
+  window.postMessage({ id, message, origin: 'page', request }, '*');
 }
 
 async function enable(): Promise<any> {
@@ -97,6 +118,10 @@ async function call(
   });
 }
 
+function sendExtrinsic(hex: string, callback: Function): void {
+  sendMessageWithCallback(CHAINX_TRANSACTION_SEND, { hex }, callback);
+}
+
 function listenAccountChange(listener) {
   accountChangeListeners.push(listener);
 }
@@ -112,5 +137,6 @@ window.chainxProvider = {
   call,
   listenAccountChange,
   listenNodeChange,
-  getCurrentNode
+  getCurrentNode,
+  sendExtrinsic
 };
