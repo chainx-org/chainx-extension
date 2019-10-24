@@ -13,5 +13,3 @@ export async function setChainx(nodeUrl: string): Promise<any> {
 export function getChainx() {
   return chainx;
 }
-
-export default chainx;

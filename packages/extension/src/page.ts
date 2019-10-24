@@ -140,7 +140,7 @@ function listenNodeChange(listener) {
 window.chainxProvider = {
   enable,
   sign,
-  call,
+  signExtrinsic: call,
   listenAccountChange,
   listenNodeChange,
   getCurrentNode,
