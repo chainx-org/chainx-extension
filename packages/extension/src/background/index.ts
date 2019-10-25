@@ -1,11 +1,14 @@
 import extension from 'extensionizer';
-import handle from './handler';
+import handle, { handleWithListen } from './handler';
 import { keyring, nodes } from './store';
 import { sendExtrinsicAndResponse, setChainx } from './chainx';
 import { registerPort, unRegisterPort } from './message';
-import { CHAINX_TRANSACTION_SEND } from '@chainx/extension-defaults/index';
+import {
+  CHAINX_TRANSACTION_SEND,
+  CHAINX_TRANSACTION_SIGN_AND_SEND
+} from '@chainx/extension-defaults/index';
 
-const promise = new Promise((resolve, reject) => {
+const initPromise = new Promise((resolve, reject) => {
   extension.runtime.onInstalled.addListener(event => {
     if (event.reason === 'install') {
       nodes
@@ -35,6 +38,10 @@ extension.runtime.onConnect.addListener(
           return sendExtrinsicAndResponse(data, port);
         }
 
+        if (data.message === CHAINX_TRANSACTION_SIGN_AND_SEND) {
+          return handleWithListen(data, port);
+        }
+
         const promise = handle(data, port);
 
         promise
@@ -58,7 +65,7 @@ extension.runtime.onConnect.addListener(
   }
 );
 
-promise.then(() => {
+initPromise.then(() => {
   Promise.all([keyring.loadAll(), nodes.loadAll()])
     .then(async () => {
       if (nodes.currentNode) {

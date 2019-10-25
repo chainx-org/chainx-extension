@@ -10,8 +10,7 @@ import notificationManager from '../notification-manager';
 import {
   CHAINX_ACCOUNT_CURRENT,
   CHAINX_NODE_CURRENT,
-  CHAINX_TRANSACTION_CALL_REQUEST,
-  CHAINX_TRANSACTION_SIGN_REQUEST
+  CHAINX_TRANSACTION_CALL_REQUEST
 } from '@chainx/extension-defaults';
 
 export const handlers = {};
@@ -21,9 +20,7 @@ export default async function handleContent({
   message,
   request
 }: MessageRequest) {
-  if (message === CHAINX_TRANSACTION_SIGN_REQUEST) {
-    return requestSignTransaction({ id, ...request });
-  } else if (message === CHAINX_ACCOUNT_CURRENT) {
+  if (message === CHAINX_ACCOUNT_CURRENT) {
     return getCurrentChainxAccount();
   } else if (message === CHAINX_TRANSACTION_CALL_REQUEST) {
     return requestSignTransaction({ id, ...request });
@@ -57,7 +54,7 @@ async function requestSignTransaction({
   if (tx.toSign) {
     return Promise.reject({ message: 'Sign transaction busy' });
   }
-  tx.setToSign({ id, address, module, method, args });
+  tx.setToSign({ id, address, module, method, args, needBroadcast: false });
 
   notificationManager.showPopup();
 

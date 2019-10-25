@@ -55,11 +55,14 @@ export function sendExtrinsicAndResponse(
             ({ phase }) =>
               phase.type === 'ApplyExtrinsic' && phase.value.eqn(index)
           );
+
           // @ts-ignore
-          result = events.length
-            ? // @ts-ignore
-              events[events.length - 1].event.data.method
-            : '';
+          result = '';
+          // @ts-ignore
+          if (events.length) {
+            // @ts-ignore
+            result = events[events.length - 1].event.data.method;
+          }
         }
       }
 

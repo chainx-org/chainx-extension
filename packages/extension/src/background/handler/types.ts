@@ -11,4 +11,5 @@ export interface ChainxCallRequest {
   module: 'xAssets' | 'xStaking';
   method: string;
   args: Array<any>;
+  needBroadcast: boolean; // 是否要求发送上链
 }

@@ -1,12 +1,11 @@
 import {
-  CHAINX_TRANSACTION_CALL_REQUEST,
-  CHAINX_TRANSACTION_SIGN_REQUEST,
-  CHAINX_ACCOUNT_CURRENT_CHANGE,
   CHAINX_ACCOUNT_CURRENT,
+  CHAINX_ACCOUNT_CURRENT_CHANGE,
   CHAINX_NODE_CURRENT,
   CHAINX_NODE_CURRENT_CHANGE,
-  CHAINX_TRANSACTION_SIGN_AND_SEND,
-  CHAINX_TRANSACTION_SEND
+  CHAINX_TRANSACTION_CALL_REQUEST,
+  CHAINX_TRANSACTION_SEND,
+  CHAINX_TRANSACTION_SIGN_AND_SEND
 } from '@chainx/extension-defaults';
 
 const accountChangeListeners: Array<any> = [];
@@ -44,6 +43,23 @@ window.addEventListener(
 
       callback(data.response);
       if (data.response.status && data.response.status.status === 'Finalized') {
+        delete callbackHandlers[data.id];
+      }
+      return;
+    }
+
+    if (data.message === CHAINX_TRANSACTION_SIGN_AND_SEND) {
+      const callback = callbackHandlers[data.id];
+      if (!callback) {
+        console.error('Not found callback', data);
+        return;
+      }
+
+      callback(data.response);
+      if (
+        (data.response.status && data.response.status.status === 'Finalized') ||
+        data.reject
+      ) {
         delete callbackHandlers[data.id];
       }
       return;
@@ -97,20 +113,6 @@ async function getCurrentNode(): Promise<any> {
   return await sendMessage(CHAINX_NODE_CURRENT);
 }
 
-async function sign(address: string): Promise<any> {
-  return await sendMessage(CHAINX_TRANSACTION_SIGN_REQUEST, {
-    address,
-    module: 'xAssets',
-    method: 'transfer',
-    args: [
-      '5PqoAuvnFAdPMYysQ6aMZKeN5fS8kN3pwuUKpkyFaKCp4HwC',
-      'PCX',
-      1000,
-      'memo'
-    ]
-  });
-}
-
 async function call(
   address: string,
   module: string,
@@ -159,7 +161,6 @@ function callAndSend(
 // @ts-ignore
 window.chainxProvider = {
   enable,
-  sign,
   signExtrinsic: call,
   signAndSendExtrinsic: callAndSend,
   listenAccountChange,
