@@ -5,6 +5,7 @@ import {
   CHAINX_ACCOUNT_CURRENT,
   CHAINX_NODE_CURRENT,
   CHAINX_NODE_CURRENT_CHANGE,
+  CHAINX_TRANSACTION_SIGN_AND_SEND,
   CHAINX_TRANSACTION_SEND
 } from '@chainx/extension-defaults';
 
@@ -136,11 +137,31 @@ function listenNodeChange(listener) {
   nodeChangeListeners.push(listener);
 }
 
+function callAndSend(
+  address: string,
+  module: string,
+  method: string,
+  args: Array<any>,
+  callback: Function
+): void {
+  sendMessageWithCallback(
+    CHAINX_TRANSACTION_SIGN_AND_SEND,
+    {
+      address,
+      module,
+      method,
+      args
+    },
+    callback
+  );
+}
+
 // @ts-ignore
 window.chainxProvider = {
   enable,
   sign,
   signExtrinsic: call,
+  signAndSendExtrinsic: callAndSend,
   listenAccountChange,
   listenNodeChange,
   getCurrentNode,

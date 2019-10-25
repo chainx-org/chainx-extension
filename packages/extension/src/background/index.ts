@@ -80,7 +80,8 @@ extension.runtime.onConnect.addListener(
                     );
                     // @ts-ignore
                     result = events.length
-                      ? events[events.length - 1].event.data.method
+                      ? // @ts-ignore
+                        events[events.length - 1].event.data.method
                       : '';
                   }
                 }
