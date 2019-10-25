@@ -12,6 +12,7 @@ import { getChainx } from '../chainx';
 import { tx } from '../store';
 import notificationManager from '../notification-manager';
 import { getChainxAccountByAddress } from './common';
+import { codes } from './error';
 
 export default function(
   request: MessageRequest,
@@ -47,7 +48,13 @@ export function handleWithListen(
     return port.postMessage({
       id,
       message,
-      response: { err: 'Invalid address', status: null }
+      response: {
+        err: {
+          code: codes.INVALID_ADDRESS,
+          msg: 'Invalid address'
+        },
+        status: null
+      }
     });
   }
 
@@ -56,7 +63,13 @@ export function handleWithListen(
     return port.postMessage({
       id,
       message,
-      response: { err: 'Invalid module', status: null }
+      response: {
+        err: {
+          code: codes.INVALID_MODULE,
+          msg: 'Invalid module'
+        },
+        status: null
+      }
     });
   }
   if (!chainx.api.tx[module][method]) {
@@ -70,7 +83,13 @@ export function handleWithListen(
     return port.postMessage({
       id,
       message,
-      response: { err: 'Sign transaction busy', status: null }
+      response: {
+        err: {
+          code: codes.SIGN_BUSY,
+          msg: 'Sign transaction busy'
+        },
+        status: null
+      }
     });
   }
   setIdPort(id, port);

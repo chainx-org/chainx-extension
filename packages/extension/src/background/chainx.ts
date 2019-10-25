@@ -1,5 +1,6 @@
 // @ts-ignore
 import Chainx from 'chainx.js';
+import { codes } from './handler/error';
 
 const { Extrinsic } = require('@chainx/types');
 
@@ -93,7 +94,7 @@ export function sendExtrinsicAndResponse(
       port.postMessage({
         id: id,
         message: message,
-        response: { err: e.message, status: null }
+        response: { err: { code: codes.UNKNOWN, msg: e.message }, status: null }
       });
       return;
     }
