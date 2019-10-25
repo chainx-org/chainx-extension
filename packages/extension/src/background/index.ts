@@ -1,16 +1,9 @@
-// Copyright 2019 @polkadot/extension authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
-
 import extension from 'extensionizer';
 import handle from './handler';
 import { keyring, nodes } from './store';
-import { setChainx } from './chainx';
+import { sendExtrinsicAndResponse, setChainx } from './chainx';
 import { registerPort, unRegisterPort } from './message';
 import { CHAINX_TRANSACTION_SEND } from '@chainx/extension-defaults/index';
-import { getChainx } from './chainx';
-
-const { Extrinsic } = require('@chainx/types');
 
 const promise = new Promise((resolve, reject) => {
   extension.runtime.onInstalled.addListener(event => {
@@ -39,88 +32,7 @@ extension.runtime.onConnect.addListener(
     port.onMessage.addListener(
       (data): void => {
         if (data.message === CHAINX_TRANSACTION_SEND) {
-          const ex = new Extrinsic(data.request.hex);
-          const hash = ex.hash.toHex();
-          const chainx = getChainx();
-          chainx.api.rpc.author.submitAndWatchExtrinsic(
-            ex,
-            async (err, status) => {
-              if (err) {
-                port.postMessage({
-                  id: data.id,
-                  message: data.message,
-                  response: { err, status: null }
-                });
-                return;
-              }
-
-              try {
-                let events = null;
-                let result = null;
-                let index = null;
-                let blockHash = null;
-                let broadcast = null;
-                if (status.type === 'Broadcast') {
-                  broadcast = status.value && status.value.toJSON();
-                }
-                if (status.type === 'Finalized') {
-                  blockHash = status.value;
-                  const {
-                    block: { extrinsics }
-                  } = await chainx.api.rpc.chain.getBlock(blockHash);
-                  const allEvents = await chainx.api.query.system.events.at(
-                    blockHash
-                  );
-                  index = extrinsics.map(ext => ext.hash.toHex()).indexOf(hash);
-                  if (index !== -1) {
-                    events = allEvents.filter(
-                      ({ phase }) =>
-                        phase.type === 'ApplyExtrinsic' &&
-                        phase.value.eqn(index)
-                    );
-                    // @ts-ignore
-                    result = events.length
-                      ? // @ts-ignore
-                        events[events.length - 1].event.data.method
-                      : '';
-                  }
-                }
-
-                const stat = {
-                  result,
-                  index,
-                  events:
-                    events &&
-                    // @ts-ignore
-                    events.map(event => {
-                      const o = event.toJSON();
-                      o.method = event.event.data.method;
-                      return o;
-                    }),
-                  txHash: hash,
-                  // @ts-ignore
-                  blockHash: blockHash && blockHash.toJSON(),
-                  broadcast: broadcast,
-                  status: status.type
-                };
-
-                port.postMessage({
-                  id: data.id,
-                  message: data.message,
-                  response: { err: null, status: stat }
-                });
-              } catch (e) {
-                port.postMessage({
-                  id: data.id,
-                  message: data.message,
-                  response: { err: e, status: null }
-                });
-                return;
-              }
-            }
-          );
-
-          return;
+          return sendExtrinsicAndResponse(data, port);
         }
 
         const promise = handle(data, port);
