@@ -93,7 +93,7 @@ export function sendExtrinsicAndResponse(
       port.postMessage({
         id: id,
         message: message,
-        response: { err: e, status: null }
+        response: { err: e.message, status: null }
       });
       return;
     }
