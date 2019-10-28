@@ -2,7 +2,7 @@
   "name": "@chainx/extension",
   "version": "1.0.0",
   "dependencies": {
-    "chainx.js": "2.21.0",
+    "chainx.js": "2.22.5",
     "@chainx/util": "2.21.0",
     "@chainx/extension-defaults": "1.0.0",
     "@chainx/extension-ui": "1.0.0"
