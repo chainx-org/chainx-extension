@@ -19,6 +19,9 @@ export default function(props) {
         <section className="args">
           <ol>
             {(query.args || []).map((arg, index) => {
+              if (!arg) {
+                return
+              }
               return <li key={index}>{arg.toString()}</li>;
             })}
           </ol>
