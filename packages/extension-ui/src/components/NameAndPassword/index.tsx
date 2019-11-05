@@ -2,12 +2,23 @@ import React, { useState } from 'react';
 import { Account } from 'chainx.js';
 import { createAccount } from '../../messaging';
 import ErrorMessage from '../ErrorMessage';
+import WarningMessage from '../WarningMessage';
 import './index.scss';
+import { useRedux } from '../../shared';
 
 function NameAndPassword(props) {
   const { secret, onSuccess } = props;
   const [obj, setObj] = useState({ name: '', pass: '', repass: '' });
   const [errMsg, setErrMsg] = useState('');
+  const [{ accounts }] = useRedux('accounts');
+  console.log('accounts', accounts);
+  const account = Account.from(secret);
+  const address = account.address();
+  console.log(address);
+  const sameAccount = (accounts || []).find(
+    account => account.address === address
+  );
+  console.log('sameAccount', sameAccount);
 
   const check = () => {
     if (!obj.name || !obj.pass || !obj.repass) {
@@ -27,7 +38,6 @@ function NameAndPassword(props) {
       return;
     }
 
-    const account = Account.from(secret);
     const keystore = account.encrypt(obj.pass);
 
     console.log('account name ', obj.name);
@@ -77,7 +87,14 @@ function NameAndPassword(props) {
       >
         完成
       </button>
-      <ErrorMessage msg={errMsg} />
+      {errMsg && <ErrorMessage msg={errMsg} />}
+      {sameAccount && (
+        <WarningMessage
+          msg={`Account ${
+            sameAccount.name
+          } has same address, and it will be overwritten by this account.`}
+        />
+      )}
     </>
   );
 }

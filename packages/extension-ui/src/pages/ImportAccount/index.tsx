@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './ImportAccount.scss';
 import ErrorMessage from '../../components/ErrorMessage';
 import NameAndPassword from '../../components/NameAndPassword';
@@ -15,14 +14,12 @@ function ImportAccount(props: any) {
   const subTitleList = [['按顺序输入助记词', '输入你的账户私钥'], ['', '']];
 
   const checkStep1 = () => {
-    console.log(currentStep, currentTabIndex, 'check step1', pk, mnemonicList);
     if (currentTabIndex === 0) {
       if (mnemonicList.some(item => item === '')) {
         setErrMsg('Mnemonic is not correct');
         return;
       }
     } else if (currentTabIndex === 1) {
-      console.log('check step1 ', pk);
       if (!pk) {
         setErrMsg('Private key is not correct');
         return;

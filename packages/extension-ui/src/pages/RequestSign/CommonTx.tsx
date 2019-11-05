@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function(props) {
   const { query } = props;
-  console.log(query)
+  console.log(query);
 
   return (
     <div className="detail">
@@ -20,7 +20,7 @@ export default function(props) {
           <ol>
             {(query.args || []).map((arg, index) => {
               if (!arg) {
-                return
+                return;
               }
               return <li key={index}>{arg.toString()}</li>;
             })}

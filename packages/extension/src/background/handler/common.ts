@@ -17,6 +17,9 @@ import { sendToContent } from '../message';
 export async function createChainxAccount(
   request: ChainxAccountCreateRequest
 ): Promise<AccountInfo | null> {
+  if (keyring.accounts.find(account => account.address === request.address)) {
+    await keyring.removeAccount(request.address);
+  }
   return await keyring.addAccount(request);
 }
 
