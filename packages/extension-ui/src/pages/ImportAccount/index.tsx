@@ -13,7 +13,6 @@ function ImportAccount(props: any) {
 
   const titleList = [['导入助记词', '导入私钥'], ['密码', '密码']];
   const subTitleList = [['按顺序输入助记词', '输入你的账户私钥'], ['', '']];
-  const buttonTextList = ['下一步', '完成'];
 
   const checkStep1 = () => {
     console.log(currentStep, currentTabIndex, 'check step1', pk, mnemonicList);
@@ -105,7 +104,7 @@ function ImportAccount(props: any) {
               }
             }}
           >
-            {buttonTextList[currentStep]}
+            Next
           </button>
         )}
         {errMsg ? <ErrorMessage msg={errMsg} /> : null}
