@@ -42,6 +42,9 @@
   justify-content: center;
   background: rgba(0, 0, 0, 0.4);
   z-index: 999;
+  img {
+    width: 32px;
+  }
 }
 
 .content {
