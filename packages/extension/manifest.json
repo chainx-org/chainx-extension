@@ -1,5 +1,5 @@
 {
-  "description": "ChainX chrome extention",
+  "description": "ChainX chrome extension",
   "name": "ChainX extension",
   "short_name": "ChainX",
   "manifest_version": 2,
