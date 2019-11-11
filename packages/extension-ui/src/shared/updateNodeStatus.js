@@ -1,21 +1,38 @@
-import { getCurrentChainxNode, getAllChainxNodes } from '../messaging'
-import fetchFromWs from './fetch'
+import { getCurrentChainxNode, getAllChainxNodes } from '../messaging';
+import { INIT_NODES } from '@chainx/extension-defaults';
+import fetchFromWs from './fetch';
 
-const TIMEOUT = 7000
+const TIMEOUT = 7000;
 
-export const getNodeList = async (setNodeList) => {
+export const getNodeList = async setNodeList => {
   const nodeListResult = await getAllChainxNodes();
   setNodeList({ nodeList: nodeListResult });
-  return nodeListResult
-}
+  return nodeListResult;
+};
 
-export const getCurrentNode = async (setCurrentNode) => {
+export const getCurrentNode = async setCurrentNode => {
   const currentNodeResult = await getCurrentChainxNode();
   setCurrentNode({ currentNode: currentNodeResult });
-  return currentNodeResult
-}
+  return currentNodeResult;
+};
 
-export const getDelay = async (currentNode, setCurrentNode, nodeList, delayList, setDelayList) => {
+export const isCurrentNodeInit = node => {
+  let result = false;
+  INIT_NODES.some(item => {
+    if (item.url === node.url) {
+      result = true;
+    }
+  });
+  return result;
+};
+
+export const getDelay = async (
+  currentNode,
+  setCurrentNode,
+  nodeList,
+  delayList,
+  setDelayList
+) => {
   nodeList.map((item, index) => {
     fetchFromWs({
       url: item.url,
@@ -35,16 +52,21 @@ export const getDelay = async (currentNode, setCurrentNode, nodeList, delayList,
           currentNode.delay = nodeList[index].delay;
           setCurrentNode({ currentNode: currentNode });
         }
-        delayList[index] = nodeList[index].delay
-        setDelayList({ delayList: delayList })
+        delayList[index] = nodeList[index].delay;
+        setDelayList({ delayList: delayList });
       });
-  })
+  });
+};
+
+async function updateNodeStatus(
+  setCurrentNode,
+  setNodeList,
+  delayList = [],
+  setDelayList
+) {
+  const currentNode = await getCurrentNode(setCurrentNode);
+  const nodeList = await getNodeList(setNodeList);
+  getDelay(currentNode, setCurrentNode, nodeList, delayList, setDelayList);
 }
 
-async function updateNodeStatus(setCurrentNode, setNodeList, delayList=[], setDelayList) {
-  const currentNode = await getCurrentNode(setCurrentNode)
-  const nodeList = await getNodeList(setNodeList)
-  getDelay(currentNode, setCurrentNode, nodeList, delayList, setDelayList)
-}
-
-export default updateNodeStatus
+export default updateNodeStatus;

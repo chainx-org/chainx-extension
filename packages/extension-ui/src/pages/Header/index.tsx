@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { updateNodeStatus, useRedux, useOutsideClick } from '../../shared';
+import {
+  updateNodeStatus,
+  useRedux,
+  useOutsideClick,
+  isCurrentNodeInit
+} from '../../shared';
 import { setChainxCurrentAccount, setChainxNode } from '../../messaging';
 import { NodeInfo } from '@chainx/extension-ui/types';
 import Icon from '../../components/Icon';
@@ -125,7 +130,11 @@ function Header(props: any) {
                     <div className="node-item-detail-url">
                       <span className="url">{item.url.slice(6)}</span>
                       <div
-                        className="node-item-detail-edit"
+                        className={
+                          isCurrentNodeInit(item)
+                            ? 'node-item-detail-edit'
+                            : 'node-item-detail-edit custom'
+                        }
                         onClick={e => {
                           e.stopPropagation();
                           e.nativeEvent.stopImmediatePropagation();
