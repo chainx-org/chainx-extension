@@ -8,14 +8,14 @@ import ErrorMessage from '../../components/ErrorMessage';
 import NameAndPassword from '../../components/NameAndPassword';
 
 function CreateAccount(props: any) {
-  const titleList = ['New Account', '备份助记词', '验证助记词', '设置标签和密码'];
+  const titleList = ['New Account', 'Backup Mnemonic', 'Verify Mnemonic', 'Name and password'];
   const subTitleList = [
     '',
-    '按顺序记下你的助记词，下一步中需要用到',
-    '按备份顺序点击下方助记词',
-    '密码包含至少 8 个字符、大写与小写字母、至少一个数字'
+    'Write down following mnemonic words, and will be used next step.',
+    'Mark the words one by one in the order last step shows.',
+    'Password contains at lease 8 characters, and at least one upper,lower and number case character.'
   ];
-  const buttonTextList = ['开始', '下一步', '下一步', '完成'];
+  const buttonTextList = ['Begin', 'Next', 'Next', 'OK'];
 
   const [currentStep, setCurrentStep] = useState(0);
   const [errMsg, setErrMsg] = useState('');
@@ -57,7 +57,7 @@ function CreateAccount(props: any) {
       </div>
       <div className="create-account-body">
         <div className="create-account-body-content">
-          {currentStep === 0 && <StaticWarning title="备份助记词" />}
+          {currentStep === 0 && <StaticWarning title="Backup Mnemonic" />}
           {currentStep === 1 &&
             mnemonicWords.map((item: any) => (
               <div className="word-item" key={item.index}>
@@ -122,13 +122,13 @@ function CreateAccount(props: any) {
               className="button button-white-half"
               onClick={() => clearErrMsg() && setCurrentStep(s => s - 1)}
             >
-              上一步
+              Pre
             </button>
             <button
               className="button button-yellow-half"
               onClick={() => checkMnemonic() && setCurrentStep(s => s + 1)}
             >
-              下一步
+              Next
             </button>
           </div>
         )}

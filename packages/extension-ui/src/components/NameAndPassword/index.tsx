@@ -58,14 +58,14 @@ function NameAndPassword(props) {
         required
         value={obj.name}
         onChange={e => setObj({ ...obj, ['name']: e.target.value })}
-        placeholder="标签（12字符以内）"
+        placeholder="Name(12 characters max)"
       />
       <input
         className="input"
         type="password"
         value={obj.pass}
         onChange={e => setObj({ ...obj, ['pass']: e.target.value })}
-        placeholder="密码"
+        placeholder="Password"
       />
       <input
         className="input"
@@ -77,7 +77,7 @@ function NameAndPassword(props) {
             create();
           }
         }}
-        placeholder="确认密码"
+        placeholder="Password confirmation"
       />
       <button
         className="button button-yellow margin-top-40"
@@ -85,7 +85,7 @@ function NameAndPassword(props) {
           create();
         }}
       >
-        完成
+        OK
       </button>
       {errMsg && <ErrorMessage msg={errMsg} />}
       {sameAccount && (
