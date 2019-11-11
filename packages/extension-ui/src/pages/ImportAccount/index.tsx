@@ -10,8 +10,8 @@ function ImportAccount(props: any) {
   const [errMsg, setErrMsg] = useState('');
   const [mnemonicList, setMnemonicList] = useState(new Array(12).fill(''));
 
-  const titleList = [['导入助记词', '导入私钥'], ['密码', '密码']];
-  const subTitleList = [['按顺序输入助记词', '输入你的账户私钥'], ['', '']];
+  const titleList = [['Mnemonic', 'Private key'], ['Password', 'Password']];
+  const subTitleList = [['Input mnemonic words', 'Input private key'], ['', '']];
 
   const checkStep1 = () => {
     if (currentTabIndex === 0) {
