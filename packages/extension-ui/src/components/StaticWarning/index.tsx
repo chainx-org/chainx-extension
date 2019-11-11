@@ -6,7 +6,7 @@ import './index.scss';
 function StaticWarning(props) {
   const {
     title = '',
-    desc = '不要将您的助记词存储在电脑上，或者网上某处。任何拥有您助记词的人都能取用您的资金'
+    desc = 'Do not store the mnemonic words in your PC or Net. Anybody can take your assets with the mnemonic words.'
   } = props;
 
   return (

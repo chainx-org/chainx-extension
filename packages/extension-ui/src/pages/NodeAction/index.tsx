@@ -16,13 +16,13 @@ function AddNode(props: any) {
   } = props;
 
   let action = '';
-  let title = '添加节点';
+  let title = 'Add node';
   if (query && query.type === 'edit') {
     action = 'edit';
-    title = '修改节点';
+    title = 'Edit node';
   } else if (query && query.type === 'remove') {
     action = 'remove';
-    title = '删除节点';
+    title = 'Delete node';
   }
 
   const check = () => {
@@ -84,9 +84,9 @@ function AddNode(props: any) {
             type="text"
             value={name}
             onChange={e => setName(e.target.value)}
-            placeholder="名称（12字符以内）"
+            placeholder="Name(12 characters max)"
           />
-          <span className="node-url">节点地址（提供核心资产数据）</span>
+          <span className="node-url">Node address</span>
           <input
             className="input"
             type="text"
