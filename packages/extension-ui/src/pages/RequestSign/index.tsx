@@ -121,7 +121,7 @@ function RequestSign(props: any) {
       {txPanel}
       <div className="submit-area">
         <div className="title">
-          <span>输入密码</span>
+          <span>Input password</span>
         </div>
         <input
           value={pass}
@@ -138,10 +138,10 @@ function RequestSign(props: any) {
         <ErrorMessage msg={errMsg} />
         <div className="button-area margin-top-40">
           <DefaultButton size="large" onClick={() => removeCurrentSign()}>
-            取消
+            Cancel
           </DefaultButton>
           <PrimaryButton size="large" onClick={() => sign()}>
-            签名
+            Sign
           </PrimaryButton>
         </div>
       </div>
