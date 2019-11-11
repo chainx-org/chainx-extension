@@ -25,6 +25,14 @@ function NameAndPassword(props) {
       setErrMsg('name and password are required');
       return false;
     }
+    if (obj.pass.length < 8) {
+      setErrMsg('password length must great than 8');
+      return false;
+    }
+    if (!(/(?=.*[a-z])(?=.*[A-Z])/).test(obj.pass)) {
+      setErrMsg('password must include lower and upper characters');
+      return false;
+    }
     if (obj.pass !== obj.repass) {
       console.log('in not match');
       setErrMsg('password is not match');
