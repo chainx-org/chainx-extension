@@ -26,15 +26,13 @@ port.onMessage.addListener(messageHandler);
 let idCounter = 0;
 
 export function sendMessage(message: string, request: any = {}): Promise<any> {
-  return new Promise(
-    (resolve, reject): void => {
-      const id = `chainx.popup.${Date.now()}.${++idCounter}`;
+  return new Promise((resolve, reject): void => {
+    const id = `chainx.popup.${Date.now()}.${++idCounter}`;
 
-      handlers[id] = { resolve, reject };
+    handlers[id] = { resolve, reject };
 
-      port.postMessage({ id, message, request });
-    }
-  );
+    port.postMessage({ id, message, request });
+  });
 }
 
 export async function signMessage(

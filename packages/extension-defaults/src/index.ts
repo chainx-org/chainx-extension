@@ -25,3 +25,26 @@ export const CHAINX_NODE_SELECT = 'chainx.nodes.select'; // 设置节点
 export const CHAINX_NODE_CURRENT = 'chainx.nodes.current'; // 获取当前节点
 export const CHAINX_NODE_CURRENT_CHANGE = 'chainx.nodes.current.change'; // 当前节点改变
 export const CHAINX_NODE_REMOVE = 'chainx.nodes.remove';
+
+export const INIT_NODES = [
+  {
+    name: 'w1.org',
+    url: 'wss://w1.chainx.org/ws'
+  },
+  {
+    name: 'w2.org',
+    url: 'wss://w2.chainx.org/ws'
+  },
+  {
+    name: 'HashQuark',
+    url: 'wss://chainx.hashquark.io'
+  },
+  {
+    name: 'BuildLinks',
+    url: 'wss://chainx.buildlinks.org'
+  },
+  {
+    name: 'w1.cn',
+    url: 'wss://w1.chainx.org.cn/ws'
+  }
+];

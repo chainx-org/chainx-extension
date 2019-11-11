@@ -90,9 +90,7 @@ function NameAndPassword(props) {
       {errMsg && <ErrorMessage msg={errMsg} />}
       {sameAccount && (
         <WarningMessage
-          msg={`Account ${
-            sameAccount.name
-          } has same address, and it will be overwritten by this account.`}
+          msg={`Account ${sameAccount.name} has same address, and it will be overwritten by this account.`}
         />
       )}
     </>

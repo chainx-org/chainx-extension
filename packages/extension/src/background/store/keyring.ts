@@ -31,13 +31,9 @@ class Keyring {
       keystore: request.keystore
     };
 
-    await store.set(
-      `${ACCOUNT_PREFIX}${request.name}`,
-      item,
-      (): void => {
-        this.accounts.push({ name: request.name, ...item });
-      }
-    );
+    await store.set(`${ACCOUNT_PREFIX}${request.name}`, item, (): void => {
+      this.accounts.push({ name: request.name, ...item });
+    });
 
     await store.set(CURRENT_ACCOUNT_KEY, request.address);
     await this.loadAll();

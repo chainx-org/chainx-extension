@@ -108,53 +108,51 @@ function Header(props: any) {
         {
           <div className={(showNodeListArea ? '' : 'hide ') + 'node-list-area'}>
             <div className="node-list">
-              {
-                (nodeList || []).map((item, index) => (
-                  <div
-                    className={
-                      item.name === currentNode.name
-                        ? 'node-item active'
-                        : 'node-item'
-                    }
-                    key={item.name}
-                    onClick={() => {
-                      setNode(item.url);
-                    }}
-                  >
-                    <div className="node-item-active-flag" />
-                    <div className="node-item-detail">
-                      <div className="node-item-detail-url">
-                        <span className="url">{item.url.slice(6)}</span>
-                        <div
-                          className="node-item-detail-edit"
-                          onClick={e => {
-                            e.stopPropagation();
-                            e.nativeEvent.stopImmediatePropagation();
-                            setShowNodeListArea(false);
-                            const query = {
-                              nodeInfo: item,
-                              type: 'remove'
-                            };
-                            props.history.push({
-                              pathname: '/addNode',
-                              query: query
-                            });
-                          }}
-                        >
-                          <Icon name="Edit" />
-                        </div>
-                      </div>
-                      <span
-                        className={
-                          'delay ' +
-                          getDelayClass(delayList && delayList[index])
-                        }
+              {(nodeList || []).map((item, index) => (
+                <div
+                  className={
+                    item.name === currentNode.name
+                      ? 'node-item active'
+                      : 'node-item'
+                  }
+                  key={item.name}
+                  onClick={() => {
+                    setNode(item.url);
+                  }}
+                >
+                  <div className="node-item-active-flag" />
+                  <div className="node-item-detail">
+                    <div className="node-item-detail-url">
+                      <span className="url">{item.url.slice(6)}</span>
+                      <div
+                        className="node-item-detail-edit"
+                        onClick={e => {
+                          e.stopPropagation();
+                          e.nativeEvent.stopImmediatePropagation();
+                          setShowNodeListArea(false);
+                          const query = {
+                            nodeInfo: item,
+                            type: 'remove'
+                          };
+                          props.history.push({
+                            pathname: '/addNode',
+                            query: query
+                          });
+                        }}
                       >
-                        {getDelayText(delayList && delayList[index])}
-                      </span>
+                        <Icon name="Edit" />
+                      </div>
                     </div>
+                    <span
+                      className={
+                        'delay ' + getDelayClass(delayList && delayList[index])
+                      }
+                    >
+                      {getDelayText(delayList && delayList[index])}
+                    </span>
                   </div>
-                ))}
+                </div>
+              ))}
             </div>
             <div
               className="add-node"
@@ -192,30 +190,30 @@ function Header(props: any) {
             {accounts.length > 0 ? (
               <div className="accounts">
                 {accounts.length > 0 &&
-                accounts.map(item => (
-                  <div
-                    className={
-                      item.address === currentAccount.address
-                        ? 'account-item active'
-                        : 'account-item'
-                    }
-                    key={item.name}
-                    onClick={async () => {
-                      setChainxCurrentAccount(item.address).then(d =>
-                        console.log(d)
-                      );
-                      await setCurrentAccount({ currentAccount: item });
-                      setShowAccountArea(false);
-                      props.history.push('/');
-                    }}
-                  >
-                    <div className="account-item-active-flag" />
-                    <div className="account-item-detail">
-                      <span className="name">{item.name}</span>
-                      <DotInCenterStr value={item.address} />
+                  accounts.map(item => (
+                    <div
+                      className={
+                        item.address === currentAccount.address
+                          ? 'account-item active'
+                          : 'account-item'
+                      }
+                      key={item.name}
+                      onClick={async () => {
+                        setChainxCurrentAccount(item.address).then(d =>
+                          console.log(d)
+                        );
+                        await setCurrentAccount({ currentAccount: item });
+                        setShowAccountArea(false);
+                        props.history.push('/');
+                      }}
+                    >
+                      <div className="account-item-active-flag" />
+                      <div className="account-item-detail">
+                        <span className="name">{item.name}</span>
+                        <DotInCenterStr value={item.address} />
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             ) : null}
           </div>

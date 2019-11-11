@@ -1,32 +1,10 @@
 import store from './store';
 import { ChainxNode } from '../types';
 import { CURRENT_ACCOUNT_KEY } from './keyring';
+import { INIT_NODES as initNodes } from '@chainx/extension-defaults';
 
 export const NODE_PREFIX = 'node_';
 export const CURRENT_NODE_KEY = 'current_node_key';
-
-const initNodes: ChainxNode[] = [
-  {
-    name: 'w1.org',
-    url: 'wss://w1.chainx.org/ws'
-  },
-  {
-    name: 'w2.org',
-    url: 'wss://w2.chainx.org/ws'
-  },
-  {
-    name: 'HashQuark',
-    url: 'wss://chainx.hashquark.io'
-  },
-  {
-    name: 'BuildLinks',
-    url: 'wss://chainx.buildlinks.org'
-  },
-  {
-    name: 'w1.cn',
-    url: 'wss://w1.chainx.org.cn/ws'
-  }
-];
 
 class Nodes {
   nodes: ChainxNode[];

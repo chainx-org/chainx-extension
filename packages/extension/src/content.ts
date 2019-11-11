@@ -9,24 +9,19 @@ import { PORT_CONTENT } from '@chainx/extension-defaults';
 const port = extension.runtime.connect({ name: PORT_CONTENT });
 
 // send any messages from the extension back to the page
-port.onMessage.addListener(
-  (data): void => {
-    window.postMessage({ ...data, origin: 'content' }, '*');
-  }
-);
+port.onMessage.addListener((data): void => {
+  window.postMessage({ ...data, origin: 'content' }, '*');
+});
 
 // all messages from the page, pass them to the extension
-window.addEventListener(
-  'message',
-  ({ data, source }): void => {
-    // only allow messages from our window, by the inject
-    if (source !== window || data.origin !== 'page') {
-      return;
-    }
-
-    port.postMessage(data);
+window.addEventListener('message', ({ data, source }): void => {
+  // only allow messages from our window, by the inject
+  if (source !== window || data.origin !== 'page') {
+    return;
   }
-);
+
+  port.postMessage(data);
+});
 
 // inject our data injector
 const script = document.createElement('script');

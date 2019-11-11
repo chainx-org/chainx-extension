@@ -28,42 +28,34 @@ const initPromise = new Promise((resolve, reject) => {
 });
 
 // listen to all messages and handle appropriately
-extension.runtime.onConnect.addListener(
-  (port): void => {
-    registerPort(port);
-    // message and disconnect handlers
-    port.onMessage.addListener(
-      (data): void => {
-        if (data.message === CHAINX_TRANSACTION_SEND) {
-          return sendExtrinsicAndResponse(data, port);
-        }
+extension.runtime.onConnect.addListener((port): void => {
+  registerPort(port);
+  // message and disconnect handlers
+  port.onMessage.addListener((data): void => {
+    if (data.message === CHAINX_TRANSACTION_SEND) {
+      return sendExtrinsicAndResponse(data, port);
+    }
 
-        if (data.message === CHAINX_TRANSACTION_SIGN_AND_SEND) {
-          return handleWithListen(data, port);
-        }
+    if (data.message === CHAINX_TRANSACTION_SIGN_AND_SEND) {
+      return handleWithListen(data, port);
+    }
 
-        const promise = handle(data, port);
+    const promise = handle(data, port);
 
-        promise
-          .then(response => {
-            port.postMessage({ id: data.id, response });
-          })
-          .catch(
-            (error): void => {
-              port.postMessage({ id: data.id, error: error.message });
-            }
-          );
-      }
-    );
+    promise
+      .then(response => {
+        port.postMessage({ id: data.id, response });
+      })
+      .catch((error): void => {
+        port.postMessage({ id: data.id, error: error.message });
+      });
+  });
 
-    port.onDisconnect.addListener(
-      (): void => {
-        console.log(`Disconnected from ${port.name}`);
-        unRegisterPort(port);
-      }
-    );
-  }
-);
+  port.onDisconnect.addListener((): void => {
+    console.log(`Disconnected from ${port.name}`);
+    unRegisterPort(port);
+  });
+});
 
 initPromise.then(() => {
   Promise.all([keyring.loadAll(), nodes.loadAll()])
@@ -73,9 +65,7 @@ initPromise.then(() => {
       }
       console.log('initialization completed');
     })
-    .catch(
-      (error): void => {
-        console.error('initialization failed', error);
-      }
-    );
+    .catch((error): void => {
+      console.error('initialization failed', error);
+    });
 });

@@ -12,86 +12,81 @@ const accountChangeListeners: Array<any> = [];
 const nodeChangeListeners: Array<any> = [];
 const callbackHandlers: Object = {};
 
-window.addEventListener(
-  'message',
-  ({ source, data }): void => {
-    // only allow messages from our window, by the inject
-    if (source !== window || data.origin !== 'content') {
-      return;
-    }
-
-    if (data.message === CHAINX_ACCOUNT_CURRENT_CHANGE) {
-      for (let listener of accountChangeListeners) {
-        listener(data.info);
-      }
-      return;
-    }
-
-    if (data.message === CHAINX_NODE_CURRENT_CHANGE) {
-      for (let listener of nodeChangeListeners) {
-        listener(data.info);
-      }
-      return;
-    }
-
-    if (data.message === CHAINX_TRANSACTION_SEND) {
-      const callback = callbackHandlers[data.id];
-      if (!callback) {
-        console.error('Not found callback', data);
-        return;
-      }
-
-      callback(data.response);
-      if (data.response.status && data.response.status.status === 'Finalized') {
-        delete callbackHandlers[data.id];
-      }
-      return;
-    }
-
-    if (data.message === CHAINX_TRANSACTION_SIGN_AND_SEND) {
-      const callback = callbackHandlers[data.id];
-      if (!callback) {
-        console.error('Not found callback', data);
-        return;
-      }
-
-      callback(data.response);
-      if (
-        (data.response.status && data.response.status.status === 'Finalized') ||
-        data.reject
-      ) {
-        delete callbackHandlers[data.id];
-      }
-      return;
-    }
-
-    const handler = handlers[data.id];
-    if (!handler) {
-      console.error(`Uknown response: ${JSON.stringify(data)}`);
-      return;
-    }
-
-    if (data.error) {
-      handler.reject(new Error(data.error));
-    } else {
-      handler.resolve(data.response);
-    }
+window.addEventListener('message', ({ source, data }): void => {
+  // only allow messages from our window, by the inject
+  if (source !== window || data.origin !== 'content') {
+    return;
   }
-);
+
+  if (data.message === CHAINX_ACCOUNT_CURRENT_CHANGE) {
+    for (let listener of accountChangeListeners) {
+      listener(data.info);
+    }
+    return;
+  }
+
+  if (data.message === CHAINX_NODE_CURRENT_CHANGE) {
+    for (let listener of nodeChangeListeners) {
+      listener(data.info);
+    }
+    return;
+  }
+
+  if (data.message === CHAINX_TRANSACTION_SEND) {
+    const callback = callbackHandlers[data.id];
+    if (!callback) {
+      console.error('Not found callback', data);
+      return;
+    }
+
+    callback(data.response);
+    if (data.response.status && data.response.status.status === 'Finalized') {
+      delete callbackHandlers[data.id];
+    }
+    return;
+  }
+
+  if (data.message === CHAINX_TRANSACTION_SIGN_AND_SEND) {
+    const callback = callbackHandlers[data.id];
+    if (!callback) {
+      console.error('Not found callback', data);
+      return;
+    }
+
+    callback(data.response);
+    if (
+      (data.response.status && data.response.status.status === 'Finalized') ||
+      data.reject
+    ) {
+      delete callbackHandlers[data.id];
+    }
+    return;
+  }
+
+  const handler = handlers[data.id];
+  if (!handler) {
+    console.error(`Uknown response: ${JSON.stringify(data)}`);
+    return;
+  }
+
+  if (data.error) {
+    handler.reject(new Error(data.error));
+  } else {
+    handler.resolve(data.response);
+  }
+});
 
 const handlers: any = {};
 let idCounter = 0;
 
 function sendMessage(message: any, request: any = null): Promise<any> {
-  return new Promise(
-    (resolve, reject): void => {
-      const id = `chainx.page.${Date.now()}.${++idCounter}`;
+  return new Promise((resolve, reject): void => {
+    const id = `chainx.page.${Date.now()}.${++idCounter}`;
 
-      handlers[id] = { resolve, reject };
+    handlers[id] = { resolve, reject };
 
-      window.postMessage({ id, message, origin: 'page', request }, '*');
-    }
-  );
+    window.postMessage({ id, message, origin: 'page', request }, '*');
+  });
 }
 
 function sendMessageWithCallback(
