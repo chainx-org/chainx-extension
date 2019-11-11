@@ -52,7 +52,7 @@ function EnterPassword(props: any) {
 
   return (
     <div className="enter-password">
-      <span className="title">输入密码</span>
+      <span className="title">Input password</span>
       <input
         className="input"
         type="password"
@@ -63,7 +63,7 @@ function EnterPassword(props: any) {
             enter();
           }
         }}
-        placeholder="密码"
+        placeholder="Password"
       />
       <button
         className="button button-yellow margin-top-40"
