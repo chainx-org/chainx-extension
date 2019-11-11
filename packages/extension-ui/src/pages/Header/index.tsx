@@ -108,8 +108,8 @@ function Header(props: any) {
         {
           <div className={(showNodeListArea ? '' : 'hide ') + 'node-list-area'}>
             <div className="node-list">
-              {nodeList &&
-                nodeList.map((item, index) => (
+              {
+                (nodeList || []).map((item, index) => (
                   <div
                     className={
                       item.name === currentNode.name
@@ -192,30 +192,30 @@ function Header(props: any) {
             {accounts.length > 0 ? (
               <div className="accounts">
                 {accounts.length > 0 &&
-                  accounts.map(item => (
-                    <div
-                      className={
-                        item.address === currentAccount.address
-                          ? 'account-item active'
-                          : 'account-item'
-                      }
-                      key={item.name}
-                      onClick={async () => {
-                        setChainxCurrentAccount(item.address).then(d =>
-                          console.log(d)
-                        );
-                        await setCurrentAccount({ currentAccount: item });
-                        setShowAccountArea(false);
-                        props.history.push('/');
-                      }}
-                    >
-                      <div className="account-item-active-flag" />
-                      <div className="account-item-detail">
-                        <span className="name">{item.name}</span>
-                        <DotInCenterStr value={item.address} />
-                      </div>
+                accounts.map(item => (
+                  <div
+                    className={
+                      item.address === currentAccount.address
+                        ? 'account-item active'
+                        : 'account-item'
+                    }
+                    key={item.name}
+                    onClick={async () => {
+                      setChainxCurrentAccount(item.address).then(d =>
+                        console.log(d)
+                      );
+                      await setCurrentAccount({ currentAccount: item });
+                      setShowAccountArea(false);
+                      props.history.push('/');
+                    }}
+                  >
+                    <div className="account-item-active-flag" />
+                    <div className="account-item-detail">
+                      <span className="name">{item.name}</span>
+                      <DotInCenterStr value={item.address} />
                     </div>
-                  ))}
+                  </div>
+                ))}
               </div>
             ) : null}
           </div>
