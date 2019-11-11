@@ -8,7 +8,7 @@ import ErrorMessage from '../../components/ErrorMessage';
 import NameAndPassword from '../../components/NameAndPassword';
 
 function CreateAccount(props: any) {
-  const titleList = ['新增账户', '备份助记词', '验证助记词', '设置标签和密码'];
+  const titleList = ['New Account', '备份助记词', '验证助记词', '设置标签和密码'];
   const subTitleList = [
     '',
     '按顺序记下你的助记词，下一步中需要用到',

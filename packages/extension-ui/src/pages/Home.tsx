@@ -125,13 +125,13 @@ function Home(props: any) {
             className="button button-white button-new-account"
             onClick={() => props.history.push('/createAccount')}
           >
-            新增账户
+            New Account
           </button>
           <button
             className="button button-white button-import-account"
             onClick={() => props.history.push('/importAccount')}
           >
-            导入账户
+            Import Account
           </button>
         </div>
       )}
