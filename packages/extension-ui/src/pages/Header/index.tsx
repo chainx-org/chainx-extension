@@ -72,7 +72,7 @@ function Header(props: any) {
         )}
         {props.history.location.pathname.indexOf('requestSign') > -1 ? (
           <div className="center-title">
-            <span>请求签名</span>
+            <span>Sign Request</span>
           </div>
         ) : (
           <div className="right">
@@ -161,7 +161,7 @@ function Header(props: any) {
               }}
             >
               <Icon name="Add" className="add-node-icon" />
-              <span>添加节点</span>
+              <span>Add node</span>
             </div>
           </div>
         }
@@ -175,7 +175,7 @@ function Header(props: any) {
                 }}
               >
                 <Icon name="Putin" className="account-area-icon" />
-                <span>导入账户</span>
+                <span>Import</span>
               </div>
               <div
                 onClick={() => {
@@ -184,7 +184,7 @@ function Header(props: any) {
                 }}
               >
                 <Icon name="Add" className="account-area-icon" />
-                <span>新建账户</span>
+                <span>New</span>
               </div>
             </div>
             {accounts.length > 0 ? (
