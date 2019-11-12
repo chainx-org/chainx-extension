@@ -58,7 +58,15 @@ async function requestSignTransaction({
   if (tx.toSign) {
     return Promise.reject({ message: 'Sign transaction busy' });
   }
-  tx.setToSign({ id, address, module, method, args, needBroadcast: false });
+  tx.setToSign({
+    id,
+    address,
+    module,
+    method,
+    args,
+    needBroadcast: false,
+    isTestNet: settings.settings.isTestNet
+  });
 
   notificationManager.showPopup();
 

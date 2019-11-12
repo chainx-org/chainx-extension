@@ -9,10 +9,12 @@ import { u8aToHex } from '@chainx/util';
 import nodes from '../store/nodes';
 import {
   CHAINX_ACCOUNT_CURRENT_CHANGE,
-  CHAINX_NODE_CURRENT_CHANGE
+  CHAINX_NODE_CURRENT_CHANGE,
+  CHAINX_SETTINGS_NETWORK_CHANGE
 } from '@chainx/extension-defaults';
 import { sendToContent } from '../message';
 import { settings, tx } from '../store';
+import { setChainx } from '../chainx';
 
 export async function createChainxAccount(
   request: ChainxAccountCreateRequest
@@ -64,7 +66,10 @@ export async function getAllChainxAccount(
 }
 
 export function getChainxAccountByAddress(address: string): KeyStore | null {
-  return keyring.accounts.find(item => item.address === address) || null;
+  const accounts = settings.settings.isTestNet
+    ? keyring.testNetAccounts
+    : keyring.accounts;
+  return accounts.find(item => item.address === address) || null;
 }
 
 export async function signChainxMessage({
@@ -87,7 +92,11 @@ export async function createChainxNode({
   url,
   isTestNet
 }: ChainxNode): Promise<ChainxNode> {
-  return await nodes.addNode(name, url, isTestNet);
+  const pre = await nodes.getCurrentNode(isTestNet);
+  const now = await nodes.addNode(name, url, isTestNet);
+  await setChainx(url);
+  sendToContent(CHAINX_NODE_CURRENT_CHANGE, { from: pre, to: now });
+  return now;
 }
 
 export async function getAllChainxNodes(
@@ -103,6 +112,7 @@ export async function setChainxCurrentNode(
   const pre = await nodes.getCurrentNode(isTestNet);
   await nodes.setCurrentNode(url, isTestNet);
   const now = await nodes.getCurrentNode(isTestNet);
+  await setChainx(url);
   sendToContent(CHAINX_NODE_CURRENT_CHANGE, { from: pre, to: now });
 }
 
@@ -122,7 +132,16 @@ export async function getSettings() {
 }
 
 export async function setNetwork(isTestNet: boolean = false) {
+  const pre = settings.settings.isTestNet;
+  if (pre === isTestNet) {
+    return;
+  }
+
   await settings.saveSettings({ ...settings.settings, isTestNet });
+  sendToContent(CHAINX_SETTINGS_NETWORK_CHANGE, {
+    from: pre ? 'testnet' : 'mainnet',
+    to: isTestNet ? 'testnet' : 'mainnet'
+  });
   // 切换网络后，清空待签交易
   tx.setToSign(null);
   return;

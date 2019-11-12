@@ -23,6 +23,7 @@ export const CHAINX_NODE_CURRENT_CHANGE = 'chainx.nodes.current.change'; // å½“å
 export const CHAINX_NODE_REMOVE = 'chainx.nodes.remove';
 export const CHAINX_SETTINGS_GET = 'chainx.settings.get';
 export const CHAINX_SETTINGS_SET_NETWORK = 'chainx.settings.set.network';
+export const CHAINX_SETTINGS_NETWORK_CHANGE = 'chainx.settings.network.change';
 
 export const INIT_NODES = [
   {
