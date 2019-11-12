@@ -3,6 +3,7 @@ import {
   CHAINX_ACCOUNT_CURRENT_CHANGE,
   CHAINX_NODE_CURRENT,
   CHAINX_NODE_CURRENT_CHANGE,
+  CHAINX_SETTINGS_GET,
   CHAINX_TRANSACTION_CALL_REQUEST,
   CHAINX_TRANSACTION_SEND,
   CHAINX_TRANSACTION_SIGN_AND_SEND
@@ -104,6 +105,15 @@ async function enable(): Promise<any> {
   return await sendMessage(CHAINX_ACCOUNT_CURRENT);
 }
 
+async function getSettings(): Promise<any> {
+  return await sendMessage(CHAINX_SETTINGS_GET);
+}
+
+async function getNetwork(): Promise<string> {
+  const settings = await sendMessage(CHAINX_SETTINGS_GET);
+  return settings.isTestNet ? 'testnet' : 'mainnet';
+}
+
 async function getCurrentNode(): Promise<any> {
   return await sendMessage(CHAINX_NODE_CURRENT);
 }
@@ -161,5 +171,7 @@ window.chainxProvider = {
   listenAccountChange,
   listenNodeChange,
   getCurrentNode,
-  sendExtrinsic
+  sendExtrinsic,
+  getSettings,
+  getNetwork
 };
