@@ -4,6 +4,7 @@ import {
   CHAINX_NODE_CURRENT,
   CHAINX_NODE_CURRENT_CHANGE,
   CHAINX_SETTINGS_GET,
+  CHAINX_SETTINGS_NETWORK_CHANGE,
   CHAINX_TRANSACTION_CALL_REQUEST,
   CHAINX_TRANSACTION_SEND,
   CHAINX_TRANSACTION_SIGN_AND_SEND
@@ -11,6 +12,7 @@ import {
 
 const accountChangeListeners: Array<any> = [];
 const nodeChangeListeners: Array<any> = [];
+const networkChangeListeners: Array<any> = [];
 const callbackHandlers: Object = {};
 
 window.addEventListener('message', ({ source, data }): void => {
@@ -28,6 +30,13 @@ window.addEventListener('message', ({ source, data }): void => {
 
   if (data.message === CHAINX_NODE_CURRENT_CHANGE) {
     for (let listener of nodeChangeListeners) {
+      listener(data.info);
+    }
+    return;
+  }
+
+  if (data.message === CHAINX_SETTINGS_NETWORK_CHANGE) {
+    for (let listener of networkChangeListeners) {
       listener(data.info);
     }
     return;
@@ -144,6 +153,10 @@ function listenNodeChange(listener) {
   nodeChangeListeners.push(listener);
 }
 
+function listenNetworkChange(listener) {
+  networkChangeListeners.push(listener);
+}
+
 function callAndSend(
   address: string,
   module: string,
@@ -170,6 +183,7 @@ window.chainxProvider = {
   signAndSendExtrinsic: callAndSend,
   listenAccountChange,
   listenNodeChange,
+  listenNetworkChange,
   getCurrentNode,
   sendExtrinsic,
   getSettings,

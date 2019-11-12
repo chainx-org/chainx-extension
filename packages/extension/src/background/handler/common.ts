@@ -9,7 +9,8 @@ import { u8aToHex } from '@chainx/util';
 import nodes from '../store/nodes';
 import {
   CHAINX_ACCOUNT_CURRENT_CHANGE,
-  CHAINX_NODE_CURRENT_CHANGE
+  CHAINX_NODE_CURRENT_CHANGE,
+  CHAINX_SETTINGS_NETWORK_CHANGE
 } from '@chainx/extension-defaults';
 import { sendToContent } from '../message';
 import { settings, tx } from '../store';
@@ -127,7 +128,16 @@ export async function getSettings() {
 }
 
 export async function setNetwork(isTestNet: boolean = false) {
+  const pre = settings.settings.isTestNet;
+  if (pre === isTestNet) {
+    return;
+  }
+
   await settings.saveSettings({ ...settings.settings, isTestNet });
+  sendToContent(CHAINX_SETTINGS_NETWORK_CHANGE, {
+    from: pre ? 'testnet' : 'mainnet',
+    to: isTestNet ? 'testnet' : 'mainnet'
+  });
   // 切换网络后，清空待签交易
   tx.setToSign(null);
   return;
