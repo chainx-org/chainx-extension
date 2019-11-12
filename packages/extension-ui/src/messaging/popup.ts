@@ -76,8 +76,11 @@ export async function getAllAccounts(
   return sendMessage(CHAINX_ACCOUNT_ALL, { isTestNet });
 }
 
-export async function removeChainxAccount(address: string) {
-  return sendMessage(CHAINX_ACCOUNT_REMOVE, { address });
+export async function removeChainxAccount(
+  address: string,
+  isTestNet: boolean = false
+) {
+  return sendMessage(CHAINX_ACCOUNT_REMOVE, { address, isTestNet });
 }
 
 export async function setChainxCurrentAccount(address: string) {

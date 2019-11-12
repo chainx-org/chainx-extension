@@ -40,7 +40,7 @@ export default function handlePopup({
     case CHAINX_ACCOUNT_ALL:
       return getAllChainxAccount(request.isTestNet);
     case CHAINX_ACCOUNT_REMOVE:
-      return removeChainxAccount(request.address);
+      return removeChainxAccount(request.address, request.isTestNet);
     case CHAINX_ACCOUNT_SELECT:
       return setChainxCurrentAccount(request.address);
     case CHAINX_ACCOUNT_SIGN_MESSAGE:
