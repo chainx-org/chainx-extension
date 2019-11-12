@@ -1,3 +1,4 @@
+import { Account } from 'chainx.js';
 import {
   AccountInfo,
   ChainxAccountCreateRequest,
@@ -13,6 +14,7 @@ import {
 } from '@chainx/extension-defaults';
 import { sendToContent } from '../message';
 import { settings, tx } from '../store';
+import { setChainx } from '../chainx';
 
 export async function createChainxAccount(
   request: ChainxAccountCreateRequest
@@ -64,7 +66,10 @@ export async function getAllChainxAccount(
 }
 
 export function getChainxAccountByAddress(address: string): KeyStore | null {
-  return keyring.accounts.find(item => item.address === address) || null;
+  const accounts = settings.settings.isTestNet
+    ? keyring.testNetAccounts
+    : keyring.accounts;
+  return accounts.find(item => item.address === address) || null;
 }
 
 export async function signChainxMessage({
@@ -103,6 +108,7 @@ export async function setChainxCurrentNode(
   const pre = await nodes.getCurrentNode(isTestNet);
   await nodes.setCurrentNode(url, isTestNet);
   const now = await nodes.getCurrentNode(isTestNet);
+  await setChainx(url);
   sendToContent(CHAINX_NODE_CURRENT_CHANGE, { from: pre, to: now });
 }
 
