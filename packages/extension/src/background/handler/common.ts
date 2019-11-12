@@ -1,4 +1,3 @@
-import { Account } from 'chainx.js';
 import {
   AccountInfo,
   ChainxAccountCreateRequest,
