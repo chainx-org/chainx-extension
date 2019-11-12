@@ -1,12 +1,14 @@
 import extension from 'extensionizer';
 import handle, { handleWithListen } from './handler';
-import { keyring, nodes } from './store';
+import { keyring, nodes, settings } from './store';
 import { sendExtrinsicAndResponse, setChainx } from './chainx';
 import { registerPort, unRegisterPort } from './message';
 import {
   CHAINX_TRANSACTION_SEND,
   CHAINX_TRANSACTION_SIGN_AND_SEND
 } from '@chainx/extension-defaults/index';
+
+const initSettingsPromise = settings.loadSettings();
 
 const initPromise = new Promise((resolve, reject) => {
   extension.runtime.onInstalled.addListener(event => {
@@ -57,7 +59,10 @@ extension.runtime.onConnect.addListener((port): void => {
   });
 });
 
-initPromise.then(() => {
+(async function init() {
+  await initSettingsPromise;
+  await initPromise;
+
   Promise.all([keyring.loadAll(), nodes.loadAll()])
     .then(async () => {
       if (nodes.currentNode) {
@@ -68,4 +73,4 @@ initPromise.then(() => {
     .catch((error): void => {
       console.error('initialization failed', error);
     });
-});
+})();
