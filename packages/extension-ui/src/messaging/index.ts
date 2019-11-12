@@ -11,7 +11,9 @@ import {
   removeChainxNode,
   setChainxCurrentAccount,
   setChainxNode,
-  signMessage
+  signMessage,
+  setNetwork,
+  getSettings
 } from './popup';
 
 import { getToSign, rejectSign, signTransaction } from './notification';
@@ -32,5 +34,7 @@ export {
   createAccountFromPrivateKey,
   signTransaction,
   getToSign,
-  rejectSign
+  rejectSign,
+  setNetwork,
+  getSettings
 };

@@ -6,12 +6,18 @@ import {
   useOutsideClick,
   isCurrentNodeInit
 } from '../../shared';
-import { setChainxCurrentAccount, setChainxNode } from '../../messaging';
+import {
+  setChainxCurrentAccount,
+  setChainxNode,
+  setNetwork
+} from '../../messaging';
 import { NodeInfo } from '@chainx/extension-ui/types';
 import Icon from '../../components/Icon';
 import DotInCenterStr from '../../components/DotInCenterStr';
 // @ts-ignore
 import logo from '../../assets/logo.jpg';
+import testNetImg from '../../assets/testnet.svg';
+import switchImg from '../../assets/switch.svg';
 import './header.scss';
 
 function Header(props: any) {
@@ -21,6 +27,7 @@ function Header(props: any) {
   const [showAccountArea, setShowAccountArea] = useState(false);
   const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount');
   const [{ accounts }] = useRedux('accounts');
+  const [{ isTestNet }, setIsTestNet] = useRedux('isTestNet');
   const [{ currentNode }, setCurrentNode] = useRedux<NodeInfo>('currentNode', {
     name: 'w1.org',
     url: '',
@@ -63,6 +70,11 @@ function Header(props: any) {
     return delay ? (delay === 'timeout' ? 'timeout' : delay + ' ms') : '';
   }
 
+  function switchNet() {
+    setNetwork(!isTestNet);
+    setIsTestNet({ isTestNet: !isTestNet });
+  }
+
   return (
     <div className="header">
       <div className="container container-header">
@@ -73,6 +85,9 @@ function Header(props: any) {
         ) : (
           <Link to="/">
             <img className="logo" src={logo} alt="logo" />
+            {isTestNet && (
+              <img className="testnet" src={testNetImg} alt="testNetImg" />
+            )}
           </Link>
         )}
         {props.history.location.pathname.indexOf('requestSign') > -1 ? (
@@ -164,13 +179,26 @@ function Header(props: any) {
               ))}
             </div>
             <div
-              className="add-node"
+              className="add-node node-action-item"
               onClick={() => {
                 props.history.push('/addNode');
               }}
             >
-              <Icon name="Add" className="add-node-icon" />
+              <Icon name="Add" className="add-node-icon node-action-item-img" />
               <span>Add node</span>
+            </div>
+            <div
+              className="switch-net node-action-item"
+              onClick={() => {
+                switchNet();
+              }}
+            >
+              <img
+                className="node-action-item-img"
+                src={switchImg}
+                alt="switchImg"
+              />
+              <span>Switch to {isTestNet ? 'Mainnet' : 'Testnet'}</span>
             </div>
           </div>
         }
