@@ -127,7 +127,7 @@ class Keyring {
       }
 
       if (key.startsWith(TESTNET_ACCOUNT_PREFIX)) {
-        this.accounts.push({
+        this.testNetAccounts.push({
           name: key.slice(TESTNET_ACCOUNT_PREFIX.length),
           ...item
         });
