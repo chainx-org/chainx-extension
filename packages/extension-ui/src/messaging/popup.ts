@@ -96,26 +96,38 @@ export async function getCurrentChainxAccount(isTestNet: boolean = false) {
   return sendMessage(CHAINX_ACCOUNT_CURRENT, { isTestNet });
 }
 
-export async function createChainxNode(name: string, url: string) {
-  return sendMessage(CHAINX_NODE_CREATE, { name, url });
+export async function createChainxNode(
+  name: string,
+  url: string,
+  isTestNet: boolean = false
+) {
+  return sendMessage(CHAINX_NODE_CREATE, { name, url, isTestNet });
 }
 
-export async function getAllChainxNodes() {
-  return sendMessage(CHAINX_NODE_ALL);
+export async function getAllChainxNodes(isTestNet: boolean = false) {
+  return sendMessage(CHAINX_NODE_ALL, { isTestNet });
 }
 
-export async function setChainxNode(url: string) {
-  return sendMessage(CHAINX_NODE_SELECT, { url });
+export async function setChainxNode(url: string, isTestNet: boolean = false) {
+  return sendMessage(CHAINX_NODE_SELECT, { url, isTestNet });
 }
 
-export async function addChainxNode(name: string, url: string) {
-  return sendMessage(CHAINX_NODE_CREATE, { name, url });
+export async function addChainxNode(
+  name: string,
+  url: string,
+  isTestNet: boolean = false
+) {
+  return sendMessage(CHAINX_NODE_CREATE, { name, url, isTestNet });
 }
 
-export async function getCurrentChainxNode() {
-  return sendMessage(CHAINX_NODE_CURRENT);
+export async function getCurrentChainxNode(isTestNet: boolean = false) {
+  return sendMessage(CHAINX_NODE_CURRENT, { isTestNet });
 }
 
-export async function removeChainxNode(name: string, url: string) {
-  return sendMessage(CHAINX_NODE_REMOVE, { name, url });
+export async function removeChainxNode(
+  name: string,
+  url: string,
+  isTestNet: boolean = false
+) {
+  return sendMessage(CHAINX_NODE_REMOVE, { name, url, isTestNet });
 }

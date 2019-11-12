@@ -94,28 +94,37 @@ export async function signTransaction(
 
 export async function createChainxNode({
   name,
-  url
+  url,
+  isTestNet
 }: ChainxNode): Promise<ChainxNode> {
-  return await nodes.addNode(name, url);
+  return await nodes.addNode(name, url, isTestNet);
 }
 
-export async function getAllChainxNodes(): Promise<ChainxNode[]> {
-  return nodes.nodes;
+export async function getAllChainxNodes(
+  isTestNet: boolean = false
+): Promise<ChainxNode[]> {
+  return isTestNet ? nodes.testNetNodes : nodes.nodes;
 }
 
-export async function setChainxCurrentNode({ url }: { url: string }) {
-  const pre = await nodes.getCurrentNode();
-  await nodes.setCurrentNode(url);
-  const now = await nodes.getCurrentNode();
+export async function setChainxCurrentNode(
+  { url }: { url: string },
+  isTestNet: boolean = false
+) {
+  const pre = await nodes.getCurrentNode(isTestNet);
+  await nodes.setCurrentNode(url, isTestNet);
+  const now = await nodes.getCurrentNode(isTestNet);
   sendToContent(CHAINX_NODE_CURRENT_CHANGE, { from: pre, to: now });
 }
 
-export async function getChainxCurrentNode() {
-  return nodes.getCurrentNode();
+export async function getChainxCurrentNode(isTestNet: boolean = false) {
+  return nodes.getCurrentNode(isTestNet);
 }
 
-export async function removeChainxNode({ url }: { url: string }) {
-  return nodes.removeNode(url);
+export async function removeChainxNode(
+  { url }: { url: string },
+  isTestNet: boolean = false
+) {
+  return nodes.removeNode(url, isTestNet);
 }
 
 export async function getSettings() {

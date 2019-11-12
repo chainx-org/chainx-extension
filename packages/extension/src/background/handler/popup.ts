@@ -50,15 +50,15 @@ export default function handlePopup({
     case CHAINX_NODE_CREATE:
       return createChainxNode(request);
     case CHAINX_NODE_ALL:
-      return getAllChainxNodes();
+      return getAllChainxNodes(request.isTestNet);
     case CHAINX_ACCOUNT_CURRENT:
       return getCurrentChainxAccount(request.isTestNet);
     case CHAINX_NODE_SELECT:
-      return setChainxCurrentNode(request);
+      return setChainxCurrentNode(request, request.isTestNet);
     case CHAINX_NODE_CURRENT:
-      return getChainxCurrentNode();
+      return getChainxCurrentNode(request.isTestNet);
     case CHAINX_NODE_REMOVE:
-      return removeChainxNode(request);
+      return removeChainxNode(request, request.isTestNet);
     case CHAINX_SETTINGS_GET:
       return getSettings();
   }
