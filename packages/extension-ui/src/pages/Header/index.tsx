@@ -37,8 +37,14 @@ function Header(props: any) {
   const [{ delayList }, setDelayList] = useRedux('delayList', []);
 
   useEffect(() => {
-    updateNodeStatus(setCurrentNode, setNodeList, delayList, setDelayList);
-  }, []);
+    updateNodeStatus(
+      setCurrentNode,
+      setNodeList,
+      delayList,
+      setDelayList,
+      isTestNet
+    );
+  }, [isTestNet]);
 
   useOutsideClick(refNodeList, () => {
     setShowNodeListArea(false);
@@ -50,7 +56,13 @@ function Header(props: any) {
 
   async function setNode(url: string) {
     await setChainxNode(url);
-    updateNodeStatus(setCurrentNode, setNodeList, delayList, setDelayList);
+    updateNodeStatus(
+      setCurrentNode,
+      setNodeList,
+      delayList,
+      setDelayList,
+      isTestNet
+    );
     setShowNodeListArea(false);
   }
 
@@ -128,55 +140,57 @@ function Header(props: any) {
         {
           <div className={(showNodeListArea ? '' : 'hide ') + 'node-list-area'}>
             <div className="node-list">
-              {(nodeList || []).map((item, index) => (
-                <div
-                  className={
-                    item.name === currentNode.name
-                      ? 'node-item active'
-                      : 'node-item'
-                  }
-                  key={item.name}
-                  onClick={() => {
-                    setNode(item.url);
-                  }}
-                >
-                  <div className="node-item-active-flag" />
-                  <div className="node-item-detail">
-                    <div className="node-item-detail-url">
-                      <span className="url">{item.url.slice(6)}</span>
-                      <div
-                        className={
-                          isCurrentNodeInit(item)
-                            ? 'node-item-detail-edit'
-                            : 'node-item-detail-edit custom'
-                        }
-                        onClick={e => {
-                          e.stopPropagation();
-                          e.nativeEvent.stopImmediatePropagation();
-                          setShowNodeListArea(false);
-                          const query = {
-                            nodeInfo: item,
-                            type: 'remove'
-                          };
-                          props.history.push({
-                            pathname: '/addNode',
-                            query: query
-                          });
-                        }}
-                      >
-                        <Icon name="Edit" />
+              {currentNode &&
+                (nodeList || []).map((item, index) => (
+                  <div
+                    className={
+                      item.name === currentNode.name
+                        ? 'node-item active'
+                        : 'node-item'
+                    }
+                    key={item.name}
+                    onClick={() => {
+                      setNode(item.url);
+                    }}
+                  >
+                    <div className="node-item-active-flag" />
+                    <div className="node-item-detail">
+                      <div className="node-item-detail-url">
+                        <span className="url">{item.url.slice(6)}</span>
+                        <div
+                          className={
+                            isCurrentNodeInit(item)
+                              ? 'node-item-detail-edit'
+                              : 'node-item-detail-edit custom'
+                          }
+                          onClick={e => {
+                            e.stopPropagation();
+                            e.nativeEvent.stopImmediatePropagation();
+                            setShowNodeListArea(false);
+                            const query = {
+                              nodeInfo: item,
+                              type: 'remove'
+                            };
+                            props.history.push({
+                              pathname: '/addNode',
+                              query: query
+                            });
+                          }}
+                        >
+                          <Icon name="Edit" />
+                        </div>
                       </div>
+                      <span
+                        className={
+                          'delay ' +
+                          getDelayClass(delayList && delayList[index])
+                        }
+                      >
+                        {getDelayText(delayList && delayList[index])}
+                      </span>
                     </div>
-                    <span
-                      className={
-                        'delay ' + getDelayClass(delayList && delayList[index])
-                      }
-                    >
-                      {getDelayText(delayList && delayList[index])}
-                    </span>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
             <div
               className="add-node node-action-item"

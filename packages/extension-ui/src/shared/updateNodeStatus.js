@@ -1,28 +1,36 @@
 import { getCurrentChainxNode, getAllChainxNodes } from '../messaging';
-import { INIT_NODES } from '@chainx/extension-defaults';
+import { INIT_NODES, TESTNET_INIT_NODES } from '@chainx/extension-defaults';
 import fetchFromWs from './fetch';
 
 const TIMEOUT = 7000;
 
-export const getNodeList = async setNodeList => {
-  const nodeListResult = await getAllChainxNodes();
+export const getNodeList = async (setNodeList, isTestNet) => {
+  const nodeListResult = await getAllChainxNodes(isTestNet);
   setNodeList({ nodeList: nodeListResult });
   return nodeListResult;
 };
 
-export const getCurrentNode = async setCurrentNode => {
-  const currentNodeResult = await getCurrentChainxNode();
+export const getCurrentNode = async (setCurrentNode, isTestNet) => {
+  const currentNodeResult = await getCurrentChainxNode(isTestNet);
   setCurrentNode({ currentNode: currentNodeResult });
   return currentNodeResult;
 };
 
-export const isCurrentNodeInit = node => {
+export const isCurrentNodeInit = (node, isTestNet) => {
   let result = false;
-  INIT_NODES.some(item => {
-    if (item.url === node.url) {
-      result = true;
-    }
-  });
+  if (isTestNet) {
+    TESTNET_INIT_NODES.some(item => {
+      if (item.url === node.url) {
+        result = true;
+      }
+    });
+  } else {
+    INIT_NODES.some(item => {
+      if (item.url === node.url) {
+        result = true;
+      }
+    });
+  }
   return result;
 };
 
@@ -62,10 +70,11 @@ async function updateNodeStatus(
   setCurrentNode,
   setNodeList,
   delayList = [],
-  setDelayList
+  setDelayList,
+  isTestNet
 ) {
-  const currentNode = await getCurrentNode(setCurrentNode);
-  const nodeList = await getNodeList(setNodeList);
+  const currentNode = await getCurrentNode(setCurrentNode, isTestNet);
+  const nodeList = await getNodeList(setNodeList, isTestNet);
   getDelay(currentNode, setCurrentNode, nodeList, delayList, setDelayList);
 }
 
