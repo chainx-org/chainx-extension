@@ -92,7 +92,11 @@ export async function createChainxNode({
   url,
   isTestNet
 }: ChainxNode): Promise<ChainxNode> {
-  return await nodes.addNode(name, url, isTestNet);
+  const pre = await nodes.getCurrentNode(isTestNet);
+  const now = await nodes.addNode(name, url, isTestNet);
+  await setChainx(url);
+  sendToContent(CHAINX_NODE_CURRENT_CHANGE, { from: pre, to: now });
+  return now;
 }
 
 export async function getAllChainxNodes(
