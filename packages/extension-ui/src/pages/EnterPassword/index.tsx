@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Account } from 'chainx.js';
 import './enterPassword.scss';
 import { removeChainxAccount } from '../../messaging';
-import { useRedux } from '../../shared'
+import { useRedux } from '../../shared';
 import ErrorMessage from '../../components/ErrorMessage';
 
 function EnterPassword(props: any) {
@@ -30,7 +30,7 @@ function EnterPassword(props: any) {
     keystore: Object
   ) {
     try {
-      Account.setNet(isTestNet ? 'testnet' : 'mainnet')
+      Account.setNet(isTestNet ? 'testnet' : 'mainnet');
       Account.fromKeyStore(keystore, password);
       await removeChainxAccount(address, isTestNet);
       props.history.push('/');

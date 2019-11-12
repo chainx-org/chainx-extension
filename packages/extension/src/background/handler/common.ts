@@ -141,6 +141,7 @@ export async function setNetwork(isTestNet: boolean = false) {
 
   // @ts-ignore
   await settings.saveSettings({
+    // @ts-ignore
     version: settings.settings.version,
     isTestNet
   });
