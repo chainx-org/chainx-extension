@@ -52,7 +52,7 @@ export default function handlePopup({
     case CHAINX_NODE_ALL:
       return getAllChainxNodes();
     case CHAINX_ACCOUNT_CURRENT:
-      return getCurrentChainxAccount();
+      return getCurrentChainxAccount(request.isTestNet);
     case CHAINX_NODE_SELECT:
       return setChainxCurrentNode(request);
     case CHAINX_NODE_CURRENT:

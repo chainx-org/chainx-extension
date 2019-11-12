@@ -90,8 +90,8 @@ export async function setChainxCurrentAccount(
   return sendMessage(CHAINX_ACCOUNT_SELECT, { address, isTestNet });
 }
 
-export async function getCurrentChainxAccount() {
-  return sendMessage(CHAINX_ACCOUNT_CURRENT);
+export async function getCurrentChainxAccount(isTestNet: boolean = false) {
+  return sendMessage(CHAINX_ACCOUNT_CURRENT, { isTestNet });
 }
 
 export async function createChainxNode(name: string, url: string) {

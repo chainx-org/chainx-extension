@@ -6,7 +6,7 @@ import {
   getCurrentChainxAccount,
   getSettings
 } from './common';
-import { tx } from '../store';
+import { settings, tx } from '../store';
 import notificationManager from '../notification-manager';
 import {
   CHAINX_ACCOUNT_CURRENT,
@@ -23,7 +23,7 @@ export default async function handleContent({
   request
 }: MessageRequest) {
   if (message === CHAINX_ACCOUNT_CURRENT) {
-    return getCurrentChainxAccount();
+    return getCurrentChainxAccount(settings.settings.isTestNet);
   } else if (message === CHAINX_TRANSACTION_CALL_REQUEST) {
     return requestSignTransaction({ id, ...request });
   } else if (message === CHAINX_NODE_CURRENT) {

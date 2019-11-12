@@ -40,8 +40,10 @@ export async function setChainxCurrentAccount(
   return currentAccount;
 }
 
-export async function getCurrentChainxAccount(): Promise<AccountInfo | null> {
-  return keyring.getCurrentAccount();
+export async function getCurrentChainxAccount(
+  isTestNet: boolean = false
+): Promise<AccountInfo | null> {
+  return keyring.getCurrentAccount(isTestNet);
 }
 
 export function removeChainxAccount(
