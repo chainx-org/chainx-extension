@@ -15,6 +15,7 @@ export interface ChainxSignMessageRequest {
   address: string;
   message: string;
   password: string;
+  isTestNet: boolean;
 }
 
 export interface SignTransactionRequest {

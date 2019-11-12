@@ -38,12 +38,14 @@ export function sendMessage(message: string, request: any = {}): Promise<any> {
 export async function signMessage(
   address: string,
   message: string,
-  password: string
+  password: string,
+  isTestNet: boolean = false
 ) {
   return sendMessage(CHAINX_ACCOUNT_SIGN_MESSAGE, {
     address,
     message,
-    password
+    password,
+    isTestNet
   });
 }
 

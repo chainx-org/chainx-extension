@@ -66,9 +66,15 @@ export function getChainxAccountByAddress(address: string): KeyStore | null {
 export async function signChainxMessage({
   address,
   message,
-  password
+  password,
+  isTestNet
 }: ChainxSignMessageRequest): Promise<string> {
-  const signResult = await keyring.signMessage(address, message, password);
+  const signResult = await keyring.signMessage(
+    address,
+    message,
+    password,
+    isTestNet
+  );
   return u8aToHex(signResult);
 }
 
