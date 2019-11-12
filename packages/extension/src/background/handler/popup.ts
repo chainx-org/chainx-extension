@@ -38,7 +38,7 @@ export default function handlePopup({
     case CHAINX_ACCOUNT_CREATE:
       return createChainxAccount(request);
     case CHAINX_ACCOUNT_ALL:
-      return getAllChainxAccount();
+      return getAllChainxAccount(request.isTestNet);
     case CHAINX_ACCOUNT_REMOVE:
       return removeChainxAccount(request.address);
     case CHAINX_ACCOUNT_SELECT:

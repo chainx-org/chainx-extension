@@ -47,8 +47,10 @@ export function removeChainxAccount(address: string): Promise<any> {
   return keyring.removeAccount(address);
 }
 
-export async function getAllChainxAccount(): Promise<AccountInfo[]> {
-  return keyring.accounts;
+export async function getAllChainxAccount(
+  isTestNet: boolean = false
+): Promise<AccountInfo[]> {
+  return isTestNet ? keyring.testNetAccounts : keyring.accounts;
 }
 
 export function getChainxAccountByAddress(address: string): KeyStore | null {

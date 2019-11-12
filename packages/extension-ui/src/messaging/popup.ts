@@ -70,8 +70,10 @@ export async function createAccountFromPrivateKey(
   });
 }
 
-export async function getAllAccounts(): Promise<AccountInfo[]> {
-  return sendMessage(CHAINX_ACCOUNT_ALL);
+export async function getAllAccounts(
+  isTestNet: boolean = false
+): Promise<AccountInfo[]> {
+  return sendMessage(CHAINX_ACCOUNT_ALL, { isTestNet });
 }
 
 export async function removeChainxAccount(address: string) {
