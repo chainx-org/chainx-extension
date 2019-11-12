@@ -30,6 +30,7 @@ function EnterPassword(props: any) {
     keystore: Object
   ) {
     try {
+      Account.setNet(isTestNet ? 'testnet' : 'mainnet')
       Account.fromKeyStore(keystore, password);
       await removeChainxAccount(address, isTestNet);
       props.history.push('/');

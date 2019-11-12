@@ -29,7 +29,7 @@ function Header(props: any) {
   const [{ accounts }] = useRedux('accounts');
   const [{ isTestNet }, setIsTestNet] = useRedux('isTestNet');
   const [{ currentNode }, setCurrentNode] = useRedux<NodeInfo>('currentNode', {
-    name: 'w1.org',
+    name: '',
     url: '',
     delay: ''
   });
@@ -85,6 +85,7 @@ function Header(props: any) {
   function switchNet() {
     setNetwork(!isTestNet);
     setIsTestNet({ isTestNet: !isTestNet });
+    setShowNodeListArea(false);
   }
 
   return (

@@ -13,6 +13,7 @@ function NameAndPassword(props) {
   const [{ accounts }] = useRedux('accounts');
   const [{ isTestNet }] = useRedux('isTestNet');
   console.log('accounts', accounts);
+  Account.setNet(isTestNet ? 'testnet' : 'mainnet')
   const account = Account.from(secret);
   const address = account.address();
   console.log(address);

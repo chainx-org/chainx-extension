@@ -25,7 +25,7 @@ function Home(props: any) {
     setCopyEvent();
     getAccountStatus();
     getUnapprovedTxs();
-  }, []);
+  }, [isTestNet]);
 
   useOutsideClick(ref, () => {
     setShowAccountAction(false);
