@@ -32,14 +32,13 @@ class Keyring {
     this.currentTestNetAccount = null;
   }
 
-  async addAccount(
-    request: ChainxAccountCreateRequest,
-    isTestNet: boolean = false
-  ) {
+  async addAccount(request: ChainxAccountCreateRequest) {
     const item: StoreItem = {
       address: request.address,
       keystore: request.keystore
     };
+
+    const isTestNet = request.isTestNet;
 
     const prefix = isTestNet ? TESTNET_ACCOUNT_PREFIX : ACCOUNT_PREFIX;
 

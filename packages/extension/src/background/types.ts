@@ -2,6 +2,7 @@ export interface ChainxAccountCreateRequest {
   name: string;
   address: string;
   keystore: object;
+  isTestNet: boolean;
 }
 
 export interface AccountInfo {
