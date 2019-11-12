@@ -52,23 +52,32 @@ export async function signMessage(
 export async function createAccount(
   name: string,
   address: string,
-  keystore: object
+  keystore: object,
+  isTestNet: boolean = false
 ): Promise<boolean> {
-  return sendMessage(CHAINX_ACCOUNT_CREATE, { name, address, keystore });
+  return sendMessage(CHAINX_ACCOUNT_CREATE, {
+    name,
+    address,
+    keystore,
+    isTestNet
+  });
 }
 
 export async function createAccountFromPrivateKey(
   name: string,
   password: string,
-  privateKey: string
+  privateKey: string,
+  isTestNet: boolean = false
 ) {
+  Account.setNet(isTestNet ? 'testnet' : 'mainnet');
   const account = Account.from(privateKey);
   const keystore = account.encrypt(password);
 
   return sendMessage(CHAINX_ACCOUNT_CREATE, {
     name,
     address: account.address(),
-    keystore
+    keystore,
+    isTestNet
   });
 }
 

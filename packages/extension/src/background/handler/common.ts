@@ -18,9 +18,14 @@ import { settings } from '../store';
 export async function createChainxAccount(
   request: ChainxAccountCreateRequest
 ): Promise<AccountInfo | null> {
-  if (keyring.accounts.find(account => account.address === request.address)) {
-    await keyring.removeAccount(request.address);
+  const accounts = request.isTestNet
+    ? keyring.testNetAccounts
+    : keyring.accounts;
+
+  if (accounts.find(account => account.address === request.address)) {
+    await keyring.removeAccount(request.address, request.isTestNet);
   }
+
   return await keyring.addAccount(request);
 }
 
