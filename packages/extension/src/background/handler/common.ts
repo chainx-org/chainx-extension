@@ -134,7 +134,7 @@ export async function getSettings() {
 
 export async function setNetwork(isTestNet: boolean = false) {
   // @ts-ignore
-  const pre = settings.settings.isTestNet;
+  const pre = (settings.settings && settings.settings.isTestNet) || null;
   if (pre === isTestNet) {
     return;
   }

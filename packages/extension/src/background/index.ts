@@ -64,7 +64,7 @@ extension.runtime.onConnect.addListener((port): void => {
 (async function init() {
   await initPromise;
 
-  Promise.all([keyring.loadAll(), nodes.loadAll()])
+  Promise.all([keyring.loadAll(), nodes.loadAll(), settings.loadSettings()])
     .then(async () => {
       if (nodes.currentNode) {
         await setChainx(nodes.currentNode.url);
