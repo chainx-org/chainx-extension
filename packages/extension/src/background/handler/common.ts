@@ -120,3 +120,7 @@ export async function removeChainxNode(
 export async function getSettings() {
   return settings.settings;
 }
+
+export async function setNetwork(isTestNet: boolean = false) {
+  return await settings.saveSettings({ ...settings.settings, isTestNet });
+}

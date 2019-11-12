@@ -12,6 +12,7 @@ import {
   CHAINX_NODE_CURRENT,
   CHAINX_NODE_REMOVE,
   CHAINX_NODE_SELECT,
+  CHAINX_SETTINGS_SET_NETWORK,
   PORT_POPUP
 } from '@chainx/extension-defaults';
 import {
@@ -139,4 +140,8 @@ export async function removeChainxNode(
   isTestNet: boolean = false
 ) {
   return sendMessage(CHAINX_NODE_REMOVE, { name, url, isTestNet });
+}
+
+export async function setNetwork(isTestNet: boolean = false) {
+  return sendMessage(CHAINX_SETTINGS_SET_NETWORK, { isTestNet });
 }

@@ -22,6 +22,7 @@ export const CHAINX_NODE_CURRENT = 'chainx.nodes.current'; // 获取当前节点
 export const CHAINX_NODE_CURRENT_CHANGE = 'chainx.nodes.current.change'; // 当前节点改变
 export const CHAINX_NODE_REMOVE = 'chainx.nodes.remove';
 export const CHAINX_SETTINGS_GET = 'chainx.settings.get';
+export const CHAINX_SETTINGS_SET_NETWORK = 'chainx.settings.set.network';
 
 export const INIT_NODES = [
   {
