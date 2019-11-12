@@ -10,7 +10,8 @@ import {
   CHAINX_NODE_CURRENT,
   CHAINX_NODE_REMOVE,
   CHAINX_NODE_SELECT,
-  CHAINX_TRANSACTION_SIGN
+  CHAINX_TRANSACTION_SIGN,
+  CHAINX_SETTINGS_GET
 } from '@chainx/extension-defaults';
 import { MessageRequest } from './types';
 import {
@@ -20,6 +21,7 @@ import {
   getAllChainxNodes,
   getChainxCurrentNode,
   getCurrentChainxAccount,
+  getSettings,
   removeChainxAccount,
   removeChainxNode,
   setChainxCurrentAccount,
@@ -57,6 +59,8 @@ export default function handlePopup({
       return getChainxCurrentNode();
     case CHAINX_NODE_REMOVE:
       return removeChainxNode(request);
+    case CHAINX_SETTINGS_GET:
+      return getSettings();
   }
 
   return Promise.resolve();

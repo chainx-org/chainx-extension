@@ -3,14 +3,16 @@ import { getChainx } from '../chainx';
 import {
   getChainxAccountByAddress,
   getChainxCurrentNode,
-  getCurrentChainxAccount
+  getCurrentChainxAccount,
+  getSettings
 } from './common';
 import { tx } from '../store';
 import notificationManager from '../notification-manager';
 import {
   CHAINX_ACCOUNT_CURRENT,
   CHAINX_NODE_CURRENT,
-  CHAINX_TRANSACTION_CALL_REQUEST
+  CHAINX_TRANSACTION_CALL_REQUEST,
+  CHAINX_SETTINGS_GET
 } from '@chainx/extension-defaults';
 
 export const handlers = {};
@@ -26,6 +28,8 @@ export default async function handleContent({
     return requestSignTransaction({ id, ...request });
   } else if (message === CHAINX_NODE_CURRENT) {
     return await getChainxCurrentNode();
+  } else if (message === CHAINX_SETTINGS_GET) {
+    return await getSettings();
   }
 
   return true;

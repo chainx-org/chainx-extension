@@ -3,12 +3,14 @@ import {
   CHAINX_TRANSACTION_GET_TO_SIGN,
   CHAINX_TRANSACTION_SIGN,
   CHAINX_TRANSACTION_SIGN_AND_SEND,
-  CHAINX_TRANSACTION_SIGN_REJECT
+  CHAINX_TRANSACTION_SIGN_REJECT,
+  CHAINX_SETTINGS_GET
 } from '@chainx/extension-defaults';
 import { tx } from '../store';
 import { handlers } from './content';
 import notificationManager from '../notification-manager';
 import { sendExtrinsicAndResponse } from '../chainx';
+import { getSettings } from './common';
 
 export default function handleNotification({
   message,
@@ -20,6 +22,8 @@ export default function handleNotification({
     return Promise.resolve(tx.toSign);
   } else if (message === CHAINX_TRANSACTION_SIGN_REJECT) {
     return rejectSignTransaction(request);
+  } else if (message === CHAINX_SETTINGS_GET) {
+    return getSettings();
   }
 
   return Promise.resolve();

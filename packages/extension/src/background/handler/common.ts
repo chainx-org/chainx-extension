@@ -13,6 +13,7 @@ import {
   CHAINX_NODE_CURRENT_CHANGE
 } from '@chainx/extension-defaults';
 import { sendToContent } from '../message';
+import { settings } from '../store';
 
 export async function createChainxAccount(
   request: ChainxAccountCreateRequest
@@ -101,4 +102,8 @@ export async function getChainxCurrentNode() {
 
 export async function removeChainxNode({ url }: { url: string }) {
   return nodes.removeNode(url);
+}
+
+export async function getSettings() {
+  return settings.settings;
 }

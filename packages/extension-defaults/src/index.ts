@@ -1,7 +1,3 @@
-// Copyright 2019 @polkadot/extension authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
-
 export const PORT_CONTENT = 'chainx-content';
 export const PORT_POPUP = 'chainx-popup';
 export const PORT_NOTIFICATION = 'chainx-notification';
@@ -25,6 +21,7 @@ export const CHAINX_NODE_SELECT = 'chainx.nodes.select'; // 设置节点
 export const CHAINX_NODE_CURRENT = 'chainx.nodes.current'; // 获取当前节点
 export const CHAINX_NODE_CURRENT_CHANGE = 'chainx.nodes.current.change'; // 当前节点改变
 export const CHAINX_NODE_REMOVE = 'chainx.nodes.remove';
+export const CHAINX_SETTINGS_GET = 'chainx.settings.get';
 
 export const INIT_NODES = [
   {
