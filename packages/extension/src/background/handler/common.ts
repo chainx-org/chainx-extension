@@ -12,7 +12,7 @@ import {
   CHAINX_NODE_CURRENT_CHANGE
 } from '@chainx/extension-defaults';
 import { sendToContent } from '../message';
-import { settings } from '../store';
+import { settings, tx } from '../store';
 
 export async function createChainxAccount(
   request: ChainxAccountCreateRequest
@@ -122,5 +122,8 @@ export async function getSettings() {
 }
 
 export async function setNetwork(isTestNet: boolean = false) {
-  return await settings.saveSettings({ ...settings.settings, isTestNet });
+  await settings.saveSettings({ ...settings.settings, isTestNet });
+  // 切换网络后，清空待签交易
+  tx.setToSign(null);
+  return;
 }
