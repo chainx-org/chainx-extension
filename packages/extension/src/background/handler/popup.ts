@@ -10,7 +10,6 @@ import {
   CHAINX_NODE_CURRENT,
   CHAINX_NODE_REMOVE,
   CHAINX_NODE_SELECT,
-  CHAINX_TRANSACTION_SIGN,
   CHAINX_SETTINGS_GET
 } from '@chainx/extension-defaults';
 import { MessageRequest } from './types';
@@ -26,8 +25,7 @@ import {
   removeChainxNode,
   setChainxCurrentAccount,
   setChainxCurrentNode,
-  signChainxMessage,
-  signTransaction
+  signChainxMessage
 } from './common';
 
 export default function handlePopup({
@@ -45,8 +43,6 @@ export default function handlePopup({
       return setChainxCurrentAccount(request.address, request.isTestNet);
     case CHAINX_ACCOUNT_SIGN_MESSAGE:
       return signChainxMessage(request);
-    case CHAINX_TRANSACTION_SIGN:
-      return signTransaction(request);
     case CHAINX_NODE_CREATE:
       return createChainxNode(request);
     case CHAINX_NODE_ALL:

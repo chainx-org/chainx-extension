@@ -2,8 +2,7 @@ import {
   AccountInfo,
   ChainxAccountCreateRequest,
   ChainxNode,
-  ChainxSignMessageRequest,
-  SignTransactionRequest
+  ChainxSignMessageRequest
 } from '../types';
 import keyring, { KeyStore } from '../store/keyring';
 import { u8aToHex } from '@chainx/util';
@@ -81,20 +80,6 @@ export async function signChainxMessage({
     isTestNet
   );
   return u8aToHex(signResult);
-}
-
-export async function signTransaction(
-  request: SignTransactionRequest
-): Promise<any> {
-  const targetAccount = keyring.accounts.find(
-    account => account.address === request.address
-  );
-  if (!targetAccount) {
-    return Promise.reject({ message: 'Account not exist' });
-  }
-
-  // TODO: sign transaction and return the signed raw tx
-  return Promise.resolve(request);
 }
 
 export async function createChainxNode({

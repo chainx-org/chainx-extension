@@ -18,13 +18,6 @@ export interface ChainxSignMessageRequest {
   isTestNet: boolean;
 }
 
-export interface SignTransactionRequest {
-  address: string;
-  module: string;
-  method: string;
-  args: Array<any>;
-}
-
 export interface ChainxNode {
   name: string;
   url: string;
