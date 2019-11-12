@@ -9,7 +9,7 @@ import {
   PORT_POPUP
 } from '@chainx/extension-defaults';
 import { getChainx } from '../chainx';
-import { tx } from '../store';
+import { settings, tx } from '../store';
 import notificationManager from '../notification-manager';
 import { getChainxAccountByAddress } from './common';
 import { codes } from './error';
@@ -93,7 +93,15 @@ export function handleWithListen(
     });
   }
   setIdPort(id, port);
-  tx.setToSign({ id, address, module, method, args, needBroadcast: true });
+  tx.setToSign({
+    id,
+    address,
+    module,
+    method,
+    args,
+    needBroadcast: true,
+    isTestNet: settings.settings.isTestNet
+  });
 
   notificationManager.showPopup();
 }
