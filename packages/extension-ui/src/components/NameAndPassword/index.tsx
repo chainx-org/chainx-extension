@@ -29,7 +29,7 @@ function NameAndPassword(props) {
       setErrMsg('password length must great than 8');
       return false;
     }
-    if (!(/(?=.*[a-z])(?=.*[A-Z])/).test(obj.pass)) {
+    if (!/(?=.*[a-z])(?=.*[A-Z])/.test(obj.pass)) {
       setErrMsg('password must include lower and upper characters');
       return false;
     }
