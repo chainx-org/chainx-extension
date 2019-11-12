@@ -25,10 +25,11 @@ export async function createChainxAccount(
 }
 
 export async function setChainxCurrentAccount(
-  address: string
+  address: string,
+  isTestNet: boolean = false
 ): Promise<AccountInfo | null> {
-  const preAccount = keyring.getCurrentAccount();
-  const currentAccount = await keyring.setCurrentAccount(address);
+  const preAccount = keyring.getCurrentAccount(isTestNet);
+  const currentAccount = await keyring.setCurrentAccount(address, isTestNet);
   if (!preAccount || preAccount.address !== address) {
     sendToContent(CHAINX_ACCOUNT_CURRENT_CHANGE, {
       from: preAccount || null,
