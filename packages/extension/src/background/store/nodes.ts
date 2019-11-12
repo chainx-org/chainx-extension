@@ -65,13 +65,6 @@ class Nodes {
       }
     });
 
-    if (this.nodes.length <= 0 && !settings.settings.isTestNet) {
-      return this.nodes;
-    }
-    if (this.testNetNodes.length <= 0 && settings.settings.isTestNet) {
-      return this.testNetNodes;
-    }
-
     await store.get(CURRENT_NODE_KEY, node => {
       if (!node) {
         this.currentNode = this.nodes[0] || null;
