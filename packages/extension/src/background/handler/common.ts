@@ -66,6 +66,7 @@ export async function getAllChainxAccount(
 }
 
 export function getChainxAccountByAddress(address: string): KeyStore | null {
+  // @ts-ignore
   const accounts = settings.settings.isTestNet
     ? keyring.testNetAccounts
     : keyring.accounts;
@@ -132,12 +133,17 @@ export async function getSettings() {
 }
 
 export async function setNetwork(isTestNet: boolean = false) {
+  // @ts-ignore
   const pre = settings.settings.isTestNet;
   if (pre === isTestNet) {
     return;
   }
 
-  await settings.saveSettings({ ...settings.settings, isTestNet });
+  // @ts-ignore
+  await settings.saveSettings({
+    version: settings.settings.version,
+    isTestNet
+  });
   sendToContent(CHAINX_SETTINGS_NETWORK_CHANGE, {
     from: pre ? 'testnet' : 'mainnet',
     to: isTestNet ? 'testnet' : 'mainnet'

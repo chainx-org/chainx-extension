@@ -85,6 +85,7 @@ class Nodes {
       this.currentTestNetNode = target || this.testNetNodes[0];
     });
 
+    // @ts-ignore
     if (settings.settings.isTestNet) {
       return this.testNetNodes;
     }

@@ -8,22 +8,24 @@ import {
   CHAINX_TRANSACTION_SIGN_AND_SEND
 } from '@chainx/extension-defaults/index';
 
-const initSettingsPromise = settings.loadSettings();
-
 const initPromise = new Promise((resolve, reject) => {
-  extension.runtime.onInstalled.addListener(event => {
-    if (event.reason === 'install') {
-      nodes
-        .initNodes()
-        .then(() => {
-          console.log('Finish to init nodes.');
-          resolve();
-        })
-        .catch(() => {
-          console.error('Fail to init nodes.');
-          reject();
-        });
+  extension.runtime.onInstalled.addListener(async event => {
+    if (event.reason !== 'install') {
+      return;
     }
+
+    await settings.initSettings();
+
+    nodes
+      .initNodes()
+      .then(() => {
+        console.log('Finish to init nodes.');
+        resolve();
+      })
+      .catch(() => {
+        console.error('Fail to init nodes.');
+        reject();
+      });
   });
 
   setTimeout(resolve, 500);
@@ -60,7 +62,6 @@ extension.runtime.onConnect.addListener((port): void => {
 });
 
 (async function init() {
-  await initSettingsPromise;
   await initPromise;
 
   Promise.all([keyring.loadAll(), nodes.loadAll()])
