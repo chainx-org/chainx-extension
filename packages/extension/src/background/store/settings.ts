@@ -13,10 +13,19 @@ const defaultSettings = {
 };
 
 class Settings {
-  settings: SettingsInterface;
+  settings: SettingsInterface | null;
 
   constructor() {
-    this.settings = defaultSettings;
+    this.settings = null;
+  }
+
+  async initSettings() {
+    await this.loadSettings();
+
+    if (!this.settings) {
+      console.log('init settings');
+      this.saveSettings(defaultSettings);
+    }
   }
 
   async saveSettings(settings: SettingsInterface) {
@@ -27,7 +36,7 @@ class Settings {
 
   async loadSettings() {
     await store.get(SETTINGS_KEY, settings => {
-      this.settings = settings || defaultSettings;
+      this.settings = settings;
     });
   }
 }
