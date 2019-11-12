@@ -26,6 +26,7 @@ export interface SignTransactionRequest {
 export interface ChainxNode {
   name: string;
   url: string;
+  isTestNet: boolean;
 }
 
 export interface Popup {

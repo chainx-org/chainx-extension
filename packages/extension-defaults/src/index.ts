@@ -45,3 +45,10 @@ export const INIT_NODES = [
     url: 'wss://w1.chainx.org.cn/ws'
   }
 ];
+
+export const TESTNET_INIT_NODES = [
+  {
+    name: 'testnet.w1.org.cn',
+    url: 'ws://120.27.210.87:8087'
+  }
+];
