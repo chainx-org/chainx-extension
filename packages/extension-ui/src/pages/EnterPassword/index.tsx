@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { Account } from 'chainx.js';
 import './enterPassword.scss';
 import { removeChainxAccount } from '../../messaging';
+import { useRedux } from '../../shared'
 import ErrorMessage from '../../components/ErrorMessage';
 
 function EnterPassword(props: any) {
   const [pass, setPass] = useState('');
   const [errMsg, setErrMsg] = useState('');
+  const [{ isTestNet }] = useRedux('isTestNet');
 
   async function exportPk(keystore: Object, password: string) {
     try {
@@ -29,7 +31,7 @@ function EnterPassword(props: any) {
   ) {
     try {
       Account.fromKeyStore(keystore, password);
-      await removeChainxAccount(address);
+      await removeChainxAccount(address, isTestNet);
       props.history.push('/');
     } catch (error) {
       setErrMsg(error.message);

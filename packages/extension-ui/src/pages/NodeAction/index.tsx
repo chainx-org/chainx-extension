@@ -9,6 +9,7 @@ function AddNode(props: any) {
   const [url, setUrl] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [{}, setCurrentNode] = useRedux('currentNode');
+  const [{ isTestNet }] = useRedux('isTestNet');
   const [{ nodeList }, setNodeList] = useRedux('nodeList', []);
   const [{ delayList }, setDelayList] = useRedux('nodeList', []);
   const {
@@ -38,7 +39,7 @@ function AddNode(props: any) {
       return;
     }
     try {
-      await addChainxNode(name, url);
+      await addChainxNode(name, url, isTestNet);
       setErrMsg('');
       await updateNodeStatus(
         setCurrentNode,
@@ -59,7 +60,7 @@ function AddNode(props: any) {
       return;
     }
     try {
-      await removeChainxNode(name, url);
+      await removeChainxNode(name, url, isTestNet);
       setErrMsg('');
       await updateNodeStatus(
         setCurrentNode,

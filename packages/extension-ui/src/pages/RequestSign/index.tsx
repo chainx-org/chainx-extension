@@ -20,6 +20,7 @@ function RequestSign(props: any) {
   const dispatch = useDispatch();
   const [pass, setPass] = useState('');
   const [errMsg, setErrMsg] = useState('');
+  const [{ isTestNet }] = useRedux('isTestNet');
   const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount', {
     address: '',
     name: ''
@@ -39,7 +40,7 @@ function RequestSign(props: any) {
   }, []);
 
   const getCurrentAccount = async () => {
-    const result = await getCurrentChainxAccount();
+    const result = await getCurrentChainxAccount(isTestNet);
     setCurrentAccount({ currentAccount: result });
   };
 
@@ -61,7 +62,7 @@ function RequestSign(props: any) {
     }
 
     dispatch(setLoading(true));
-    const node = await getCurrentChainxNode();
+    const node = await getCurrentChainxNode(isTestNet);
     const chainx = await setChainx(node.url);
 
     const { id, address, module, method, args } = query;

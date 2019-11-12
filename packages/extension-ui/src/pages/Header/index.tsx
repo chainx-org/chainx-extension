@@ -55,7 +55,7 @@ function Header(props: any) {
   });
 
   async function setNode(url: string) {
-    await setChainxNode(url);
+    await setChainxNode(url, isTestNet);
     updateNodeStatus(
       setCurrentNode,
       setNodeList,
@@ -250,7 +250,7 @@ function Header(props: any) {
                       }
                       key={item.name}
                       onClick={async () => {
-                        setChainxCurrentAccount(item.address).then(d =>
+                        setChainxCurrentAccount(item.address, isTestNet).then(d =>
                           console.log(d)
                         );
                         await setCurrentAccount({ currentAccount: item });

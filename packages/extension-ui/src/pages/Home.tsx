@@ -18,6 +18,7 @@ function Home(props: any) {
     keystore: {}
   });
   const [{}, setAccounts] = useRedux('accounts');
+  const [{ isTestNet }] = useRedux('isTestNet');
   const [copySuccess, setCopySuccess] = useState('');
 
   useEffect(() => {
@@ -51,12 +52,12 @@ function Home(props: any) {
   }
 
   async function getCurrentAccount() {
-    const result = await getCurrentChainxAccount();
+    const result = await getCurrentChainxAccount(isTestNet);
     setCurrentAccount({ currentAccount: result });
   }
 
   async function getAccounts() {
-    const result = await getAllAccounts();
+    const result = await getAllAccounts(isTestNet);
     setAccounts({ accounts: result });
   }
 

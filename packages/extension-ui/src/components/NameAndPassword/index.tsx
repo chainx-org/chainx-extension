@@ -11,6 +11,7 @@ function NameAndPassword(props) {
   const [obj, setObj] = useState({ name: '', pass: '', repass: '' });
   const [errMsg, setErrMsg] = useState('');
   const [{ accounts }] = useRedux('accounts');
+  const [{ isTestNet }] = useRedux('isTestNet');
   console.log('accounts', accounts);
   const account = Account.from(secret);
   const address = account.address();
@@ -49,7 +50,7 @@ function NameAndPassword(props) {
     const keystore = account.encrypt(obj.pass);
 
     console.log('account name ', obj.name);
-    createAccount(obj.name, account.address(), keystore)
+    createAccount(obj.name, account.address(), keystore, isTestNet)
       .then(_ => {
         onSuccess();
       })
