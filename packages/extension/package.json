@@ -1,6 +1,6 @@
 {
   "name": "@chainx/extension",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "dependencies": {
     "chainx.js": "2.22.25",
     "@chainx/util": "2.22.2",
