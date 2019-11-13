@@ -22,14 +22,13 @@ export default async function handleContent({
   message,
   request
 }: MessageRequest) {
+  const isTestNet = (settings.settings && settings.settings.isTestNet) || false;
   if (message === CHAINX_ACCOUNT_CURRENT) {
-    return getCurrentChainxAccount(
-      (settings.settings && settings.settings.isTestNet) || false
-    );
+    return getCurrentChainxAccount(isTestNet);
   } else if (message === CHAINX_TRANSACTION_CALL_REQUEST) {
     return requestSignTransaction({ id, ...request });
   } else if (message === CHAINX_NODE_CURRENT) {
-    return await getChainxCurrentNode();
+    return await getChainxCurrentNode(isTestNet);
   } else if (message === CHAINX_SETTINGS_GET) {
     return await getSettings();
   }
