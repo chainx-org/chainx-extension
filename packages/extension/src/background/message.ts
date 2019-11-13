@@ -26,7 +26,6 @@ export function registerPort(port) {
   }
 
   console.log('register new port', port.name);
-  console.log(ports);
 }
 
 export function unRegisterPort(port) {
