@@ -51,6 +51,6 @@ export const INIT_NODES = [
 export const TESTNET_INIT_NODES = [
   {
     name: 'testnet.w1.org.cn',
-    url: 'ws://120.27.210.87:8087'
+    url: 'wss://testnet.w1.chainx.org.cn/ws'
   }
 ];
