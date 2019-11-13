@@ -23,7 +23,9 @@ export default async function handleContent({
   request
 }: MessageRequest) {
   if (message === CHAINX_ACCOUNT_CURRENT) {
-    return getCurrentChainxAccount(settings.settings.isTestNet);
+    return getCurrentChainxAccount(
+      (settings.settings && settings.settings.isTestNet) || false
+    );
   } else if (message === CHAINX_TRANSACTION_CALL_REQUEST) {
     return requestSignTransaction({ id, ...request });
   } else if (message === CHAINX_NODE_CURRENT) {
@@ -58,6 +60,11 @@ async function requestSignTransaction({
   if (tx.toSign) {
     return Promise.reject({ message: 'Sign transaction busy' });
   }
+
+  if (!settings.settings) {
+    return Promise.reject({ message: 'Invalid network' });
+  }
+
   tx.setToSign({
     id,
     address,
