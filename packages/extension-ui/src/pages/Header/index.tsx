@@ -174,7 +174,7 @@ function Header(props: any) {
                         <span className="url">{item.url.slice(6)}</span>
                         <div
                           className={
-                            isCurrentNodeInit(item)
+                            isCurrentNodeInit(item, isTestNet)
                               ? 'node-item-detail-edit'
                               : 'node-item-detail-edit custom'
                           }
