@@ -11,7 +11,7 @@ function AddNode(props: any) {
   const [{}, setCurrentNode] = useRedux('currentNode');
   const [{ isTestNet }] = useRedux('isTestNet');
   const [{ nodeList }, setNodeList] = useRedux('nodeList', []);
-  const [{ delayList }, setDelayList] = useRedux('nodeList', []);
+  const [{ delayList }, setDelayList] = useRedux('delayList', []);
   const {
     location: { query }
   } = props;
