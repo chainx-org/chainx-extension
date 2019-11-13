@@ -12,15 +12,12 @@ function NameAndPassword(props) {
   const [errMsg, setErrMsg] = useState('');
   const [{ accounts }] = useRedux('accounts');
   const [{ isTestNet }] = useRedux('isTestNet');
-  console.log('accounts', accounts);
   Account.setNet(isTestNet ? 'testnet' : 'mainnet');
   const account = Account.from(secret);
   const address = account.address();
-  console.log(address);
   const sameAccount = (accounts || []).find(
     account => account.address === address
   );
-  console.log('sameAccount', sameAccount);
 
   const check = () => {
     if (!obj.name || !obj.pass || !obj.repass) {
