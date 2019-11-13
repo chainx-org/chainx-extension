@@ -69,6 +69,14 @@ function Header(props: any) {
     }
   }
 
+  function getDelayList(_isTestNet) {
+    if (_isTestNet) {
+      return testDelayList;
+    } else {
+      return delayList;
+    }
+  }
+
   async function setNode(url: string) {
     await setChainxNode(url, isTestNet);
     updateNodeStatus(
@@ -198,10 +206,10 @@ function Header(props: any) {
                       <span
                         className={
                           'delay ' +
-                          getDelayClass(delayList && delayList[index])
+                          getDelayClass(getDelayList(isTestNet) && getDelayList(isTestNet)[index])
                         }
                       >
-                        {getDelayText(delayList && delayList[index])}
+                        {getDelayText(getDelayList(isTestNet) && getDelayList(isTestNet)[index])}
                       </span>
                     </div>
                   </div>
