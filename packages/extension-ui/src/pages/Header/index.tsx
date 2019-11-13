@@ -251,9 +251,10 @@ function Header(props: any) {
                       }
                       key={item.name}
                       onClick={async () => {
-                        setChainxCurrentAccount(item.address, isTestNet).then(
-                          d => console.log(d)
-                        );
+                        setChainxCurrentAccount(
+                          item.address,
+                          isTestNet
+                        ).then(d => console.log(d));
                         await setCurrentAccount({ currentAccount: item });
                         setShowAccountArea(false);
                         props.history.push('/');

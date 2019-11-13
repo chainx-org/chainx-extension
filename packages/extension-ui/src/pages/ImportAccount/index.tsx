@@ -10,7 +10,10 @@ function ImportAccount(props: any) {
   const [errMsg, setErrMsg] = useState('');
   const [mnemonicList, setMnemonicList] = useState(new Array(12).fill(''));
 
-  const titleList = [['Mnemonic', 'Private key'], ['Password', 'Password']];
+  const titleList = [
+    ['Mnemonic', 'Private key'],
+    ['Password', 'Password']
+  ];
   const subTitleList = [
     ['Input mnemonic words', 'Input private key'],
     ['', '']

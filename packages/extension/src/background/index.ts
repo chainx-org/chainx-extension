@@ -66,8 +66,19 @@ extension.runtime.onConnect.addListener((port): void => {
 
   Promise.all([keyring.loadAll(), nodes.loadAll(), settings.loadSettings()])
     .then(async () => {
-      if (nodes.currentNode) {
+      if (!settings.settings) {
+        throw new Error('Settings not initialized.');
+      }
+
+      if (settings.settings.isTestNet && nodes.currentTestNetNode) {
+        await setChainx(nodes.currentTestNetNode.url);
+      } else if (!settings.settings.isTestNet && nodes.currentNode) {
         await setChainx(nodes.currentNode.url);
+      } else {
+        throw new Error('ChainX instance not initialized');
+      }
+
+      if (nodes.currentNode) {
       }
       console.log('initialization completed');
     })
