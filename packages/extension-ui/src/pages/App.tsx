@@ -46,8 +46,7 @@ export default function App() {
             <Route path="/createAccount" component={CreateAccount} />
             <Route path="/importAccount" component={ImportAccount} />
             <Route
-              path="/import useRedux from '../shared/useRedux';
-requestSign/:id?"
+              path="/requestSign/:id?"
               component={RequestSign}
             />
             <Route path="/showPrivateKey" component={ShowPrivateKey} />
