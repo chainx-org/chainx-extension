@@ -77,6 +77,9 @@ function RequestSign(props: any) {
       setErrMsg('Invalid address');
     }
 
+    if (method === 'putCode') {
+      args[1] = Uint8Array.from(Object.values(args[1]))
+    }
     try {
       const account = chainx.account.fromKeyStore(
         currentAccount.keystore,

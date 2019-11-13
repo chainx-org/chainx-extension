@@ -22,7 +22,7 @@ export default function(props) {
               if (!arg) {
                 return;
               }
-              return <li key={index}>{arg.toString()}</li>;
+              return <li key={index}>{arg.toString().length > 10000 ? '[object Object]' : arg.toString()}</li>;
             })}
           </ol>
         </section>
