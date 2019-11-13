@@ -91,7 +91,7 @@ function ImportAccount(props: any) {
           {currentStep === 1 && (
             <NameAndPassword
               type={currentTabIndex === 0 ? 'mnemonic' : 'pk'}
-              secret={currentTabIndex === 0 ? mnemonicList.join(' ') : pk}
+              secret={currentTabIndex === 0 ? mnemonicList.join(' ') : pk.trim()}
               onSuccess={function() {
                 props.history.push('/');
               }}
