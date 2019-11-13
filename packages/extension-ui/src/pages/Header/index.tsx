@@ -179,7 +179,7 @@ function Header(props: any) {
                     <div className="node-item-active-flag" />
                     <div className="node-item-detail">
                       <div className="node-item-detail-url">
-                        <span className="url">{item.url.slice(6)}</span>
+                        <span className="url">{item.url.split('//')[1] || item.url}</span>
                         <div
                           className={
                             isCurrentNodeInit(item, isTestNet)
