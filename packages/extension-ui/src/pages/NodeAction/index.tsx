@@ -45,7 +45,8 @@ function AddNode(props: any) {
         setCurrentNode,
         setNodeList,
         delayList,
-        setDelayList
+        setDelayList,
+        isTestNet
       );
       props.history.push('/');
     } catch (error) {
@@ -66,7 +67,8 @@ function AddNode(props: any) {
         setCurrentNode,
         setNodeList,
         delayList,
-        setDelayList
+        setDelayList,
+        isTestNet
       );
       props.history.push('/');
     } catch (error) {
