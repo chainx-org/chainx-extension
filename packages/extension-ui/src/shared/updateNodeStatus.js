@@ -36,10 +36,11 @@ export const isCurrentNodeInit = (node, isTestNet) => {
 
 export const getDelay = async (
   currentNode,
-  setCurrentNode,
+  setCurrentDelay,
   nodeList,
   delayList,
-  setDelayList
+  setDelayList,
+  isTestNet
 ) => {
   nodeList.map((item, index) => {
     fetchFromWs({
@@ -57,17 +58,25 @@ export const getDelay = async (
       })
       .finally(() => {
         if (nodeList[index].url === currentNode.url) {
-          currentNode.delay = nodeList[index].delay;
-          setCurrentNode({ currentNode: currentNode });
+          if (isTestNet) {
+            setCurrentDelay({ currentTestDelay: nodeList[index].delay });
+          } else {
+            setCurrentDelay({ currentDelay: nodeList[index].delay });
+          }
         }
         delayList[index] = nodeList[index].delay;
-        setDelayList({ delayList: delayList });
+        if (isTestNet) {
+          setDelayList({ testDelayList: delayList });
+        } else {
+          setDelayList({ delayList: delayList });
+        }
       });
   });
 };
 
 async function updateNodeStatus(
   setCurrentNode,
+  setCurrentDelay,
   setNodeList,
   delayList = [],
   setDelayList,
@@ -75,7 +84,14 @@ async function updateNodeStatus(
 ) {
   const currentNode = await getCurrentNode(setCurrentNode, isTestNet);
   const nodeList = await getNodeList(setNodeList, isTestNet);
-  getDelay(currentNode, setCurrentNode, nodeList, delayList, setDelayList);
+  getDelay(
+    currentNode,
+    setCurrentDelay,
+    nodeList,
+    delayList,
+    setDelayList,
+    isTestNet
+  );
 }
 
 export default updateNodeStatus;

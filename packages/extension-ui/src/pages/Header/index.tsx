@@ -35,13 +35,20 @@ function Header(props: any) {
   });
   const [{ nodeList }, setNodeList] = useRedux<NodeInfo[]>('nodeList', []);
   const [{ delayList }, setDelayList] = useRedux('delayList', []);
+  const [{ testDelayList }, setTestDelayList] = useRedux('testDelayList', []);
+  const [{ currentDelay }, setCurrentDelay] = useRedux('currentDelay', 0);
+  const [{ currentTestDelay }, setCurrentTestDelay] = useRedux(
+    'currentTestDelay',
+    0
+  );
 
   useEffect(() => {
     updateNodeStatus(
       setCurrentNode,
+      isTestNet ? setCurrentTestDelay : setCurrentDelay,
       setNodeList,
-      delayList,
-      setDelayList,
+      isTestNet ? testDelayList : delayList,
+      isTestNet ? setTestDelayList : setDelayList,
       isTestNet
     );
   }, [isTestNet]);
@@ -54,13 +61,22 @@ function Header(props: any) {
     setShowAccountArea(false);
   });
 
+  function getCurrentDelay(_isTestNet) {
+    if (_isTestNet) {
+      return currentTestDelay;
+    } else {
+      return currentDelay;
+    }
+  }
+
   async function setNode(url: string) {
     await setChainxNode(url, isTestNet);
     updateNodeStatus(
       setCurrentNode,
+      isTestNet ? setCurrentTestDelay : setCurrentDelay,
       setNodeList,
-      delayList,
-      setDelayList,
+      isTestNet ? testDelayList : delayList,
+      isTestNet ? setTestDelayList : setDelayList,
       isTestNet
     );
     setShowNodeListArea(false);
@@ -119,9 +135,7 @@ function Header(props: any) {
             >
               <span
                 className={
-                  'dot ' +
-                  getDelayClass(currentNode && currentNode.delay) +
-                  '-bg'
+                  'dot ' + getDelayClass(getCurrentDelay(isTestNet)) + '-bg'
                 }
               />
               <span>{currentNode && currentNode.name}</span>

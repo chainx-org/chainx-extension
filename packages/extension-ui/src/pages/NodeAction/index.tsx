@@ -12,6 +12,10 @@ function AddNode(props: any) {
   const [{ isTestNet }] = useRedux('isTestNet');
   const [{ nodeList }, setNodeList] = useRedux('nodeList', []);
   const [{ delayList }, setDelayList] = useRedux('delayList', []);
+  const [{ testDelayList }, setTestDelayList] = useRedux('testDelayList', []);
+  const [{}, setCurrentDelay] = useRedux('currentDelay', 0);
+  const [{}, setCurrentTestDelay] = useRedux('currentTestDelay', 0);
+
   const {
     location: { query }
   } = props;
@@ -43,9 +47,10 @@ function AddNode(props: any) {
       setErrMsg('');
       await updateNodeStatus(
         setCurrentNode,
+        isTestNet ? setCurrentTestDelay : setCurrentDelay,
         setNodeList,
-        delayList,
-        setDelayList,
+        isTestNet ? testDelayList : delayList,
+        isTestNet ? setTestDelayList : setDelayList,
         isTestNet
       );
       props.history.push('/');
@@ -65,9 +70,10 @@ function AddNode(props: any) {
       setErrMsg('');
       await updateNodeStatus(
         setCurrentNode,
+        isTestNet ? setCurrentTestDelay : setCurrentDelay,
         setNodeList,
-        delayList,
-        setDelayList,
+        isTestNet ? testDelayList : delayList,
+        isTestNet ? setTestDelayList : setDelayList,
         isTestNet
       );
       props.history.push('/');
