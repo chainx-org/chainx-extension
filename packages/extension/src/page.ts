@@ -111,7 +111,15 @@ function sendMessageWithCallback(
 }
 
 async function enable(): Promise<any> {
-  return await sendMessage(CHAINX_ACCOUNT_CURRENT);
+  const account = await sendMessage(CHAINX_ACCOUNT_CURRENT);
+  if (!account) {
+    return account;
+  }
+
+  return {
+    name: account.name,
+    address: account.address
+  };
 }
 
 async function getSettings(): Promise<any> {
