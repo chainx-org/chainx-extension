@@ -93,6 +93,9 @@ export function handleWithListen(
     });
   }
   setIdPort(id, port);
+  if (!settings.settings) {
+    throw new Error('Invalid settings');
+  }
   tx.setToSign({
     id,
     address,
