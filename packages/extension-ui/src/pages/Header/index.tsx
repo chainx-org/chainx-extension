@@ -16,7 +16,9 @@ import Icon from '../../components/Icon';
 import DotInCenterStr from '../../components/DotInCenterStr';
 // @ts-ignore
 import logo from '../../assets/logo.jpg';
+// @ts-ignore
 import testNetImg from '../../assets/testnet.svg';
+// @ts-ignore
 import switchImg from '../../assets/switch.svg';
 import './header.scss';
 
