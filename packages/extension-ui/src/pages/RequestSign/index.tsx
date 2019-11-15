@@ -137,7 +137,7 @@ function RequestSign(props: any) {
           }}
           className="input"
           type="password"
-          placeholder="密码"
+          placeholder="Password"
         />
         <ErrorMessage msg={errMsg} />
         <div className="button-area margin-top-40">
