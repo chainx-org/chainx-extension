@@ -93,7 +93,7 @@ function RequestSign(props: any) {
         id: id,
         hex: hex
       };
-      const result = await signTransaction(request);
+      await signTransaction(request);
       setErrMsg('');
       dispatch(setLoading(false));
     } catch (e) {
