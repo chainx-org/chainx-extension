@@ -135,7 +135,7 @@ class Nodes {
     });
   }
 
-  async getCurrentNode(isTestNet: boolean = false) {
+  getCurrentNode(isTestNet: boolean = false) {
     if (isTestNet) {
       return this.currentTestNetNode;
     }

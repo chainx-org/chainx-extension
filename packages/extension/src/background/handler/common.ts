@@ -93,7 +93,7 @@ export async function createChainxNode({
   url,
   isTestNet
 }: ChainxNode): Promise<ChainxNode> {
-  const pre = await nodes.getCurrentNode(isTestNet);
+  const pre = nodes.getCurrentNode(isTestNet);
   const now = await nodes.addNode(name, url, isTestNet);
   await setChainx(url);
   sendToContent(CHAINX_NODE_CURRENT_CHANGE, { from: pre, to: now });
@@ -110,9 +110,9 @@ export async function setChainxCurrentNode(
   { url }: { url: string },
   isTestNet: boolean = false
 ) {
-  const pre = await nodes.getCurrentNode(isTestNet);
+  const pre = nodes.getCurrentNode(isTestNet);
   await nodes.setCurrentNode(url, isTestNet);
-  const now = await nodes.getCurrentNode(isTestNet);
+  const now = nodes.getCurrentNode(isTestNet);
   await setChainx(url);
   sendToContent(CHAINX_NODE_CURRENT_CHANGE, { from: pre, to: now });
 }
@@ -145,6 +145,13 @@ export async function setNetwork(isTestNet: boolean = false) {
     version: settings.settings.version,
     isTestNet
   });
+
+  if (isTestNet && nodes.currentTestNetNode) {
+    await setChainx(nodes.currentTestNetNode.url);
+  } else if (!isTestNet && nodes.currentNode) {
+    await setChainx(nodes.currentNode.url);
+  }
+
   sendToContent(CHAINX_SETTINGS_NETWORK_CHANGE, {
     from: pre ? 'testnet' : 'mainnet',
     to: isTestNet ? 'testnet' : 'mainnet'
