@@ -35,6 +35,7 @@ export async function rejectSignTransaction({ id }: ChainxCallRequest) {
     if (!port) {
       console.error(`Find no port for sign and send request ${id}`);
       tx.setToSign(null);
+      notificationManager.closePopup();
       return;
     }
 
