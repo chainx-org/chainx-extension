@@ -74,7 +74,7 @@ export async function removeChainxAccount(
   await keyring.removeAccount(address, isTestNet);
   const nowAccount = keyring.getCurrentAccount(isTestNet);
 
-  if (!preAccount || preAccount.address !== address) {
+  if (!preAccount || !nowAccount || preAccount.address !== nowAccount.address) {
     sendToContent(CHAINX_ACCOUNT_CURRENT_CHANGE, {
       from: simpleAccount(preAccount),
       to: simpleAccount(nowAccount)
