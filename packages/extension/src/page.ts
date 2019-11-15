@@ -22,7 +22,6 @@ window.addEventListener('message', ({ source, data }): void => {
   }
 
   if (data.message === CHAINX_ACCOUNT_CURRENT_CHANGE) {
-    console.log('account change', data);
     for (let listener of accountChangeListeners) {
       listener(data.info);
     }
