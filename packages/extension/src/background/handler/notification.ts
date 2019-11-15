@@ -39,13 +39,16 @@ export async function rejectSignTransaction({ id }: ChainxCallRequest) {
       return;
     }
 
-    port.postMessage({
-      id: id,
-      message: CHAINX_TRANSACTION_SIGN_AND_SEND,
-      response: { err: null, status: null, reject: true }
-    });
-    tx.setToSign(null);
-    notificationManager.closePopup();
+    try {
+      port.postMessage({
+        id: id,
+        message: CHAINX_TRANSACTION_SIGN_AND_SEND,
+        response: { err: null, status: null, reject: true }
+      });
+    } finally {
+      tx.setToSign(null);
+      notificationManager.closePopup();
+    }
 
     return;
   }
@@ -61,10 +64,12 @@ export async function rejectSignTransaction({ id }: ChainxCallRequest) {
   }
 
   if (!handler) {
+    tx.setToSign(null);
     return Promise.reject({ message: 'No handler for request' });
   }
 
   if (id !== tx.toSign.id) {
+    tx.setToSign(null);
     return Promise.reject({ message: 'Invalid request' });
   }
 
