@@ -34,8 +34,10 @@ export async function rejectSignTransaction({ id }: ChainxCallRequest) {
     const port = getAndRemovePort(id);
     if (!port) {
       console.error(`Find no port for sign and send request ${id}`);
+      tx.setToSign(null);
       return;
     }
+
     port.postMessage({
       id: id,
       message: CHAINX_TRANSACTION_SIGN_AND_SEND,

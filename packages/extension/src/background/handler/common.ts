@@ -27,7 +27,20 @@ export async function createChainxAccount(
     await keyring.removeAccount(request.address, request.isTestNet);
   }
 
-  return await keyring.addAccount(request);
+  const preAccount = keyring.getCurrentAccount(request.isTestNet);
+  const nowAccount = await keyring.addAccount(request);
+  if (!nowAccount) {
+    throw new Error('fail to create account');
+  }
+
+  if (!preAccount || preAccount.address !== nowAccount.address) {
+    sendToContent(CHAINX_ACCOUNT_CURRENT_CHANGE, {
+      from: preAccount || null,
+      to: nowAccount
+    });
+  }
+
+  return nowAccount;
 }
 
 export async function setChainxCurrentAccount(
