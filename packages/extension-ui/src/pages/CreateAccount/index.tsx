@@ -10,9 +10,9 @@ import NameAndPassword from '../../components/NameAndPassword';
 function CreateAccount(props: any) {
   const titleList = [
     'New Account',
-    '备份助记词',
-    '验证助记词',
-    '设置标签和密码'
+    'Backup Mnemonic',
+    'Verify Mnemonic',
+    'Name and password setting'
   ];
   const subTitleList = [
     '',
