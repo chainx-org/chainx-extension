@@ -66,11 +66,22 @@ export async function getCurrentChainxAccount(
   return keyring.getCurrentAccount(isTestNet);
 }
 
-export function removeChainxAccount(
+export async function removeChainxAccount(
   address: string,
   isTestNet: boolean = false
 ): Promise<any> {
-  return keyring.removeAccount(address, isTestNet);
+  const preAccount = keyring.getCurrentAccount(isTestNet);
+  await keyring.removeAccount(address, isTestNet);
+  const nowAccount = keyring.getCurrentAccount(isTestNet);
+
+  if (!preAccount || preAccount.address !== address) {
+    sendToContent(CHAINX_ACCOUNT_CURRENT_CHANGE, {
+      from: simpleAccount(preAccount),
+      to: simpleAccount(nowAccount)
+    });
+  }
+
+  return;
 }
 
 export async function getAllChainxAccount(
