@@ -15,6 +15,7 @@ import {
 import { sendToContent } from '../message';
 import { settings, tx } from '../store';
 import { setChainx } from '../chainx';
+import { simpleAccount } from './utils';
 
 export async function createChainxAccount(
   request: ChainxAccountCreateRequest
@@ -35,8 +36,8 @@ export async function createChainxAccount(
 
   if (!preAccount || preAccount.address !== nowAccount.address) {
     sendToContent(CHAINX_ACCOUNT_CURRENT_CHANGE, {
-      from: preAccount || null,
-      to: nowAccount
+      from: simpleAccount(preAccount),
+      to: simpleAccount(nowAccount)
     });
   }
 
@@ -51,8 +52,8 @@ export async function setChainxCurrentAccount(
   const currentAccount = await keyring.setCurrentAccount(address, isTestNet);
   if (!preAccount || preAccount.address !== address) {
     sendToContent(CHAINX_ACCOUNT_CURRENT_CHANGE, {
-      from: preAccount || null,
-      to: currentAccount
+      from: simpleAccount(preAccount),
+      to: simpleAccount(currentAccount)
     });
   }
 
