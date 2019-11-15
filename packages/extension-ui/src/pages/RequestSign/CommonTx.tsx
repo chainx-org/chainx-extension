@@ -2,7 +2,6 @@ import React from 'react';
 
 export default function(props) {
   const { query } = props;
-  console.log(query);
 
   return (
     <div className="detail">

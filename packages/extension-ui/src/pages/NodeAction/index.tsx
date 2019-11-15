@@ -56,7 +56,6 @@ function AddNode(props: any) {
       props.history.push('/');
     } catch (error) {
       setErrMsg(error.message);
-      console.log('occur error: ', error);
     }
   };
 
@@ -79,7 +78,6 @@ function AddNode(props: any) {
       props.history.push('/');
     } catch (error) {
       setErrMsg(error.message);
-      console.log('occur error: ', error);
     }
   };
 

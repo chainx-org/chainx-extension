@@ -94,7 +94,6 @@ function RequestSign(props: any) {
         hex: hex
       };
       const result = await signTransaction(request);
-      console.log('sign message ', result);
       setErrMsg('');
       dispatch(setLoading(false));
     } catch (e) {
@@ -105,7 +104,6 @@ function RequestSign(props: any) {
 
   const removeCurrentSign = async () => {
     try {
-      console.log('remove sign id: ', id);
       await rejectSign(id);
     } catch (e) {
       console.log(e);

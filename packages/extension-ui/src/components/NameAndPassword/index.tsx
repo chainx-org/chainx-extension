@@ -33,7 +33,6 @@ function NameAndPassword(props) {
       return false;
     }
     if (obj.pass !== obj.repass) {
-      console.log('in not match');
       setErrMsg('password is not match');
       return false;
     }
@@ -47,7 +46,6 @@ function NameAndPassword(props) {
 
     const keystore = account.encrypt(obj.pass);
 
-    console.log('account name ', obj.name);
     createAccount(obj.name, account.address(), keystore, isTestNet)
       .then(_ => {
         onSuccess();

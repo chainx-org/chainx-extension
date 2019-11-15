@@ -27,7 +27,6 @@ export default function App() {
 
   const getSetting = async () => {
     const settings = await getSettings();
-    console.log('get settings ', settings);
     setIsTestNet({ isTestNet: settings.isTestNet });
   };
 

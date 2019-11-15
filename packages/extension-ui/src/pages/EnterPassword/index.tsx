@@ -20,7 +20,6 @@ function EnterPassword(props: any) {
       });
     } catch (error) {
       setErrMsg(error.message);
-      console.log('export error', error.message);
     }
   }
 
@@ -36,7 +35,6 @@ function EnterPassword(props: any) {
       props.history.push('/');
     } catch (error) {
       setErrMsg(error.message);
-      console.log('remove error', error.message);
     }
   }
 
