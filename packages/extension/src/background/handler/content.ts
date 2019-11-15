@@ -14,6 +14,7 @@ import {
   CHAINX_TRANSACTION_CALL_REQUEST,
   CHAINX_SETTINGS_GET
 } from '@chainx/extension-defaults';
+import { simpleAccount } from './utils';
 
 export const handlers = {};
 
@@ -24,7 +25,8 @@ export default async function handleContent({
 }: MessageRequest) {
   const isTestNet = (settings.settings && settings.settings.isTestNet) || false;
   if (message === CHAINX_ACCOUNT_CURRENT) {
-    return getCurrentChainxAccount(isTestNet);
+    const account = await getCurrentChainxAccount(isTestNet);
+    return simpleAccount(account);
   } else if (message === CHAINX_TRANSACTION_CALL_REQUEST) {
     return requestSignTransaction({ id, ...request });
   } else if (message === CHAINX_NODE_CURRENT) {

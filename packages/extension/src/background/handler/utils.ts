@@ -1,6 +1,7 @@
 import { KeyStore } from '../store/keyring';
+import { AccountInfo } from '../types';
 
-export function simpleAccount(account: null | KeyStore) {
+export function simpleAccount(account: null | KeyStore | AccountInfo) {
   if (!account) {
     return null;
   }
