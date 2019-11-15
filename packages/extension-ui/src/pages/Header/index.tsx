@@ -16,7 +16,9 @@ import Icon from '../../components/Icon';
 import DotInCenterStr from '../../components/DotInCenterStr';
 // @ts-ignore
 import logo from '../../assets/logo.jpg';
+// @ts-ignore
 import testNetImg from '../../assets/testnet.svg';
+// @ts-ignore
 import switchImg from '../../assets/switch.svg';
 import './header.scss';
 
@@ -179,7 +181,9 @@ function Header(props: any) {
                     <div className="node-item-active-flag" />
                     <div className="node-item-detail">
                       <div className="node-item-detail-url">
-                        <span className="url">{item.url.split('//')[1] || item.url}</span>
+                        <span className="url">
+                          {item.url.split('//')[1] || item.url}
+                        </span>
                         <div
                           className={
                             isCurrentNodeInit(item, isTestNet)
@@ -206,10 +210,16 @@ function Header(props: any) {
                       <span
                         className={
                           'delay ' +
-                          getDelayClass(getDelayList(isTestNet) && getDelayList(isTestNet)[index])
+                          getDelayClass(
+                            getDelayList(isTestNet) &&
+                              getDelayList(isTestNet)[index]
+                          )
                         }
                       >
-                        {getDelayText(getDelayList(isTestNet) && getDelayList(isTestNet)[index])}
+                        {getDelayText(
+                          getDelayList(isTestNet) &&
+                            getDelayList(isTestNet)[index]
+                        )}
                       </span>
                     </div>
                   </div>

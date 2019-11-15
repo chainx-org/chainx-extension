@@ -78,7 +78,7 @@ function RequestSign(props: any) {
     }
 
     if (method === 'putCode') {
-      args[1] = Uint8Array.from(Object.values(args[1]))
+      args[1] = Uint8Array.from(Object.values(args[1]));
     }
     try {
       const account = chainx.account.fromKeyStore(
