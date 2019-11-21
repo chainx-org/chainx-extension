@@ -2,12 +2,9 @@ import React, { useState, useEffect } from 'react';
 import {
   signTransaction,
   rejectSign,
-  getCurrentChainxAccount,
-  getCurrentChainxNode
+  getCurrentChainxAccount
 } from '../../messaging';
-import { setChainx } from '@chainx/extension/src/background/chainx';
-import { SignTransactionRequest } from '@chainx/extension-ui/types';
-import { useRedux, getCurrentGas } from '../../shared';
+import { useRedux, getCurrentGas, getSignRequest } from '../../shared';
 import ErrorMessage from '../../components/ErrorMessage';
 import './requestSign.scss';
 import { PrimaryButton, DefaultButton, Slider } from '@chainx/ui';
@@ -35,11 +32,11 @@ function RequestSign(props: any) {
     location: { query }
   } = props;
 
-  const { module, method } = query;
+  const { address, module, method } = query;
 
   useEffect(() => {
     getCurrentAccount();
-    getCurrentGas(isTestNet, query, acceleration, setErrMsg, setCurrentGas);
+    getCurrentGas(isTestNet, query, setErrMsg, setCurrentGas);
   }, [isTestNet]);
 
   const getCurrentAccount = async () => {
@@ -59,46 +56,24 @@ function RequestSign(props: any) {
     setErrMsg('');
     if (!currentAccount || !currentAccount.address) {
       setErrMsg(`Error: address is not exist`);
+      return;
     }
     if (!check()) {
       return;
     }
-
-    dispatch(setLoading(true));
-    const node = await getCurrentChainxNode(isTestNet);
-    const chainx = await setChainx(node.url);
-
-    const { id, address, module, method, args } = query;
-
-    const call = chainx.api.tx[module][method];
-
-    if (!call) {
-      setErrMsg('Invalid method');
-    }
-
     if (currentAccount.address !== address) {
       setErrMsg('Invalid address');
+      return;
     }
 
-    if (method === 'putCode') {
-      args[1] = Uint8Array.from(Object.values(args[1]));
-    }
+    dispatch(setLoading(true));
     try {
-      const account = chainx.account.fromKeyStore(
-        currentAccount.keystore,
-        pass
+      const request = await getSignRequest(
+        isTestNet,
+        query,
+        pass,
+        acceleration
       );
-      const submittable = call(...args);
-      const nonce = await submittable.getNonce(account.publicKey());
-      submittable.sign(account, {
-        nonce: nonce.toNumber(),
-        acceleration: acceleration
-      });
-      const hex = submittable.toHex();
-      const request: SignTransactionRequest = {
-        id: id,
-        hex: hex
-      };
       await signTransaction(request);
       setErrMsg('');
       dispatch(setLoading(false));
