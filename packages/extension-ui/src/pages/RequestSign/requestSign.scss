@@ -4,6 +4,27 @@
   display: flex;
   flex-direction: column;
 
+  .adjust-gas {
+    display: flex;
+    flex-direction: column;
+    .adjust-gas-desc {
+      display: flex;
+      flex-direction: column;
+      span {
+        font-size: 14px;
+        color: #000;
+      }
+      div {
+        margin-top: 16px;
+        display: flex;
+        justify-content: space-between;
+      }
+      > span {
+        margin-top: 4px;
+        opacity: 0.32;
+      }
+    }
+  }
   .detail {
     width: 100%;
     padding-bottom: 10px;

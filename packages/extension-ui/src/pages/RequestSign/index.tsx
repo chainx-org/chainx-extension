@@ -7,10 +7,10 @@ import {
 } from '../../messaging';
 import { setChainx } from '@chainx/extension/src/background/chainx';
 import { SignTransactionRequest } from '@chainx/extension-ui/types';
-import { useRedux } from '../../shared';
+import { useRedux, getCurrentGas } from '../../shared';
 import ErrorMessage from '../../components/ErrorMessage';
 import './requestSign.scss';
-import { PrimaryButton, DefaultButton } from '@chainx/ui';
+import { PrimaryButton, DefaultButton, Slider } from '@chainx/ui';
 import { setLoading } from '../../store/reducers/statusSlice';
 import { useDispatch } from 'react-redux';
 import Transfer from './Transfer';
@@ -20,6 +20,8 @@ function RequestSign(props: any) {
   const dispatch = useDispatch();
   const [pass, setPass] = useState('');
   const [errMsg, setErrMsg] = useState('');
+  const [currentGas, setCurrentGas] = useState(0);
+  const [acceleration, setAcceleration] = useState(1);
   const [{ isTestNet }] = useRedux('isTestNet');
   const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount', {
     address: '',
@@ -37,7 +39,8 @@ function RequestSign(props: any) {
 
   useEffect(() => {
     getCurrentAccount();
-  }, []);
+    getCurrentGas(isTestNet, query, acceleration, setErrMsg, setCurrentGas);
+  }, [isTestNet]);
 
   const getCurrentAccount = async () => {
     const result = await getCurrentChainxAccount(isTestNet);
@@ -87,7 +90,10 @@ function RequestSign(props: any) {
       );
       const submittable = call(...args);
       const nonce = await submittable.getNonce(account.publicKey());
-      submittable.sign(account, { nonce: nonce.toNumber() });
+      submittable.sign(account, {
+        nonce: nonce.toNumber(),
+        acceleration: acceleration
+      });
       const hex = submittable.toHex();
       const request: SignTransactionRequest = {
         id: id,
@@ -111,6 +117,10 @@ function RequestSign(props: any) {
     }
   };
 
+  const getCurrentGasText = () => {
+    return (acceleration * currentGas) / 10 ** 8 + ' PCX';
+  };
+
   let txPanel: any = null;
   if (module === 'xAssets' && method === 'transfer') {
     txPanel = <Transfer query={query} />;
@@ -118,9 +128,40 @@ function RequestSign(props: any) {
     txPanel = <CommonTx query={query} />;
   }
 
+  const marks = [
+    {
+      value: 1,
+      label: '1x'
+    },
+    {
+      value: 10,
+      label: '10x'
+    }
+  ];
+
   return (
     <div className="container request-sign">
       {txPanel}
+      <div className="adjust-gas">
+        <div className="adjust-gas-desc">
+          <div>
+            <span>Fee</span>
+            <span>{getCurrentGasText()}</span>
+          </div>
+          <span>More fee, faster speed</span>
+        </div>
+        <Slider
+          defaultValue={acceleration}
+          onChange={v => setAcceleration(v)}
+          // getAriaValueText={valuetext}
+          aria-labelledby="discrete-slider"
+          valueLabelDisplay="auto"
+          step={1}
+          marks={marks}
+          min={1}
+          max={10}
+        />
+      </div>
       <div className="submit-area">
         <div className="title">
           <span>Input password</span>
