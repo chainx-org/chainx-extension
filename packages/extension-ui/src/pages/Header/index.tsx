@@ -15,7 +15,7 @@ import { NodeInfo } from '@chainx/extension-ui/types';
 import Icon from '../../components/Icon';
 import DotInCenterStr from '../../components/DotInCenterStr';
 // @ts-ignore
-import logo from '../../assets/logo.jpg';
+import logo from '../../assets/extension_logo.svg';
 // @ts-ignore
 import testNetImg from '../../assets/testnet.svg';
 // @ts-ignore

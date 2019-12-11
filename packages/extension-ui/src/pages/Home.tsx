@@ -8,6 +8,8 @@ import {
 } from '../messaging';
 import Icon from '../components/Icon';
 import './index.scss';
+// @ts-ignore
+import logo from '../assets/extension_logo.svg';
 
 function Home(props: any) {
   const ref = useRef<HTMLInputElement>(null);
@@ -122,6 +124,9 @@ function Home(props: any) {
         </div>
       ) : (
         <div className="container container-column container-no-account">
+          <div className="home-logo">
+            <img src={logo} alt="logo" />
+          </div>
           <button
             className="button button-white button-new-account"
             onClick={() => props.history.push('/createAccount')}

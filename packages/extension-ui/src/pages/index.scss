@@ -166,9 +166,15 @@
 
   .container-no-account {
     align-items: center;
+    
+    .home-logo {
+      margin-top: 60px;
+      width: 90px;
+      height: 90px;
+    }
 
     .button-new-account {
-      margin-top: 56px;
+      margin-top: 40px;
     }
 
     .button-import-account {
