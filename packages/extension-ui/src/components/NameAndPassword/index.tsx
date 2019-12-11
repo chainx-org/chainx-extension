@@ -3,7 +3,6 @@ import { Account } from 'chainx.js';
 import { createAccount } from '../../messaging';
 import ErrorMessage from '../ErrorMessage';
 import WarningMessage from '../WarningMessage';
-import './index.scss';
 import { useRedux } from '../../shared';
 
 function NameAndPassword(props) {
