@@ -112,7 +112,7 @@ function Header(props: any) {
     setNetwork(!isTestNet);
     setIsTestNet({ isTestNet: !isTestNet });
     setShowNodeListArea(false);
-    props.history.push('/')
+    props.history.push('/');
   }
 
   return (

@@ -1,3 +1,5 @@
+export const CHAINX_ORIGIN_PAGE = 'chainx.page';
+export const CHAINX_ORIGIN_CONTENT = 'chainx.content';
 export const PORT_CONTENT = 'chainx-content';
 export const PORT_POPUP = 'chainx-popup';
 export const PORT_NOTIFICATION = 'chainx-notification';

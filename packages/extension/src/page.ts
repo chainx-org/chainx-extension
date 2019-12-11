@@ -7,7 +7,9 @@ import {
   CHAINX_SETTINGS_NETWORK_CHANGE,
   CHAINX_TRANSACTION_CALL_REQUEST,
   CHAINX_TRANSACTION_SEND,
-  CHAINX_TRANSACTION_SIGN_AND_SEND
+  CHAINX_TRANSACTION_SIGN_AND_SEND,
+  CHAINX_ORIGIN_PAGE,
+  CHAINX_ORIGIN_CONTENT
 } from '@chainx/extension-defaults';
 
 const accountChangeListeners: Array<any> = [];
@@ -17,7 +19,7 @@ const callbackHandlers: Object = {};
 
 window.addEventListener('message', ({ source, data }): void => {
   // only allow messages from our window, by the inject
-  if (source !== window || data.origin !== 'content') {
+  if (source !== window || data.origin !== CHAINX_ORIGIN_CONTENT) {
     return;
   }
 
@@ -95,7 +97,10 @@ function sendMessage(message: any, request: any = null): Promise<any> {
 
     handlers[id] = { resolve, reject };
 
-    window.postMessage({ id, message, origin: 'page', request }, '*');
+    window.postMessage(
+      { id, message, origin: CHAINX_ORIGIN_PAGE, request },
+      '*'
+    );
   });
 }
 
@@ -107,7 +112,7 @@ function sendMessageWithCallback(
   const id = `chainx.page.${Date.now()}.${++idCounter}`;
   callbackHandlers[id] = callback;
 
-  window.postMessage({ id, message, origin: 'page', request }, '*');
+  window.postMessage({ id, message, origin: CHAINX_ORIGIN_PAGE, request }, '*');
 }
 
 async function enable(): Promise<any> {
