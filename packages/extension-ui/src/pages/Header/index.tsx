@@ -118,19 +118,13 @@ function Header(props: any) {
   return (
     <div className="header">
       <div className="container container-header">
-        {props.location.pathname.indexOf('requestSign') > -1 ? (
-          <div>
-            <img className="logo" src={logo} alt="logo" />
-          </div>
-        ) : (
-          <Link to="/">
-            <img className="logo" src={logo} alt="logo" />
-            {isTestNet && (
-              <img className="testnet" src={testNetImg} alt="testNetImg" />
-            )}
-          </Link>
-        )}
-        {props.history.location.pathname.indexOf('requestSign') > -1 ? (
+        <Link to="/">
+          <img className="logo" src={logo} alt="logo" />
+          {isTestNet && (
+            <img className="testnet" src={testNetImg} alt="testNetImg" />
+          )}
+        </Link>
+        {props.history.location.pathname.includes('requestSign') ? (
           <div className="center-title">
             <span>Sign Request</span>
           </div>

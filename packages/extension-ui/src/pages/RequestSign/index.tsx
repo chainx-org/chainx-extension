@@ -9,9 +9,14 @@ import ErrorMessage from '../../components/ErrorMessage';
 import './requestSign.scss';
 import { PrimaryButton, DefaultButton, Slider } from '@chainx/ui';
 import { setLoading } from '../../store/reducers/statusSlice';
+import { fetchIntentions } from '../../store/reducers/intentionSlice';
+import { fetchTradePairs, fetchFee } from '../../store/reducers/tradeSlice';
 import { useDispatch } from 'react-redux';
 import Transfer from './Transfer';
 import CommonTx from './CommonTx';
+import Trade from './Trade';
+import AssetsProcess from './AssetsProcess';
+import Staking from './Staking';
 
 function RequestSign(props: any) {
   const dispatch = useDispatch();
@@ -32,11 +37,24 @@ function RequestSign(props: any) {
     location: { query }
   } = props;
 
+  if (!query) {
+    return <></>;
+  }
+
   const { address, module, method } = query;
 
   useEffect(() => {
     getCurrentAccount();
     getCurrentGas(isTestNet, query, setErrMsg, setCurrentGas);
+    if (module === 'xStaking') {
+      dispatch(fetchIntentions(isTestNet));
+    }
+    if (module === 'xSpot') {
+      dispatch(fetchTradePairs(isTestNet));
+    }
+    if (module === 'xAssetsProcess') {
+      dispatch(fetchFee(isTestNet));
+    }
   }, [isTestNet]);
 
   const getCurrentAccount = async () => {
@@ -96,9 +114,37 @@ function RequestSign(props: any) {
     return (acceleration * currentGas) / 10 ** 8 + ' PCX';
   };
 
+  // xStaking
+  // 投票，切换投票，赎回，解冻，提息
+  // nominate, renominate, unnominate, unfreeze, claim
+  // 切换投票页面不一样
+  // this.api.tx.xStaking.nominate(target, value, memo);
+  // this.api.tx.xStaking.renominate(from, to, value, memo);
+  // this.api.tx.xStaking.unnominate(target, value, memo);
+  // this.api.tx.xStaking.unfreeze(target, revocationIndex);
+  // this.api.tx.xStaking.claim(target);
+
+  // xAssetsProcess(Asset.js)
+  // 提现，取消提现
+  // withdraw, revokeWithdraw
+  // this.api.tx.xAssetsProcess.withdraw(token, value, addr, ext);
+  // this.api.tx.xAssetsProcess.revokeWithdraw(id);
+
+  // xSpot(Trade.js)
+  // 挂单，撤单
+  // putOrder, cancelOrder
+  // this.api.tx.xSpot.putOrder(pairid, ordertype, direction, amount, price);
+  // this.api.tx.xSpot.cancelOrder(pairid, index);
+
   let txPanel: any = null;
   if (module === 'xAssets' && method === 'transfer') {
     txPanel = <Transfer query={query} />;
+  } else if (module === 'xSpot') {
+    txPanel = <Trade query={query} />;
+  } else if (module === 'xAssetsProcess') {
+    txPanel = <AssetsProcess query={query} />;
+  } else if (module === 'xStaking') {
+    txPanel = <Staking query={query} />;
   } else {
     txPanel = <CommonTx query={query} />;
   }
@@ -121,7 +167,7 @@ function RequestSign(props: any) {
         <div className="adjust-gas-desc">
           <div>
             <span>Fee</span>
-            <span>{getCurrentGasText()}</span>
+            <span className="yellow">{getCurrentGasText()}</span>
           </div>
           <span>More fee, faster speed</span>
         </div>

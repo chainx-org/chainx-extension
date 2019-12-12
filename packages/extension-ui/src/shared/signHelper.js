@@ -41,6 +41,7 @@ export const getCurrentGas = async (
 ) => {
   const node = await getCurrentChainxNode(isTestNet);
   const chainx = await setChainx(node.url);
+  await chainx.isRpcReady();
   const _currentAccount = await getCurrentChainxAccount(isTestNet);
 
   const { address, module, method, args } = query;

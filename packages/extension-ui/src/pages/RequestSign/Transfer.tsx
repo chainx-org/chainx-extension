@@ -7,11 +7,7 @@ export default function(props) {
 
   return (
     <div className="detail">
-      <div className="detail-item">
-        <span>Operation</span>
-        <span>{query.method}</span>
-      </div>
-      <div className="detail-item">
+      <div className="detail-amount">
         <span>Amount</span>
         <span>
           {toPrecision(query.args[2], pcxPrecision)} {query.args[1]}
