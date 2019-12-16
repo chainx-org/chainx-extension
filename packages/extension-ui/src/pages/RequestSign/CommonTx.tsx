@@ -1,10 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { intentionsSelector } from '../../store/reducers/intentionSlice';
 
 export default function(props) {
   const { query } = props;
-  const intentions = useSelector(intentionsSelector);
 
   return (
     <div className="detail">
@@ -15,10 +12,6 @@ export default function(props) {
       <div className="detail-item">
         <span>Method</span>
         <span>{query.method}</span>
-      </div>
-      <div className="detail-item">
-        <span>Test</span>
-        <span>{intentions && intentions[query.args[0]]}</span>
       </div>
       <div className="detail-item">
         <span>Args</span>
