@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import {
-  signTransaction,
-  rejectSign,
-  getCurrentChainxAccount
-} from '../../messaging';
-import { useRedux, getCurrentGas, getSignRequest } from '../../shared';
+import React, { useEffect, useState } from 'react';
+import { rejectSign, signTransaction } from '../../messaging';
+import { getCurrentGas, getSignRequest, useRedux } from '../../shared';
 import ErrorMessage from '../../components/ErrorMessage';
 import './requestSign.scss';
-import { PrimaryButton, DefaultButton, Slider } from '@chainx/ui';
+import { DefaultButton, PrimaryButton, Slider } from '@chainx/ui';
 import { setLoading } from '../../store/reducers/statusSlice';
 import { fetchIntentions } from '../../store/reducers/intentionSlice';
-import { fetchTradePairs, fetchFee } from '../../store/reducers/tradeSlice';
+import { fetchFee, fetchTradePairs } from '../../store/reducers/tradeSlice';
 import { useDispatch } from 'react-redux';
 import Transfer from './Transfer';
 import CommonTx from './CommonTx';
@@ -25,7 +21,7 @@ function RequestSign(props: any) {
   const [currentGas, setCurrentGas] = useState(0);
   const [acceleration, setAcceleration] = useState(1);
   const [{ isTestNet }] = useRedux('isTestNet');
-  const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount', {
+  const [{ currentAccount }] = useRedux('currentAccount', {
     address: '',
     name: ''
   });
@@ -44,7 +40,6 @@ function RequestSign(props: any) {
   const { address, module, method } = query;
 
   useEffect(() => {
-    getCurrentAccount();
     getCurrentGas(isTestNet, query, setErrMsg, setCurrentGas);
     if (module === 'xStaking') {
       dispatch(fetchIntentions(isTestNet));
@@ -57,10 +52,6 @@ function RequestSign(props: any) {
     }
   }, [isTestNet]);
 
-  const getCurrentAccount = async () => {
-    const result = await getCurrentChainxAccount(isTestNet);
-    setCurrentAccount({ currentAccount: result });
-  };
 
   const check = () => {
     if (!pass) {
