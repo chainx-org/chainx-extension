@@ -11,7 +11,6 @@ import {
   removeChainxNode,
   setChainxCurrentAccount,
   setChainxNode,
-  signMessage,
   setNetwork,
   getSettings
 } from './popup';
@@ -28,7 +27,6 @@ export {
   getCurrentChainxNode,
   removeChainxNode,
   createChainxNode,
-  signMessage,
   getAllAccounts,
   createAccount,
   createAccountFromPrivateKey,
