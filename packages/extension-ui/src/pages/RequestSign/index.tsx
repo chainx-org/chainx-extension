@@ -52,7 +52,6 @@ function RequestSign(props: any) {
     }
   }, [isTestNet]);
 
-
   const check = () => {
     if (!pass) {
       setErrMsg('password is required');

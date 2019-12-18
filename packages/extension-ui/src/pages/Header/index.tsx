@@ -44,7 +44,7 @@ function Header(props: any) {
     0
   );
 
-  console.log(props)
+  console.log(props);
 
   useEffect(() => {
     updateNodeStatus(
@@ -128,7 +128,11 @@ function Header(props: any) {
         </Link>
         {props.history.location.pathname.includes('requestSign') ? (
           <div className="center-title">
-            <span>{(props.history.location.query && props.history.location.query.method) || 'Sign Request'}</span>
+            <span>
+              {(props.history.location.query &&
+                props.history.location.query.method) ||
+                'Sign Request'}
+            </span>
           </div>
         ) : (
           <div className="right">

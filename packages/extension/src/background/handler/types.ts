@@ -8,9 +8,7 @@ export interface MessageRequest {
 export interface ChainxCallRequest {
   id: string;
   address: string; // 用于确定是那个账户的请求
-  module: 'xAssets' | 'xStaking';
-  method: string;
-  args: Array<any>;
+  data: string; // 待签名的raw hex
   needBroadcast: boolean; // 是否要求发送上链
   isTestNet: boolean;
 }

@@ -1,3 +1,4 @@
+const { Extrinsic } = require('@chainx/types');
 import handleContent from './content';
 import handlePopup from './popup';
 import handleNotification, { setIdPort } from './notification';
@@ -8,7 +9,6 @@ import {
   PORT_NOTIFICATION,
   PORT_POPUP
 } from '@chainx/extension-defaults';
-import { getChainx } from '../chainx';
 import { settings, tx } from '../store';
 import notificationManager from '../notification-manager';
 import { getChainxAccountByAddress } from './common';
@@ -33,15 +33,14 @@ export function handleWithListen(
   { id, message, request }: MessageRequest,
   port: chrome.runtime.Port
 ): void {
-  if (port.name !== PORT_CONTENT) {
+  if (
+    port.name !== PORT_CONTENT ||
+    message !== CHAINX_TRANSACTION_SIGN_AND_SEND
+  ) {
     return;
   }
 
-  if (message !== CHAINX_TRANSACTION_SIGN_AND_SEND) {
-    return;
-  }
-
-  const { address, module, method, args } = request;
+  const { address, data } = request;
 
   const item = getChainxAccountByAddress(address);
   if (!item) {
@@ -58,27 +57,22 @@ export function handleWithListen(
     });
   }
 
-  const chainx = getChainx();
-  if (!chainx.api.tx[module]) {
+  try {
+    new Extrinsic(data);
+  } catch (e) {
     return port.postMessage({
       id,
       message,
       response: {
         err: {
-          code: codes.INVALID_MODULE,
-          msg: 'Invalid module'
+          code: codes.INVALID_DATA,
+          msg: 'Invalid data'
         },
         status: null
       }
     });
   }
-  if (!chainx.api.tx[module][method]) {
-    return port.postMessage({
-      id,
-      message,
-      response: { err: 'Invalid method', status: null }
-    });
-  }
+
   if (tx.toSign) {
     return port.postMessage({
       id,
@@ -99,9 +93,7 @@ export function handleWithListen(
   tx.setToSign({
     id,
     address,
-    module,
-    method,
-    args,
+    data,
     needBroadcast: true,
     isTestNet: settings.settings.isTestNet
   });

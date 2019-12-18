@@ -1,5 +1,5 @@
+const { Extrinsic } = require('@chainx/types');
 import { ChainxCallRequest, MessageRequest } from './types';
-import { getChainx } from '../chainx';
 import {
   getChainxAccountByAddress,
   getChainxCurrentNode,
@@ -11,8 +11,8 @@ import notificationManager from '../notification-manager';
 import {
   CHAINX_ACCOUNT_CURRENT,
   CHAINX_NODE_CURRENT,
-  CHAINX_TRANSACTION_CALL_REQUEST,
-  CHAINX_SETTINGS_GET
+  CHAINX_SETTINGS_GET,
+  CHAINX_TRANSACTION_CALL_REQUEST
 } from '@chainx/extension-defaults';
 import { simpleAccount } from './utils';
 
@@ -41,37 +41,31 @@ export default async function handleContent({
 async function requestSignTransaction({
   id,
   address,
-  module,
-  method,
-  args
+  data
 }: ChainxCallRequest) {
-  const chainx = getChainx();
-  if (!chainx.api.tx[module]) {
-    return Promise.reject({ message: 'Invalid module' });
-  }
-  if (!chainx.api.tx[module][method]) {
-    return Promise.reject({ message: 'Invalid method' });
-  }
-
   const item = getChainxAccountByAddress(address);
   if (!item) {
-    return Promise.reject({ message: 'Invalid address' });
+    throw { message: 'Invalid address' };
   }
 
   if (tx.toSign) {
-    return Promise.reject({ message: 'Sign transaction busy' });
+    throw { message: 'Sign transaction busy' };
   }
 
   if (!settings.settings) {
-    return Promise.reject({ message: 'Invalid network' });
+    throw { message: 'Invalid network' };
+  }
+
+  try {
+    new Extrinsic(data);
+  } catch (e) {
+    throw { message: 'Invalid data' };
   }
 
   tx.setToSign({
     id,
     address,
-    module,
-    method,
-    args,
+    data,
     needBroadcast: false,
     isTestNet: settings.settings.isTestNet
   });

@@ -140,17 +140,10 @@ async function getCurrentNode(): Promise<any> {
   return await sendMessage(CHAINX_NODE_CURRENT);
 }
 
-async function call(
-  address: string,
-  module: string,
-  method: string,
-  args: Array<any>
-) {
+async function call(address: string, data: string) {
   return await sendMessage(CHAINX_TRANSACTION_CALL_REQUEST, {
     address,
-    module,
-    method,
-    args
+    data
   });
 }
 
@@ -170,20 +163,12 @@ function listenNetworkChange(listener) {
   networkChangeListeners.push(listener);
 }
 
-function callAndSend(
-  address: string,
-  module: string,
-  method: string,
-  args: Array<any>,
-  callback: Function
-): void {
+function callAndSend(address: string, data: string, callback: Function): void {
   sendMessageWithCallback(
     CHAINX_TRANSACTION_SIGN_AND_SEND,
     {
       address,
-      module,
-      method,
-      args
+      data
     },
     callback
   );
