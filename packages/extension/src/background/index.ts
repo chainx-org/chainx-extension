@@ -51,7 +51,7 @@ extension.runtime.onConnect.addListener((port): void => {
         port.postMessage({ id: data.id, response });
       })
       .catch((error): void => {
-        port.postMessage({ id: data.id, error: error.message });
+        port.postMessage({ id: data.id, response: { err: error } });
       });
   });
 
