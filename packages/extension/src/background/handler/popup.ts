@@ -4,7 +4,6 @@ import {
   CHAINX_ACCOUNT_CURRENT,
   CHAINX_ACCOUNT_REMOVE,
   CHAINX_ACCOUNT_SELECT,
-  CHAINX_ACCOUNT_SIGN_MESSAGE,
   CHAINX_NODE_ALL,
   CHAINX_NODE_CREATE,
   CHAINX_NODE_CURRENT,
@@ -26,8 +25,7 @@ import {
   removeChainxNode,
   setChainxCurrentAccount,
   setChainxCurrentNode,
-  setNetwork,
-  signChainxMessage
+  setNetwork
 } from './common';
 
 export default function handlePopup({
@@ -43,8 +41,6 @@ export default function handlePopup({
       return removeChainxAccount(request.address, request.isTestNet);
     case CHAINX_ACCOUNT_SELECT:
       return setChainxCurrentAccount(request.address, request.isTestNet);
-    case CHAINX_ACCOUNT_SIGN_MESSAGE:
-      return signChainxMessage(request);
     case CHAINX_NODE_CREATE:
       return createChainxNode(request);
     case CHAINX_NODE_ALL:

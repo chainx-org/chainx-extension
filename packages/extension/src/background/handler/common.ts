@@ -1,11 +1,5 @@
-import {
-  AccountInfo,
-  ChainxAccountCreateRequest,
-  ChainxNode,
-  ChainxSignMessageRequest
-} from '../types';
+import { AccountInfo, ChainxAccountCreateRequest, ChainxNode } from '../types';
 import keyring, { KeyStore } from '../store/keyring';
-import { u8aToHex } from '@chainx/util';
 import nodes from '../store/nodes';
 import {
   CHAINX_ACCOUNT_CURRENT_CHANGE,
@@ -96,21 +90,6 @@ export function getChainxAccountByAddress(address: string): KeyStore | null {
     ? keyring.testNetAccounts
     : keyring.accounts;
   return accounts.find(item => item.address === address) || null;
-}
-
-export async function signChainxMessage({
-  address,
-  message,
-  password,
-  isTestNet
-}: ChainxSignMessageRequest): Promise<string> {
-  const signResult = await keyring.signMessage(
-    address,
-    message,
-    password,
-    isTestNet
-  );
-  return u8aToHex(signResult);
 }
 
 export async function createChainxNode({

@@ -6,7 +6,6 @@ import {
   CHAINX_ACCOUNT_CURRENT,
   CHAINX_ACCOUNT_REMOVE,
   CHAINX_ACCOUNT_SELECT,
-  CHAINX_ACCOUNT_SIGN_MESSAGE,
   CHAINX_NODE_ALL,
   CHAINX_NODE_CREATE,
   CHAINX_NODE_CURRENT,
@@ -34,20 +33,6 @@ export function sendMessage(message: string, request: any = {}): Promise<any> {
     handlers[id] = { resolve, reject };
 
     port.postMessage({ id, message, request });
-  });
-}
-
-export async function signMessage(
-  address: string,
-  message: string,
-  password: string,
-  isTestNet: boolean = false
-) {
-  return sendMessage(CHAINX_ACCOUNT_SIGN_MESSAGE, {
-    address,
-    message,
-    password,
-    isTestNet
   });
 }
 

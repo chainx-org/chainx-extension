@@ -9,7 +9,6 @@ export const CHAINX_ACCOUNT_SELECT = 'chainx.accounts.select'; // 设置目标�
 export const CHAINX_ACCOUNT_CURRENT = 'chainx.accounts.current'; // 获取当前账户
 export const CHAINX_ACCOUNT_CURRENT_CHANGE = 'chainx.accounts.change'; // 当前账户改变
 export const CHAINX_ACCOUNT_REMOVE = 'chainx.accounts.remove';
-export const CHAINX_ACCOUNT_SIGN_MESSAGE = 'chainx.accounts.sign.message';
 export const CHAINX_TRANSACTION_SIGN = 'chainx.transaction.sign';
 export const CHAINX_TRANSACTION_SIGN_AND_SEND = 'chainx.transaction.sign.send';
 export const CHAINX_TRANSACTION_CALL_REQUEST =
