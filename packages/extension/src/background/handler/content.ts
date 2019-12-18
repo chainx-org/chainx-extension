@@ -1,3 +1,5 @@
+import { codes } from './error';
+
 const { Extrinsic } = require('@chainx/types');
 import { ChainxCallRequest, MessageRequest } from './types';
 import {
@@ -45,21 +47,27 @@ async function requestSignTransaction({
 }: ChainxCallRequest) {
   const item = getChainxAccountByAddress(address);
   if (!item) {
-    throw { message: 'Invalid address' };
+    throw {
+      code: codes.INVALID_ADDRESS,
+      message: 'Invalid address'
+    };
   }
 
   if (tx.toSign) {
-    throw { message: 'Sign transaction busy' };
+    throw { code: codes.SIGN_BUSY, message: 'Sign transaction busy' };
   }
 
   if (!settings.settings) {
-    throw { message: 'Invalid network' };
+    throw { code: codes.INVALID_NETWORK, message: 'Invalid network' };
   }
 
   try {
     new Extrinsic(data);
   } catch (e) {
-    throw { message: 'Invalid data' };
+    throw {
+      code: codes.INVALID_SIGN_DATA,
+      message: 'Invalid data'
+    };
   }
 
   tx.setToSign({

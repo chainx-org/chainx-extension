@@ -65,7 +65,7 @@ export function handleWithListen(
       message,
       response: {
         err: {
-          code: codes.INVALID_DATA,
+          code: codes.INVALID_SIGN_DATA,
           msg: 'Invalid data'
         },
         status: null
