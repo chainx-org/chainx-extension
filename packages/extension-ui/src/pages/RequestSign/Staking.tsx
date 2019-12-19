@@ -8,8 +8,6 @@ export default function(props) {
   const { query } = props;
   const intentions = useSelector(intentionsSelector);
 
-  console.log(query);
-
   return (
     <div className="detail">
       {query.args.length > 2 ? (

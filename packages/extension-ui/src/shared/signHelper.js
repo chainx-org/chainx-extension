@@ -1,25 +1,25 @@
 import { getCurrentChainxAccount, getCurrentChainxNode } from '../messaging';
 import { setChainx } from '@chainx/extension/src/background/chainx';
 
+const getSubmittable = (query, chainx) => {
+  const { module, method, args } = query;
+  const call = chainx.api.tx[module][method];
+  if (!call) {
+    throw new Error('Invalid method');
+  }
+  if (method === 'putCode') {
+    args[1] = Uint8Array.from(Object.values(args[1]));
+  }
+  return call(...args);
+}
+
 export const getSignRequest = async (isTestNet, query, pass, acceleration) => {
   const node = await getCurrentChainxNode(isTestNet);
   const chainx = await setChainx(node.url);
   const currentAccount = await getCurrentChainxAccount(isTestNet);
 
-  const { id, module, method, args } = query;
-
-  const call = chainx.api.tx[module][method];
-
-  if (!call) {
-    throw new Error('Invalid method');
-  }
-
-  if (method === 'putCode') {
-    args[1] = Uint8Array.from(Object.values(args[1]));
-  }
-
+  const submittable = getSubmittable(query, chainx)
   const account = chainx.account.fromKeyStore(currentAccount.keystore, pass);
-  const submittable = call(...args);
   const nonce = await submittable.getNonce(account.publicKey());
   submittable.sign(account, {
     nonce: nonce.toNumber(),
@@ -27,7 +27,7 @@ export const getSignRequest = async (isTestNet, query, pass, acceleration) => {
   });
   const hex = submittable.toHex();
   const request = {
-    id: id,
+    id: query.id,
     hex: hex
   };
   return request;

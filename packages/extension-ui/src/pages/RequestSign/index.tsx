@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { rejectSign, signTransaction } from '../../messaging';
 import { getCurrentGas, getSignRequest, useRedux } from '../../shared';
+import { parseData } from '../../shared/extensionExtrinsic';
 import ErrorMessage from '../../components/ErrorMessage';
 import './requestSign.scss';
 import { DefaultButton, PrimaryButton, Slider } from '@chainx/ui';
@@ -20,6 +21,7 @@ function RequestSign(props: any) {
   const [errMsg, setErrMsg] = useState('');
   const [currentGas, setCurrentGas] = useState(0);
   const [acceleration, setAcceleration] = useState(1);
+  const [txPanel, setTxPanel] = useState(null);
   const [{ isTestNet }] = useRedux('isTestNet');
   const [{ currentAccount }] = useRedux('currentAccount', {
     address: '',
@@ -37,19 +39,9 @@ function RequestSign(props: any) {
     return <></>;
   }
 
-  const { address, module, method } = query;
-
+  const { address } = query;
   useEffect(() => {
-    getCurrentGas(isTestNet, query, setErrMsg, setCurrentGas);
-    if (module === 'xStaking') {
-      dispatch(fetchIntentions(isTestNet));
-    }
-    if (module === 'xSpot') {
-      dispatch(fetchTradePairs(isTestNet));
-    }
-    if (module === 'xAssetsProcess') {
-      dispatch(fetchFee(isTestNet));
-    }
+    parseQuery(isTestNet);
   }, [isTestNet]);
 
   const check = () => {
@@ -58,6 +50,61 @@ function RequestSign(props: any) {
       return false;
     }
     return true;
+  };
+
+  const fetchRelevantInfo = isTestNet => {
+    if (query.module === 'xStaking') {
+      dispatch(fetchIntentions(isTestNet));
+    }
+    if (query.module === 'xSpot') {
+      dispatch(fetchTradePairs(isTestNet));
+    }
+    if (query.module === 'xAssetsProcess') {
+      dispatch(fetchFee(isTestNet));
+    }
+  };
+  const parseQuery = isTestNet => {
+    // const hex = '0xe90281ff3f53e37c21e24df9cacc2ec69d010d144fe4dace6b2f087f466ade8b6b72278fc116af6b699bdeb55d265d7fa1828111106f1bac0814ab2432765e029b31976e3991300d94d4a5ec8411cd49f5a61fda0cbd9aeed39501cbe1913e51f55b910e0000040803ff7684c16db0c321ee15a297e20bab33279632dd7e288c6d66f16d73e185a4f9fc0c504358010000000000000094756e6973776170313536393733353332303134323832322e36303438363133363738323639'
+    if (!query.module) {
+      const [method, args] = parseData(query.data);
+      query.method = method;
+      query.args = args;
+      let module = '';
+      if (
+        ['nominate', 'renominate', 'unnominate', 'unfreeze', 'claim'].includes(
+          method
+        )
+      ) {
+        module = 'xStaking';
+      } else if (['withdraw', 'revokeWithdraw'].includes(method)) {
+        module = 'xAssetsProcess';
+      } else if (['putOrder', 'cancelOrder'].includes(method)) {
+        module = 'xSpot';
+      } else if (['transfer'].includes(method)) {
+        module = 'xAssets';
+      }
+      query.module = module;
+    }
+
+    updateTxPanel();
+    getCurrentGas(isTestNet, query, setErrMsg, setCurrentGas);
+    fetchRelevantInfo(isTestNet);
+  };
+
+  const updateTxPanel = () => {
+    let _txPanel;
+    if (query.module === 'xAssets' && query.method === 'transfer') {
+      _txPanel = <Transfer query={query} />;
+    } else if (query.module === 'xSpot') {
+      _txPanel = <Trade query={query} />;
+    } else if (query.module === 'xAssetsProcess') {
+      _txPanel = <AssetsProcess query={query} />;
+    } else if (query.module === 'xStaking') {
+      _txPanel = <Staking query={query} />;
+    } else {
+      _txPanel = <CommonTx query={query} />;
+    }
+    setTxPanel(_txPanel);
   };
 
   const sign = async () => {
@@ -94,6 +141,7 @@ function RequestSign(props: any) {
   const removeCurrentSign = async () => {
     try {
       await rejectSign(id);
+      props.history.push('/');
     } catch (e) {
       console.log(e);
       // window.close()
@@ -126,19 +174,6 @@ function RequestSign(props: any) {
   // this.api.tx.xSpot.putOrder(pairid, ordertype, direction, amount, price);
   // this.api.tx.xSpot.cancelOrder(pairid, index);
 
-  let txPanel: any = null;
-  if (module === 'xAssets' && method === 'transfer') {
-    txPanel = <Transfer query={query} />;
-  } else if (module === 'xSpot') {
-    txPanel = <Trade query={query} />;
-  } else if (module === 'xAssetsProcess') {
-    txPanel = <AssetsProcess query={query} />;
-  } else if (module === 'xStaking') {
-    txPanel = <Staking query={query} />;
-  } else {
-    txPanel = <CommonTx query={query} />;
-  }
-
   const marks = [
     {
       value: 1,
@@ -152,7 +187,7 @@ function RequestSign(props: any) {
 
   return (
     <div className="container request-sign">
-      {txPanel}
+      <div className="tx-panel">{txPanel}</div>
       <div className="adjust-gas">
         <div className="adjust-gas-desc">
           <div>

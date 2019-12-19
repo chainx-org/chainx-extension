@@ -4,6 +4,10 @@
   display: flex;
   flex-direction: column;
 
+  .tx-panel {
+    min-height: 144px;
+  }
+
   .adjust-gas {
     display: flex;
     flex-direction: column;

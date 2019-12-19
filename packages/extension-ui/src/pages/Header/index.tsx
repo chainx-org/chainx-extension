@@ -44,8 +44,6 @@ function Header(props: any) {
     0
   );
 
-  console.log(props);
-
   useEffect(() => {
     updateNodeStatus(
       setCurrentNode,
