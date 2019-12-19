@@ -127,9 +127,13 @@ function Header(props: any) {
         {props.history.location.pathname.includes('requestSign') ? (
           <div className="center-title">
             <span>
-              {(props.history.location.query &&
-                props.history.location.query.method) ||
-                'Sign Request'}
+              {(
+                (props.history.location.query &&
+                  props.history.location.query.method) ||
+                ''
+              )
+                .replace(/([A-Z])/g, ' ' + '$1')
+                .toLowerCase() || 'Sign Request'}
             </span>
           </div>
         ) : (
