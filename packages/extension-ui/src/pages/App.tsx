@@ -26,6 +26,7 @@ export default function App() {
   const [{}, setIsTestNet] = useRedux('isTestNet', false);
   const loading = useSelector(state => state.status.loading);
   const initLoading = useSelector(state => state.status.initLoading);
+  const homeLoading = useSelector(state => state.status.homeLoading);
   useEffect(() => {
     getSetting();
   }, []);
@@ -42,7 +43,7 @@ export default function App() {
     <Router>
       <React.Fragment>
         <Header props />
-        {(loading || initLoading) && (
+        {(loading || initLoading || homeLoading) && (
           <div className="spinner">
             <img src={spinner} alt="spinner" />
           </div>

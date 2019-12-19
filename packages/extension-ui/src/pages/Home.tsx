@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useOutsideClick, useRedux } from '../shared';
+import { useSelector, useDispatch } from 'react-redux';
+import { setHomeLoading } from '../store/reducers/statusSlice';
 import ClipboardJS from 'clipboard';
 import {
   getAllAccounts,
@@ -19,13 +21,14 @@ function Home(props: any) {
     name: '',
     keystore: {}
   });
+  const dispatch = useDispatch();
+  const homeLoading = useSelector(state => state.status.homeLoading);
   const [{}, setAccounts] = useRedux('accounts');
   const [{ isTestNet }] = useRedux('isTestNet');
   const [copySuccess, setCopySuccess] = useState('');
 
   useEffect(() => {
     setCopyEvent();
-    getAccountStatus();
     getUnapprovedTxs();
   }, [isTestNet]);
 
@@ -45,12 +48,15 @@ function Home(props: any) {
       }
     } catch (error) {
       console.log('sign request error occurs ', error);
+    } finally {
+      await getAccountStatus();
+      dispatch(setHomeLoading(false));
     }
   }
 
   async function getAccountStatus() {
-    getCurrentAccount();
-    getAccounts();
+    await getCurrentAccount();
+    await getAccounts();
   }
 
   async function getCurrentAccount() {
@@ -85,6 +91,10 @@ function Home(props: any) {
       });
     }
     setShowAccountAction(false);
+  }
+
+  if (homeLoading) {
+    return <></>;
   }
 
   return (
