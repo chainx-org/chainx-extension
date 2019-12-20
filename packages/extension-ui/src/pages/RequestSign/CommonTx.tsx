@@ -7,7 +7,9 @@ export default function(props) {
     <div className="detail">
       <div className="detail-item">
         <span>Module</span>
-        <span>{query.module}</span>
+        <span>{query.module
+                .toLowerCase()}
+        </span>
       </div>
       <div className="detail-item">
         <span>Method</span>
