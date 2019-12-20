@@ -1,7 +1,7 @@
 import extension from 'extensionizer';
 import { Popup } from './types';
 
-const NOTIFICATION_HEIGHT = 580;
+const NOTIFICATION_HEIGHT = 620;
 const NOTIFICATION_WIDTH = 358;
 
 class NotificationManager {
