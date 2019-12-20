@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { pairsSelector } from '../../store/reducers/tradeSlice';
 import toPrecision from '../../shared/toPrecision';
 import { pcxPrecision } from '../../shared/constants';
+import { replaceBTC } from '../../shared/chainx';
 
 export default function(props) {
   const { query } = props;
@@ -61,7 +62,9 @@ export default function(props) {
         <span>Trade pair</span>
         <span>
           {pairs[query.args[0]] &&
-            pairs[query.args[0]].assets + '/' + pairs[query.args[0]].currency}
+            replaceBTC(pairs[query.args[0]].assets) +
+              '/' +
+              replaceBTC(pairs[query.args[0]].currency)}
         </span>
       </div>
     </div>

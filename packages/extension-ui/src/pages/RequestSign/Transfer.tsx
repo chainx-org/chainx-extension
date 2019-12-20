@@ -1,6 +1,7 @@
 import React from 'react';
 import toPrecision from '../../shared/toPrecision';
 import { pcxPrecision } from '../../shared/constants';
+import { replaceBTC } from '../../shared/chainx';
 
 export default function(props) {
   const { query } = props;
@@ -10,7 +11,7 @@ export default function(props) {
       <div className="detail-amount">
         <span>Amount</span>
         <span>
-          {toPrecision(query.args[2], pcxPrecision)} {query.args[1]}
+          {toPrecision(query.args[2], pcxPrecision)} {replaceBTC(query.args[1])}
         </span>
       </div>
       <div className="detail-item">

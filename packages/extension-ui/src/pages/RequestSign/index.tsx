@@ -77,6 +77,9 @@ function RequestSign(props: any) {
         )
       ) {
         module = 'xStaking';
+        if (args.length === 1 && args[0].length < 6) {
+          module = 'xTokens';
+        }
       } else if (['withdraw', 'revokeWithdraw'].includes(method)) {
         module = 'xAssetsProcess';
       } else if (['putOrder', 'cancelOrder'].includes(method)) {
@@ -102,7 +105,7 @@ function RequestSign(props: any) {
       _txPanel = <Trade query={query} />;
     } else if (query.module === 'xAssetsProcess') {
       _txPanel = <AssetsProcess query={query} />;
-    } else if (query.module === 'xStaking') {
+    } else if (['xStaking', 'xTokens'].includes(query.module)) {
       _txPanel = <Staking query={query} />;
     } else {
       _txPanel = <CommonTx query={query} />;
