@@ -10,6 +10,7 @@ export default function(props) {
   const intentions = useSelector(intentionsSelector);
 
   const getPublicKey = (address) => {
+    console.log(address, typeof address)
     const chainx = getChainx()
     return chainx.account.decodeAddress(address)
   }
@@ -32,7 +33,7 @@ export default function(props) {
           )}
           <div className="detail-item">
             <span>Dest node</span>
-            <span>{intentions && intentions[getPublicKey(query.args.slice(-3, -2))]}</span>
+            <span>{intentions && intentions[getPublicKey(query.args.slice(-3, -2)[0])]}</span>
           </div>
           <div className="detail-item">
             <span>Memo</span>
