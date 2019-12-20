@@ -66,8 +66,9 @@ function RequestSign(props: any) {
   const parseQuery = isTestNet => {
     // const hex = '0xe90281ff3f53e37c21e24df9cacc2ec69d010d144fe4dace6b2f087f466ade8b6b72278fc116af6b699bdeb55d265d7fa1828111106f1bac0814ab2432765e029b31976e3991300d94d4a5ec8411cd49f5a61fda0cbd9aeed39501cbe1913e51f55b910e0000040803ff7684c16db0c321ee15a297e20bab33279632dd7e288c6d66f16d73e185a4f9fc0c504358010000000000000094756e6973776170313536393733353332303134323832322e36303438363133363738323639'
     if (!query.module) {
-      const [method, args] = parseData(query.data);
+      const [method, args, argsWithName] = parseData(query.data);
       query.method = method;
+      query.argsWithName = argsWithName;
       query.args = args;
       let module = '';
       if (
@@ -83,7 +84,7 @@ function RequestSign(props: any) {
       } else if (['transfer'].includes(method)) {
         module = 'xAssets';
       } else {
-        module = 'xContracts'
+        module = 'xContracts';
       }
       query.module = module;
     }
@@ -137,16 +138,19 @@ function RequestSign(props: any) {
     } catch (e) {
       dispatch(setLoading(false));
       setErrMsg(`Error: ${e.message}`);
+    } finally {
+      props.history.push('/');
     }
   };
 
   const removeCurrentSign = async () => {
     try {
       await rejectSign(id);
-      props.history.push('/');
     } catch (e) {
       console.log(e);
       // window.close()
+    } finally {
+      props.history.push('/');
     }
   };
 

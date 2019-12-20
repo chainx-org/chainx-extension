@@ -6,6 +6,7 @@
 
   .tx-panel {
     min-height: 144px;
+    overflow-y: scroll;
   }
 
   .adjust-gas {
@@ -86,6 +87,14 @@
           &:not(:first-of-type) {
             margin-top: 5px;
           }
+        }
+        .arg-name {
+          color: #AFB1B4;
+          font-size: 14px;
+        }
+        .arg-value {
+          font-size: 14px;
+          color: #3F3F3F;
         }
       }
     }

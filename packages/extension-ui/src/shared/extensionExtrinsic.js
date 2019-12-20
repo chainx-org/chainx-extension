@@ -22,6 +22,7 @@ export const parseData = data => {
   const ex = new Extrinsic(data);
   return [
     stringCamelCase(ex.methodName),
-    ex.argsArr.map(item => item.value.toString())
+    ex.argsArr.map(item => item.value.toString()),
+    ex.argsArr
   ];
 };
