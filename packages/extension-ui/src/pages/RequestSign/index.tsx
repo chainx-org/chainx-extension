@@ -82,6 +82,8 @@ function RequestSign(props: any) {
         module = 'xSpot';
       } else if (['transfer'].includes(method)) {
         module = 'xAssets';
+      } else {
+        module = 'xContracts'
       }
       query.module = module;
     }

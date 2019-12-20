@@ -11,7 +11,10 @@ export default function(props) {
       </div>
       <div className="detail-item">
         <span>Method</span>
-        <span>{query.method}</span>
+        <span>{query.method
+                .replace(/([A-Z])/g, '_' + '$1')
+                .toLowerCase()}
+        </span>
       </div>
       <div className="detail-item">
         <span>Args</span>
