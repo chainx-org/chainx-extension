@@ -58,7 +58,7 @@ export default function(props) {
         </div>
       )}
       <div className="detail-item">
-        <span>Tx pair</span>
+        <span>Trade pair</span>
         <span>
           {pairs[query.args[0]] &&
             pairs[query.args[0]].assets + '/' + pairs[query.args[0]].currency}
