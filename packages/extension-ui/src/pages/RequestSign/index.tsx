@@ -146,6 +146,10 @@ function RequestSign(props: any) {
     }
   };
 
+  window.onbeforeunload = function() {
+    removeCurrentSign()
+  }
+
   const removeCurrentSign = async () => {
     try {
       await rejectSign(id);
