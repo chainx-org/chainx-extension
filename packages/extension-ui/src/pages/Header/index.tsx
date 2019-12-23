@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import ClipboardJS from 'clipboard';
+import ReactTooltip from 'react-tooltip'
 import {
   updateNodeStatus,
   useRedux,
@@ -28,6 +29,7 @@ function Header(props: any) {
   const refAccountList = useRef<HTMLInputElement>(null);
   const [showNodeListArea, setShowNodeListArea] = useState(false);
   const [showAccountArea, setShowAccountArea] = useState(false);
+  const [copyText, setCopyText] = useState('Copy Address');
   const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount');
   const [{ accounts }] = useRedux('accounts');
   const [{ isTestNet }, setIsTestNet] = useRedux('isTestNet');
@@ -82,7 +84,10 @@ function Header(props: any) {
   }
 
   function setCopyEvent() {
-    new ClipboardJS('.account-copy');
+    const clipboard = new ClipboardJS('.account-copy');
+    clipboard.on('success', function() {
+      setCopyText('Copied!');
+    });
   }
 
   async function setNode(url: string) {
@@ -312,12 +317,19 @@ function Header(props: any) {
                               e.stopPropagation()
                               e.nativeEvent.stopImmediatePropagation()
                             }}
+                            data-tip
+                            data-for='happyFace'
                           >
                             <Icon
                               className="copy-icon"
                               name="copy"
                             />
                           </button>
+                          <ReactTooltip id='happyFace' place="top" effect="solid" globalEventOff="click"
+                            afterHide={() => setCopyText('Copy Address')}
+                          >
+                            <span>{copyText}</span>
+                          </ReactTooltip>
                         </div>
                       </div>
                     </div>
