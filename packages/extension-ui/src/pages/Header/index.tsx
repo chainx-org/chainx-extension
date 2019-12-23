@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import ClipboardJS from 'clipboard';
 import {
   updateNodeStatus,
   useRedux,
@@ -53,6 +54,7 @@ function Header(props: any) {
       isTestNet ? setTestDelayList : setDelayList,
       isTestNet
     );
+    setCopyEvent();
   }, [isTestNet]);
 
   useOutsideClick(refNodeList, () => {
@@ -77,6 +79,10 @@ function Header(props: any) {
     } else {
       return delayList;
     }
+  }
+
+  function setCopyEvent() {
+    new ClipboardJS('.account-copy');
   }
 
   async function setNode(url: string) {
@@ -298,7 +304,21 @@ function Header(props: any) {
                       <div className="account-item-active-flag" />
                       <div className="account-item-detail">
                         <span className="name">{item.name}</span>
-                        <DotInCenterStr value={item.address} />
+                        <div className="address">
+                          <DotInCenterStr value={item.address} />
+                          <button className="account-copy"
+                            data-clipboard-text={item.address}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              e.nativeEvent.stopImmediatePropagation()
+                            }}
+                          >
+                            <Icon
+                              className="copy-icon"
+                              name="copy"
+                            />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}
