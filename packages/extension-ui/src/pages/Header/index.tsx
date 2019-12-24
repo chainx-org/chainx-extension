@@ -29,7 +29,7 @@ function Header(props: any) {
   const refAccountList = useRef<HTMLInputElement>(null);
   const [showNodeListArea, setShowNodeListArea] = useState(false);
   const [showAccountArea, setShowAccountArea] = useState(false);
-  const [copyText, setCopyText] = useState('Copy Address');
+  const [copyText, setCopyText] = useState('Copy');
   const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount');
   const [{ accounts }] = useRedux('accounts');
   const [{ isTestNet }, setIsTestNet] = useRedux('isTestNet');
@@ -318,15 +318,16 @@ function Header(props: any) {
                               e.nativeEvent.stopImmediatePropagation()
                             }}
                             data-tip
-                            data-for='happyFace'
+                            data-for='copy-address-tooltip'
                           >
                             <Icon
                               className="copy-icon"
                               name="copy"
                             />
                           </button>
-                          <ReactTooltip id='happyFace' place="top" effect="solid" globalEventOff="click"
-                            afterHide={() => setCopyText('Copy Address')}
+                          <ReactTooltip id='copy-address-tooltip' effect="solid" globalEventOff="click"
+                            className="extension-tooltip"
+                            afterHide={() => setCopyText('Copy')}
                           >
                             <span>{copyText}</span>
                           </ReactTooltip>
