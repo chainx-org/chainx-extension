@@ -72,7 +72,7 @@ function RequestSign(props: any) {
       query.args = args;
       let module = '';
       if (
-        ['nominate', 'renominate', 'unnominate', 'unfreeze', 'claim'].includes(
+        ['nominate', 'renominate', 'unnominate', 'unfreeze', 'claim', 'register'].includes(
           method
         )
       ) {
@@ -167,13 +167,14 @@ function RequestSign(props: any) {
 
   // xStaking
   // 投票，切换投票，赎回，解冻，提息
-  // nominate, renominate, unnominate, unfreeze, claim
+  // nominate, renominate, unnominate, unfreeze, claim, register
   // 切换投票页面不一样
   // this.api.tx.xStaking.nominate(target, value, memo);
   // this.api.tx.xStaking.renominate(from, to, value, memo);
   // this.api.tx.xStaking.unnominate(target, value, memo);
   // this.api.tx.xStaking.unfreeze(target, revocationIndex);
   // this.api.tx.xStaking.claim(target);
+  // this.api.tx.xStaking.register(name);
 
   // xAssetsProcess(Asset.js)
   // 提现，取消提现
