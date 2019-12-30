@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import ClipboardJS from 'clipboard';
-import ReactTooltip from 'react-tooltip'
+import ReactTooltip from 'react-tooltip';
 import {
   updateNodeStatus,
   useRedux,
@@ -311,21 +311,22 @@ function Header(props: any) {
                         <span className="name">{item.name}</span>
                         <div className="address">
                           <DotInCenterStr value={item.address} />
-                          <button className="account-copy"
+                          <button
+                            className="account-copy"
                             data-clipboard-text={item.address}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              e.nativeEvent.stopImmediatePropagation()
+                            onClick={e => {
+                              e.stopPropagation();
+                              e.nativeEvent.stopImmediatePropagation();
                             }}
                             data-tip
-                            data-for='copy-address-tooltip'
+                            data-for="copy-address-tooltip"
                           >
-                            <Icon
-                              className="copy-icon"
-                              name="copy"
-                            />
+                            <Icon className="copy-icon" name="copy" />
                           </button>
-                          <ReactTooltip id='copy-address-tooltip' effect="solid" globalEventOff="click"
+                          <ReactTooltip
+                            id="copy-address-tooltip"
+                            effect="solid"
+                            globalEventOff="click"
                             className="extension-tooltip"
                             afterHide={() => setCopyText('Copy')}
                           >

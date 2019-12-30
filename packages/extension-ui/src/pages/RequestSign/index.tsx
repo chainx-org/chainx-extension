@@ -147,8 +147,8 @@ function RequestSign(props: any) {
   };
 
   window.onbeforeunload = function() {
-    removeCurrentSign()
-  }
+    removeCurrentSign();
+  };
 
   const removeCurrentSign = async () => {
     try {
