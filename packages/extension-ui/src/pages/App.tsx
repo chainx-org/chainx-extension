@@ -41,7 +41,7 @@ export default function App() {
     const settings = await getSettings();
     setIsTestNet({ isTestNet: settings.isTestNet });
     const node = await getCurrentChainxNode(settings.isTestNet);
-    Promise.race([setChainx(node.url), sleep(3000)])
+    Promise.race([await setChainx(node.url), sleep(3000)])
     .catch((e) => {
       console.log(`set Chainx catch error: ${e}`)
     })
