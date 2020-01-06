@@ -71,6 +71,7 @@ function RequestSign(props: any) {
       query.argsWithName = argsWithName;
       query.args = args;
       let module = '';
+      const contractMethods = ["putCode", "call", "instantiate", "claimSurcharge", "convertToErc20", "convertToAsset", "setTokenErc20", "setErc20Selector", "removeTokenErc20", "forceIssueErc20", "setGasPrice", "setPrintln"]
       if (
         ['nominate', 'renominate', 'unnominate', 'unfreeze', 'claim', 'register'].includes(
           method
@@ -86,8 +87,10 @@ function RequestSign(props: any) {
         module = 'xSpot';
       } else if (['transfer'].includes(method)) {
         module = 'xAssets';
-      } else {
+      } else if (contractMethods.includes(method)) {
         module = 'xContracts';
+      } else {
+        module = '';
       }
       query.module = module;
     }
