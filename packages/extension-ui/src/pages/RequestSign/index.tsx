@@ -71,11 +71,29 @@ function RequestSign(props: any) {
       query.argsWithName = argsWithName;
       query.args = args;
       let module = '';
-      const contractMethods = ["putCode", "call", "instantiate", "claimSurcharge", "convertToErc20", "convertToAsset", "setTokenErc20", "setErc20Selector", "removeTokenErc20", "forceIssueErc20", "setGasPrice", "setPrintln"]
+      const contractMethods = [
+        'putCode',
+        'call',
+        'instantiate',
+        'claimSurcharge',
+        'convertToErc20',
+        'convertToAsset',
+        'setTokenErc20',
+        'setErc20Selector',
+        'removeTokenErc20',
+        'forceIssueErc20',
+        'setGasPrice',
+        'setPrintln'
+      ];
       if (
-        ['nominate', 'renominate', 'unnominate', 'unfreeze', 'claim', 'register'].includes(
-          method
-        )
+        [
+          'nominate',
+          'renominate',
+          'unnominate',
+          'unfreeze',
+          'claim',
+          'register'
+        ].includes(method)
       ) {
         module = 'xStaking';
         if (args.length === 1 && args[0].length < 6) {

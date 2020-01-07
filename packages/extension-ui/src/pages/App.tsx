@@ -33,21 +33,21 @@ export default function App() {
 
   const sleep = time => {
     return new Promise(resolve => {
-      setTimeout(resolve, time)
-    })
-  }
+      setTimeout(resolve, time);
+    });
+  };
 
   const getSetting = async () => {
     const settings = await getSettings();
     setIsTestNet({ isTestNet: settings.isTestNet });
     const node = await getCurrentChainxNode(settings.isTestNet);
     Promise.race([await setChainx(node.url), sleep(3000)])
-    .catch((e) => {
-      console.log(`set Chainx catch error: ${e}`)
-    })
-    .finally(() => {
-      dispatch(setInitLoading(false))
-    })
+      .catch(e => {
+        console.log(`set Chainx catch error: ${e}`);
+      })
+      .finally(() => {
+        dispatch(setInitLoading(false));
+      });
   };
 
   return (
