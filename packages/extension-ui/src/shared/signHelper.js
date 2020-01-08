@@ -1,5 +1,5 @@
-import { getCurrentChainxAccount, getCurrentChainxNode } from '../messaging';
-import { setChainx } from '@chainx/extension/src/background/chainx';
+import { getCurrentChainxAccount } from '../messaging';
+import { getChainx } from './chainx';
 import { compactAddLength } from '@chainx/util';
 
 const getSubmittable = (query, chainx) => {
@@ -16,8 +16,7 @@ const getSubmittable = (query, chainx) => {
 };
 
 export const getSignRequest = async (isTestNet, query, pass, acceleration) => {
-  const node = await getCurrentChainxNode(isTestNet);
-  const chainx = await setChainx(node.url);
+  const chainx = getChainx();
   const currentAccount = await getCurrentChainxAccount(isTestNet);
 
   const submittable = getSubmittable(query, chainx);
@@ -41,9 +40,7 @@ export const getCurrentGas = async (
   setErrMsg,
   setCurrentGas
 ) => {
-  const node = await getCurrentChainxNode(isTestNet);
-  const chainx = await setChainx(node.url);
-  await chainx.isRpcReady();
+  const chainx = getChainx();
   const _currentAccount = await getCurrentChainxAccount(isTestNet);
 
   const { address, module, method, args } = query;

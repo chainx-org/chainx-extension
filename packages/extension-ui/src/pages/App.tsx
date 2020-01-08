@@ -9,7 +9,8 @@ import RequestSign from './RequestSign';
 import ShowPrivateKey from './ShowPrivateKey/index';
 import EnterPassword from './EnterPassword';
 import NodeAction from './NodeAction';
-import { useRedux, setChainx } from '../shared';
+import NodeError from './NodeAction/NodeError';
+import { useRedux, setChainx, sleep } from '../shared';
 import { useDispatch } from 'react-redux';
 import { getCurrentChainxNode } from '../messaging';
 import { getSettings } from '../messaging/index';
@@ -31,23 +32,17 @@ export default function App() {
     getSetting();
   }, []);
 
-  const sleep = time => {
-    return new Promise(resolve => {
-      setTimeout(resolve, time)
-    })
-  }
-
   const getSetting = async () => {
     const settings = await getSettings();
     setIsTestNet({ isTestNet: settings.isTestNet });
     const node = await getCurrentChainxNode(settings.isTestNet);
-    Promise.race([await setChainx(node.url), sleep(3000)])
-    .catch((e) => {
-      console.log(`set Chainx catch error: ${e}`)
-    })
-    .finally(() => {
-      dispatch(setInitLoading(false))
-    })
+    Promise.race([setChainx(node.url), sleep(5000)])
+      .catch(e => {
+        console.log(`set Chainx catch error: ${e}`);
+      })
+      .finally(() => {
+        dispatch(setInitLoading(false));
+      });
   };
 
   return (
@@ -69,6 +64,7 @@ export default function App() {
               <Route path="/showPrivateKey" component={ShowPrivateKey} />
               <Route path="/enterPassword" component={EnterPassword} />
               <Route path="/addNode" component={NodeAction} />
+              <Route path="/nodeError" component={NodeError} />
               <Redirect to={redirectUrl} />
             </Switch>
           </div>

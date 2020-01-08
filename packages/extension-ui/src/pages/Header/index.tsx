@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import ClipboardJS from 'clipboard';
 import ReactTooltip from 'react-tooltip';
@@ -6,7 +7,9 @@ import {
   updateNodeStatus,
   useRedux,
   useOutsideClick,
-  isCurrentNodeInit
+  isCurrentNodeInit,
+  sleep,
+  setChainx
 } from '../../shared';
 import {
   setChainxCurrentAccount,
@@ -16,6 +19,7 @@ import {
 import { NodeInfo } from '@chainx/extension-ui/types';
 import Icon from '../../components/Icon';
 import DotInCenterStr from '../../components/DotInCenterStr';
+import { setInitLoading } from '../../store/reducers/statusSlice';
 // @ts-ignore
 import logo from '../../assets/extension_logo.svg';
 // @ts-ignore
@@ -46,6 +50,7 @@ function Header(props: any) {
     'currentTestDelay',
     0
   );
+  const dispatch = useDispatch();
 
   useEffect(() => {
     updateNodeStatus(
@@ -91,7 +96,8 @@ function Header(props: any) {
   }
 
   async function setNode(url: string) {
-    await setChainxNode(url, isTestNet);
+    dispatch(setInitLoading(true));
+    await Promise.race([setChainxNode(url, isTestNet), sleep(2000)]);
     updateNodeStatus(
       setCurrentNode,
       isTestNet ? setCurrentTestDelay : setCurrentDelay,
@@ -101,6 +107,22 @@ function Header(props: any) {
       isTestNet
     );
     setShowNodeListArea(false);
+
+    Promise.race([setChainx(url), sleep(5000)])
+      .then(chainx => {
+        if (!chainx) {
+          props.history.push('/nodeError');
+        } else {
+          props.history.push('/redirect');
+        }
+      })
+      .catch(e => {
+        console.log('switch node error ', e);
+        props.history.push('/nodeError');
+      })
+      .finally(() => {
+        dispatch(setInitLoading(false));
+      });
   }
 
   function getDelayClass(delay: Number | string): string {
