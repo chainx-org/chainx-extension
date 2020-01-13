@@ -155,12 +155,27 @@ function listenAccountChange(listener) {
   accountChangeListeners.push(listener);
 }
 
+function removeAccountChangeListener(listener) {
+  const index = accountChangeListeners.findIndex(l => l === listener);
+  accountChangeListeners.splice(index, 1);
+}
+
 function listenNodeChange(listener) {
   nodeChangeListeners.push(listener);
 }
 
+function removeNodeChangeListener(listener) {
+  const index = nodeChangeListeners.findIndex(l => l === listener);
+  nodeChangeListeners.splice(index, 1);
+}
+
 function listenNetworkChange(listener) {
   networkChangeListeners.push(listener);
+}
+
+function removeNetworkChangeListener(listener) {
+  const index = networkChangeListeners.findIndex(l => l === listener);
+  networkChangeListeners.splice(index, 1);
 }
 
 function callAndSend(address: string, data: string, callback: Function): void {
@@ -180,8 +195,11 @@ window.chainxProvider = {
   signExtrinsic: call,
   signAndSendExtrinsic: callAndSend,
   listenAccountChange,
+  removeAccountChangeListener,
   listenNodeChange,
+  removeNodeChangeListener,
   listenNetworkChange,
+  removeNetworkChangeListener,
   getCurrentNode,
   sendExtrinsic,
   getSettings,
