@@ -4,7 +4,7 @@ import { getCurrentGas, getSignRequest, useRedux } from '../../shared';
 import { parseData } from '../../shared/extensionExtrinsic';
 import ErrorMessage from '../../components/ErrorMessage';
 import './requestSign.scss';
-import { DefaultButton, PrimaryButton, Slider } from '@chainx/ui';
+import { DefaultButton, PrimaryButton, Slider, TextInput } from '@chainx/ui';
 import { setLoading } from '../../store/reducers/statusSlice';
 import { fetchIntentions } from '../../store/reducers/intentionSlice';
 import { fetchFee, fetchTradePairs } from '../../store/reducers/tradeSlice';
@@ -250,15 +250,15 @@ function RequestSign(props: any) {
         <div className="title">
           <span>Input password</span>
         </div>
-        <input
+        <TextInput
           value={pass}
-          onChange={e => setPass(e.target.value)}
+          onChange={setPass}
           onKeyPress={event => {
             if (event.key === 'Enter') {
               sign();
             }
           }}
-          className="input"
+          className="fixed-width"
           type="password"
           placeholder="Password"
         />

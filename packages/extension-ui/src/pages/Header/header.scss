@@ -54,6 +54,7 @@
     
   }
   .node-list-area {
+    z-index: 1000;
     &.hide {
       display: none;
     }
@@ -157,6 +158,7 @@
     }
   }
   .account-area {
+    z-index: 1000;
     position: absolute;
     right: 20px;
     top: 70px;

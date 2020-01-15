@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { addChainxNode, removeChainxNode } from '../../messaging';
 import ErrorMessage from '../../components/ErrorMessage';
 import { useRedux, updateNodeStatus } from '../../shared';
+import { TextInput } from '@chainx/ui';
 import './nodeAction.scss';
 
 function AddNode(props: any) {
@@ -86,19 +87,17 @@ function AddNode(props: any) {
       <span className="title">{title}</span>
       {action !== 'remove' ? (
         <>
-          <input
-            className="input"
-            type="text"
+          <TextInput
+            className="fixed-width"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={setName}
             placeholder="Name(12 characters max)"
           />
           <span className="node-url">Node address</span>
-          <input
-            className="input"
-            type="text"
+          <TextInput
+            className="fixed-width"
             value={url}
-            onChange={e => setUrl(e.target.value)}
+            onChange={setUrl}
             onKeyPress={event => {
               if (event.key === 'Enter') {
                 enter();
