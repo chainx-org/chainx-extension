@@ -18,6 +18,10 @@ export async function createChainxAccount(
     ? keyring.testNetAccounts
     : keyring.accounts;
 
+  if (accounts.find(a => a.name === request.name)) {
+    return Promise.reject(`name ${request.name} existed`);
+  }
+
   if (accounts.find(account => account.address === request.address)) {
     await keyring.removeAccount(request.address, request.isTestNet);
   }

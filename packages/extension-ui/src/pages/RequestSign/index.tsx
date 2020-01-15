@@ -163,7 +163,7 @@ function RequestSign(props: any) {
       await signTransaction(request);
       setErrMsg('');
       dispatch(setLoading(false));
-      props.history.push('/')
+      props.history.push('/');
     } catch (e) {
       dispatch(setLoading(false));
       setErrMsg(`Error: ${e.message}`);
