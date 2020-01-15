@@ -88,6 +88,7 @@ function AddNode(props: any) {
       {action !== 'remove' ? (
         <>
           <TextInput
+            showClear={false}
             className="fixed-width"
             value={name}
             onChange={setName}
@@ -95,6 +96,7 @@ function AddNode(props: any) {
           />
           <span className="node-url">Node address</span>
           <TextInput
+            showClear={false}
             className="fixed-width"
             value={url}
             onChange={setUrl}

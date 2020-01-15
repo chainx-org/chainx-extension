@@ -251,6 +251,7 @@ function RequestSign(props: any) {
           <span>Input password</span>
         </div>
         <TextInput
+          showClear={false}
           value={pass}
           onChange={setPass}
           onKeyPress={event => {

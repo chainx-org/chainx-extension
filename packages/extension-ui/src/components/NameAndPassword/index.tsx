@@ -74,6 +74,7 @@ function NameAndPassword(props) {
     <Wrap>
       {inputList.map((item, i) =>
         <TextInput
+          showClear={false}
           key={i}
           className="fixed-width"
           type={item.type}
