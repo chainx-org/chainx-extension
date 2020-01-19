@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './ImportAccount.scss';
 import ErrorMessage from '../../components/ErrorMessage';
 import NameAndPassword from '../../components/NameAndPassword';
-import { TextInput } from '@chainx/ui'
+import { TextInput } from '@chainx/ui';
 
 function ImportAccount(props: any) {
   const [currentStep, setCurrentStep] = useState(0);
@@ -76,17 +76,17 @@ function ImportAccount(props: any) {
                 ))}
               </div>
             ) : (
-                <TextInput
-                  value={pk}
-                  onChange={value => setPk(value)}
-                  multiline={true}
-                  rows={4}
-                  onKeyPress={event => {
-                    if (event.key === 'Enter') {
-                      checkStep1();
-                    }
-                  }}
-                />
+              <TextInput
+                value={pk}
+                onChange={value => setPk(value)}
+                multiline={true}
+                rows={4}
+                onKeyPress={event => {
+                  if (event.key === 'Enter') {
+                    checkStep1();
+                  }
+                }}
+              />
             )
           ) : null}
           {currentStep === 1 && (

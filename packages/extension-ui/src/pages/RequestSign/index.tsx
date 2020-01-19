@@ -14,6 +14,7 @@ import CommonTx from './CommonTx';
 import Trade from './Trade';
 import AssetsProcess from './AssetsProcess';
 import Staking from './Staking';
+import toPrecision from '../../shared/toPrecision';
 
 function RequestSign(props: any) {
   const dispatch = useDispatch();
@@ -38,6 +39,11 @@ function RequestSign(props: any) {
   if (!query) {
     return <></>;
   }
+
+  useEffect(() => {
+    const fee = getCurrentGas(query.data, setErrMsg, acceleration);
+    setCurrentGas(fee);
+  }, [acceleration, query.data, setErrMsg]);
 
   const { address } = query;
   useEffect(() => {
@@ -113,7 +119,6 @@ function RequestSign(props: any) {
         }
         query.module = module;
         updateTxPanel();
-        getCurrentGas(isTestNet, query, setErrMsg, setCurrentGas);
         fetchRelevantInfo(isTestNet);
       } catch (error) {
         console.log('parse error ', error);
@@ -185,10 +190,6 @@ function RequestSign(props: any) {
     }
   };
 
-  const getCurrentGasText = () => {
-    return (acceleration * currentGas) / 10 ** 8 + ' PCX';
-  };
-
   // xStaking
   // 投票，切换投票，赎回，解冻，提息
   // nominate, renominate, unnominate, unfreeze, claim, register
@@ -230,7 +231,7 @@ function RequestSign(props: any) {
         <div className="adjust-gas-desc">
           <div>
             <span>Fee</span>
-            <span className="yellow">{getCurrentGasText()}</span>
+            <span className="yellow">{toPrecision(currentGas, 8)} PCX</span>
           </div>
           <span>More fee, faster speed</span>
         </div>

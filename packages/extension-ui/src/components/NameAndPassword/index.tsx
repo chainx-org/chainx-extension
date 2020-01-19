@@ -5,12 +5,12 @@ import ErrorMessage from '../ErrorMessage';
 import WarningMessage from '../WarningMessage';
 import { useRedux } from '../../shared';
 import { TextInput } from '@chainx/ui';
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 function NameAndPassword(props) {
   const { secret, onSuccess } = props;
@@ -66,13 +66,14 @@ function NameAndPassword(props) {
   };
 
   const inputList = [
-    {name: 'name', type: 'text', placeholder: 'Name(12 characters max)'},
-    {name: 'pass', type: 'password', placeholder: 'Password'},
-    {name: 'repass', type: 'password', placeholder: 'Password confirmation'}]
+    { name: 'name', type: 'text', placeholder: 'Name(12 characters max)' },
+    { name: 'pass', type: 'password', placeholder: 'Password' },
+    { name: 'repass', type: 'password', placeholder: 'Password confirmation' }
+  ];
 
   return (
     <Wrap>
-      {inputList.map((item, i) =>
+      {inputList.map((item, i) => (
         <TextInput
           showClear={false}
           key={i}
@@ -87,7 +88,7 @@ function NameAndPassword(props) {
             }
           }}
         />
-      )}
+      ))}
       <button
         className="button button-yellow margin-top-40"
         onClick={() => {

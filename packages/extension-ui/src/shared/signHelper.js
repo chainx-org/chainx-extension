@@ -1,6 +1,7 @@
 import { getCurrentChainxAccount } from '../messaging';
 import { getChainx } from './chainx';
 import { compactAddLength } from '@chainx/util';
+import { SubmittableExtrinsic } from 'chainx.js';
 
 const getSubmittable = (query, chainx) => {
   const { module, method, args } = query;
@@ -34,35 +35,12 @@ export const getSignRequest = async (isTestNet, query, pass, acceleration) => {
   return request;
 };
 
-export const getCurrentGas = async (
-  isTestNet,
-  query,
-  setErrMsg,
-  setCurrentGas
-) => {
+export const getCurrentGas = (hex, setErrMsg, acceleration) => {
   const chainx = getChainx();
-  const _currentAccount = await getCurrentChainxAccount(isTestNet);
-
-  const { address, module, method, args } = query;
-
-  const call = chainx.api.tx[module][method];
-
-  if (!call) {
-    setErrMsg('Invalid method');
-    return;
+  try {
+    const submittable = new SubmittableExtrinsic(chainx.api, hex);
+    return submittable.getFeeSync({ acceleration });
+  } catch (e) {
+    setErrMsg('Invalid transaction to sign');
   }
-
-  if (_currentAccount.address !== address) {
-    setErrMsg('Invalid address');
-    return;
-  }
-
-  if (method === 'putCode') {
-    args[1] = Uint8Array.from(Object.values(args[1]));
-  }
-
-  const submittable = call(...args);
-  const _currentGas = submittable.getFeeSync(_currentAccount.address, 1);
-
-  setCurrentGas(_currentGas);
 };

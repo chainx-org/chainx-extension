@@ -1,7 +1,7 @@
 const { Extrinsic: OriginExtrinsic } = require('@chainx/types');
 import { stringCamelCase } from '@chainx/util';
 
-class Extrinsic extends OriginExtrinsic {
+export class Extrinsic extends OriginExtrinsic {
   get methodName() {
     return this.meta.get('name').toString();
   }
