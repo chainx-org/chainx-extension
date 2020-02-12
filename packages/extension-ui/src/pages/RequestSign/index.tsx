@@ -16,7 +16,8 @@ import toPrecision from '../../shared/toPrecision';
 import {
   isPseduClaimSelector,
   isStakingClaimSelector,
-  toSignMethodNameSelector, toSignSelector
+  toSignMethodNameSelector,
+  toSignSelector
 } from '@chainx/extension-ui/store/reducers/txSlice';
 import {
   stakingMethodNames,
@@ -42,7 +43,7 @@ function RequestSign(props: any) {
   const isStakingClaim = useSelector(isStakingClaimSelector);
   const isPseduClaim = useSelector(isPseduClaimSelector);
 
-  const toSign = useSelector(toSignSelector)
+  const toSign = useSelector(toSignSelector);
 
   if (!toSign) {
     return <></>;

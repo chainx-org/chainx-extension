@@ -41,7 +41,7 @@ function Home(props: any) {
 
   useEffect(() => {
     if (toSign) {
-      props.history.push({ pathname: '/requestSign', });
+      props.history.push({ pathname: '/requestSign' });
     }
   }, [toSign]);
 

@@ -1,4 +1,4 @@
-const { Extrinsic: OriginExtrinsic } = require('@chainx/types');
+export const { Extrinsic: OriginExtrinsic } = require('@chainx/types');
 
 export class Extrinsic extends OriginExtrinsic {
   get methodName() {
