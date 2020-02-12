@@ -3,6 +3,7 @@ import './ImportAccount.scss';
 import ErrorMessage from '../../components/ErrorMessage';
 import NameAndPassword from '../../components/NameAndPassword';
 import { TextInput } from '@chainx/ui';
+import { Account } from 'chainx.js'
 
 function ImportAccount(props: any) {
   const [currentStep, setCurrentStep] = useState(0);
@@ -22,8 +23,8 @@ function ImportAccount(props: any) {
 
   const checkStep1 = () => {
     if (currentTabIndex === 0) {
-      if (mnemonicList.some(item => item === '')) {
-        setErrMsg('Mnemonic is not correct');
+      if (mnemonicList.some(item => item === '') || !Account.isMnemonicValid(mnemonicList.join(' '))) {
+        setErrMsg('Invalid mnemonic');
         return;
       }
     } else if (currentTabIndex === 1) {
