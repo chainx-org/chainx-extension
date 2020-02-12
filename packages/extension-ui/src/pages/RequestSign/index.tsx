@@ -15,6 +15,17 @@ import Trade from './Trade';
 import AssetsProcess from './AssetsProcess';
 import Staking from './Staking';
 import toPrecision from '../../shared/toPrecision';
+import { useSelector } from 'react-redux';
+import {
+  isPseduClaimSelector,
+  isStakingClaimSelector,
+  toSignMethodNameSelector
+} from '@chainx/extension-ui/store/reducers/txSlice';
+import {
+  stakingMethodNames,
+  xAssetsProcessCalls
+} from '@chainx/extension-ui/pages/RequestSign/constants';
+import PseduClaim from '@chainx/extension-ui/pages/RequestSign/PseduClaim';
 
 function RequestSign(props: any) {
   const dispatch = useDispatch();
@@ -29,12 +40,18 @@ function RequestSign(props: any) {
     name: ''
   });
 
+  const toSignMethodName = useSelector(toSignMethodNameSelector);
+  const isStakingClaim = useSelector(isStakingClaimSelector);
+  const isPseduClaim = useSelector(isPseduClaimSelector);
+
   const {
     match: {
       params: { id }
     },
-    location: { query }
+    location: { query: originQuery }
   } = props;
+
+  const query = { ...originQuery };
 
   if (!query) {
     return <></>;
@@ -60,7 +77,7 @@ function RequestSign(props: any) {
 
   const fetchRelevantInfo = isTestNet => {
     if (query.module === 'xStaking') {
-      dispatch(fetchIntentions(isTestNet));
+      dispatch(fetchIntentions());
     }
     if (query.module === 'xSpot') {
       dispatch(fetchTradePairs(isTestNet));
@@ -128,15 +145,29 @@ function RequestSign(props: any) {
   };
 
   const updateTxPanel = () => {
+    if (toSignMethodName === 'transfer') {
+      // @ts-ignore
+      return setTxPanel(<Transfer />);
+    }
+
+    if (xAssetsProcessCalls.includes(toSignMethodName)) {
+      // @ts-ignore
+      return setTxPanel(<AssetsProcess />);
+    }
+
+    if (stakingMethodNames.includes(toSignMethodName) || isStakingClaim) {
+      // @ts-ignore
+      return setTxPanel(<Staking />);
+    }
+
+    if (isPseduClaim) {
+      // @ts-ignore
+      return setTxPanel(<PseduClaim />);
+    }
+
     let _txPanel;
-    if (query.module === 'xAssets' && query.method === 'transfer') {
-      _txPanel = <Transfer query={query} />;
-    } else if (query.module === 'xSpot') {
+    if (query.module === 'xSpot') {
       _txPanel = <Trade query={query} />;
-    } else if (query.module === 'xAssetsProcess') {
-      _txPanel = <AssetsProcess query={query} />;
-    } else if (['xStaking', 'xTokens'].includes(query.module)) {
-      _txPanel = <Staking query={query} />;
     } else {
       _txPanel = <CommonTx query={query} />;
     }

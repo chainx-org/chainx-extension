@@ -2,6 +2,7 @@
   "name": "@chainx/extension-ui",
   "version": "1.0.0",
   "dependencies": {
+    "@chainx/types": "^2.22.31",
     "@babel/runtime": "^7.5.5",
     "@chainx/extension-defaults": "1.0.0",
     "@chainx/ui": "^0.0.25",

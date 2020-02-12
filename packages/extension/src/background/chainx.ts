@@ -21,6 +21,11 @@ export function sendExtrinsicAndResponse(
   const chainx = getChainx();
   const submittable = new SubmittableExtrinsic(chainx.api, hex);
   submittable.send(async (err, status) => {
+    if (!port.postMessage) {
+      console.error('port disconnected');
+      return;
+    }
+
     port.postMessage({
       id: id,
       message: message,

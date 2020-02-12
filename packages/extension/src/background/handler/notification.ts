@@ -80,6 +80,8 @@ export async function rejectSignTransaction({ id }: ChainxCallRequest) {
 }
 
 async function signTransaction({ id, hex }) {
+  console.log(id, hex);
+  debugger;
   if (tx.toSign && tx.toSign.needBroadcast) {
     return broadcastAndResponse(id, hex);
   }
@@ -130,6 +132,7 @@ function broadcastAndResponse(id, hex) {
     console.error(`Find no port for sign and send request ${id}`);
     return;
   }
+  debugger;
   sendExtrinsicAndResponse(
     { id, message: CHAINX_TRANSACTION_SIGN_AND_SEND, request: { hex } },
     port

@@ -1,38 +1,29 @@
 import { getCurrentChainxAccount } from '../messaging';
 import { getChainx } from './chainx';
-import { compactAddLength } from '@chainx/util';
 import { SubmittableExtrinsic } from 'chainx.js';
-
-const getSubmittable = (query, chainx) => {
-  const { module, method, args } = query;
-  const call = chainx.api.tx[module][method];
-  if (!call) {
-    throw new Error('Invalid method');
-  }
-  if (method === 'putCode') {
-    args[0] = args[0].toString();
-    args[1] = compactAddLength(args[1]);
-  }
-  return call(...args);
-};
+import { store } from '../store';
+import { toSignSelector } from '@chainx/extension-ui/store/reducers/txSlice';
 
 export const getSignRequest = async (isTestNet, query, pass, acceleration) => {
+  const state = store.getState();
   const chainx = getChainx();
   const currentAccount = await getCurrentChainxAccount(isTestNet);
 
-  const submittable = getSubmittable(query, chainx);
+  const { id, data } = toSignSelector(state);
+
+  const extrinsic = new SubmittableExtrinsic(chainx.api, data);
   const account = chainx.account.fromKeyStore(currentAccount.keystore, pass);
-  const nonce = await submittable.getNonce(account.publicKey());
-  submittable.sign(account, {
+  const nonce = await chainx.api.query.system.accountNonce(account.publicKey());
+  const signedExtrinsic = extrinsic.sign(account, {
     nonce: nonce.toNumber(),
-    acceleration: acceleration
+    acceleration: acceleration,
+    blockHash: chainx.api.genesisHash
   });
-  const hex = submittable.toHex();
-  const request = {
-    id: query.id,
+  const hex = signedExtrinsic.toHex();
+  return {
+    id,
     hex: hex
   };
-  return request;
 };
 
 export const getCurrentGas = (hex, setErrMsg, acceleration) => {

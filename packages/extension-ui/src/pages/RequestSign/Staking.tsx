@@ -1,83 +1,88 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { intentionsSelector } from '../../store/reducers/intentionSlice';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  fetchIntentions,
+  intentionAccountNameMapSelector
+} from '../../store/reducers/intentionSlice';
 import toPrecision from '../../shared/toPrecision';
 import { pcxPrecision } from '../../shared/constants';
-import { getChainx, replaceBTC } from '../../shared/chainx';
+import { getChainx } from '../../shared/chainx';
+import {
+  toSignArgsSelector,
+  toSignMethodNameSelector
+} from '../../store/reducers/txSlice';
+import { nominateMethodNames } from './constants';
+import DetailItem from './components/DetailItem';
+import DetailAmount from './components/DetailAmount';
 
-export default function(props) {
-  const { query } = props;
-  const intentions = useSelector(intentionsSelector);
+export default function() {
+  const intentionAccountNameMap = useSelector(intentionAccountNameMapSelector);
+  const chainx = getChainx();
+  const dispatch = useDispatch();
+
+  const methodName = useSelector(toSignMethodNameSelector);
+  const isNominateMethod = nominateMethodNames.includes(methodName);
+  const args = useSelector(toSignArgsSelector);
+
+  useEffect(() => {
+    dispatch(fetchIntentions());
+  }, [dispatch]);
 
   const getPublicKey = address => {
-    console.log(address, typeof address);
-    const chainx = getChainx();
-    return chainx.account.decodeAddress(address);
+    if (methodName && args && address) {
+      return chainx.account.decodeAddress(address);
+    }
   };
 
-  return (
-    <div className="detail">
-      {query.args.length > 2 ? (
-        <>
-          <div className="detail-amount">
-            <span>Amount</span>
-            <span>
-              {toPrecision(query.args.slice(-2, -1), pcxPrecision)} PCX
-            </span>
-          </div>
-          {query.method === 'renominate' && (
-            <div className="detail-item">
-              <span>From node</span>
-              <span>
-                {intentions && intentions[getPublicKey(query.args[0])]}
-              </span>
-            </div>
-          )}
-          <div className="detail-item">
-            <span>Dest node</span>
-            <span>
-              {intentions &&
-                intentions[getPublicKey(query.args.slice(-3, -2)[0])]}
-            </span>
-          </div>
-          <div className="detail-item">
-            <span>Memo</span>
-            <span>{query.args.slice(-1)}</span>
-          </div>
-        </>
-      ) : (
-        <>
-          {query.module === 'xTokens' && (
-            <div className="detail-item">
-              <span>Token</span>
-              <span>{replaceBTC(query.args[0])}</span>
-            </div>
-          )}
-          {query.method === 'register' ? (
-            <div className="detail-item">
-              <span>Name</span>
-              <span>{query.args[0]}</span>
-            </div>
-          ) : (
-            <>
-              {query.module === 'xStaking' && (
-                <div className="detail-item">
-                  <span>Node</span>
-                  <span>
-                    {intentions && intentions[getPublicKey(query.args[0])]}
-                  </span>
-                </div>
-              )}
-              {query.method === 'unfreeze' && (
-                <div className="detail-item">
-                  <span>Id</span>
-                  <span>{query.args[1]}</span>
-                </div>
-              )}
-            </>
-          )}
-        </>
+  const nominateMethodElement = (
+    <>
+      <DetailAmount
+        value={toPrecision(args.slice(-2, -1), pcxPrecision)}
+        token="PCX"
+      />
+      {methodName === 'renominate' && (
+        <DetailItem
+          label="From node"
+          value={intentionAccountNameMap[getPublicKey(args[0])]}
+        />
       )}
-    </div>
+      <DetailItem
+        label="Dest node"
+        value={intentionAccountNameMap[getPublicKey(args.slice(-3, -2)[0])]}
+      />
+      <DetailItem label="Memo" value={args.slice(-1)} />
+    </>
   );
+
+  const registerElement = <DetailItem label="Name" value={args[0]} />;
+
+  const unfreezeElement = (
+    <>
+      <DetailItem
+        label="Node"
+        value={intentionAccountNameMap[getPublicKey(args[0])]}
+      />
+      <DetailItem label="Id" value={args[1]} />
+    </>
+  );
+
+  // default ui. 现在claim在用这个
+  let element = (
+    <>
+      <DetailItem
+        label="Node"
+        value={intentionAccountNameMap[getPublicKey(args[0])]}
+      />
+    </>
+  );
+
+  if (isNominateMethod) {
+    element = nominateMethodElement;
+  } else if (methodName === 'register') {
+    element = registerElement;
+  } else if (methodName === 'unfreeze') {
+    element = unfreezeElement;
+  }
+
+  return <div className="detail">{element}</div>;
 }

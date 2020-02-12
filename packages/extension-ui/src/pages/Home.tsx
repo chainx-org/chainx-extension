@@ -12,6 +12,7 @@ import Icon from '../components/Icon';
 import './index.scss';
 // @ts-ignore
 import logo from '../assets/extension_logo.svg';
+import { setToSign } from '../store/reducers/txSlice';
 
 function Home(props: any) {
   const ref = useRef<HTMLInputElement>(null);
@@ -39,6 +40,8 @@ function Home(props: any) {
   async function getUnapprovedTxs() {
     try {
       const toSign = await getToSign();
+      dispatch(setToSign(toSign));
+
       if (toSign) {
         props.history.push({
           // @ts-ignore

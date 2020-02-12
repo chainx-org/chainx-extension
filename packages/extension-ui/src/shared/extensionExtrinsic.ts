@@ -11,6 +11,7 @@ export class Extrinsic extends OriginExtrinsic {
 
     const entries = this.method.get('args').entries();
     for (let [name, value] of entries) {
+      // @ts-ignore
       args.push({ name, value });
     }
 
@@ -19,6 +20,7 @@ export class Extrinsic extends OriginExtrinsic {
 }
 
 export const parseData = data => {
+  // @ts-ignore
   const ex = new Extrinsic(data);
   return [
     stringCamelCase(ex.methodName),
