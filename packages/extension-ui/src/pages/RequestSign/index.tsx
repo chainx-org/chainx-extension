@@ -16,7 +16,7 @@ import toPrecision from '../../shared/toPrecision';
 import {
   isPseduClaimSelector,
   isStakingClaimSelector,
-  toSignMethodNameSelector
+  toSignMethodNameSelector, toSignSelector
 } from '@chainx/extension-ui/store/reducers/txSlice';
 import {
   stakingMethodNames,
@@ -42,25 +42,17 @@ function RequestSign(props: any) {
   const isStakingClaim = useSelector(isStakingClaimSelector);
   const isPseduClaim = useSelector(isPseduClaimSelector);
 
-  const {
-    match: {
-      params: { id }
-    },
-    location: { query: originQuery }
-  } = props;
+  const toSign = useSelector(toSignSelector)
 
-  const query = { ...originQuery };
-
-  if (!query) {
+  if (!toSign) {
     return <></>;
   }
 
   useEffect(() => {
-    const fee = getCurrentGas(query.data, setErrMsg, acceleration);
+    const fee = getCurrentGas(toSign.data, setErrMsg, acceleration);
     setCurrentGas(fee);
-  }, [acceleration, query.data, setErrMsg]);
+  }, [acceleration, toSign.data, setErrMsg]);
 
-  const { address } = query;
   useEffect(() => {
     parseQuery(isTestNet);
   }, [isTestNet]);
@@ -119,7 +111,8 @@ function RequestSign(props: any) {
     if (!check()) {
       return;
     }
-    if (currentAccount.address !== address) {
+
+    if (currentAccount.address !== toSign.address) {
       setErrMsg('Invalid address');
       return;
     }
@@ -143,7 +136,7 @@ function RequestSign(props: any) {
 
   const removeCurrentSign = async () => {
     try {
-      await rejectSign(id);
+      await rejectSign(toSign.id);
     } catch (e) {
       console.log(e);
       // window.close()

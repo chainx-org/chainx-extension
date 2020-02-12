@@ -41,11 +41,7 @@ function Home(props: any) {
 
   useEffect(() => {
     if (toSign) {
-      props.history.push({
-        // @ts-ignore
-        pathname: '/requestSign/' + toSign.id,
-        query: toSign
-      });
+      props.history.push({ pathname: '/requestSign', });
     }
   }, [toSign]);
 
