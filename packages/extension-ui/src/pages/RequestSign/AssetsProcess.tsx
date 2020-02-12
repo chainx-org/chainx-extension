@@ -7,13 +7,15 @@ import {
   toSignArgsSelector,
   toSignMethodNameSelector
 } from '../../store/reducers/txSlice';
+import { useRedux } from '@chainx/extension-ui/shared';
 
 export default function() {
   const fee = useSelector(feeSelector);
   const dispatch = useDispatch();
+  const [{ isTestNet }] = useRedux('isTestNet');
 
   useEffect(() => {
-    dispatch(fetchFee());
+    dispatch(fetchFee(isTestNet));
   }, [dispatch]);
 
   const methodName = useSelector(toSignMethodNameSelector);

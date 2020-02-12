@@ -1,18 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useOutsideClick, useRedux } from '../shared';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setHomeLoading } from '../store/reducers/statusSlice';
 import ClipboardJS from 'clipboard';
-import {
-  getAllAccounts,
-  getCurrentChainxAccount,
-  getToSign
-} from '../messaging';
+import { getAllAccounts, getCurrentChainxAccount } from '../messaging';
 import Icon from '../components/Icon';
 import './index.scss';
 // @ts-ignore
 import logo from '../assets/extension_logo.svg';
-import { setToSign } from '../store/reducers/txSlice';
+import { fetchToSign, toSignSelector } from '../store/reducers/txSlice';
+import { fetchIntentions } from '@chainx/extension-ui/store/reducers/intentionSlice';
+import { fetchTradePairs } from '@chainx/extension-ui/store/reducers/tradeSlice';
 
 function Home(props: any) {
   const ref = useRef<HTMLInputElement>(null);
@@ -27,39 +25,34 @@ function Home(props: any) {
   const [{}, setAccounts] = useRedux('accounts');
   const [{ isTestNet }] = useRedux('isTestNet');
   const [copySuccess, setCopySuccess] = useState('');
+  const toSign = useSelector(toSignSelector);
 
   useEffect(() => {
     setCopyEvent();
-    getUnapprovedTxs();
+    dispatch(fetchToSign());
+    dispatch(fetchIntentions());
+    dispatch(fetchTradePairs(isTestNet));
+    getAccountInfo().then(() => console.log('Finished to get accounts info'));
   }, [isTestNet]);
 
   useOutsideClick(ref, () => {
     setShowAccountAction(false);
   });
 
-  async function getUnapprovedTxs() {
-    try {
-      const toSign = await getToSign();
-      dispatch(setToSign(toSign));
-
-      if (toSign) {
-        props.history.push({
-          // @ts-ignore
-          pathname: '/requestSign/' + toSign.id,
-          query: toSign
-        });
-      }
-    } catch (error) {
-      console.log('sign request error occurs ', error);
-    } finally {
-      await getAccountStatus();
-      dispatch(setHomeLoading(false));
+  useEffect(() => {
+    if (toSign) {
+      props.history.push({
+        // @ts-ignore
+        pathname: '/requestSign/' + toSign.id,
+        query: toSign
+      });
     }
-  }
+  }, [toSign]);
 
-  async function getAccountStatus() {
+  async function getAccountInfo() {
     await getCurrentAccount();
     await getAccounts();
+    dispatch(setHomeLoading(false));
   }
 
   async function getCurrentAccount() {

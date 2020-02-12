@@ -1,5 +1,4 @@
 const { Extrinsic: OriginExtrinsic } = require('@chainx/types');
-import { stringCamelCase } from '@chainx/util';
 
 export class Extrinsic extends OriginExtrinsic {
   get methodName() {
@@ -18,15 +17,3 @@ export class Extrinsic extends OriginExtrinsic {
     return args;
   }
 }
-
-export const parseData = data => {
-  // @ts-ignore
-  const ex = new Extrinsic(data);
-  return [
-    stringCamelCase(ex.methodName),
-    ex.argsArr.map(item =>
-      ex.methodName === 'put_code' ? item.value : item.value.toString()
-    ),
-    ex.argsArr
-  ];
-};

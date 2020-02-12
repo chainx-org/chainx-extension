@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { rejectSign, signTransaction } from '../../messaging';
 import { getCurrentGas, getSignRequest, useRedux } from '../../shared';
-import { parseData } from '../../shared/extensionExtrinsic';
 import ErrorMessage from '../../components/ErrorMessage';
 import './requestSign.scss';
 import { DefaultButton, PrimaryButton, Slider, TextInput } from '@chainx/ui';
 import { setLoading } from '../../store/reducers/statusSlice';
-import { fetchIntentions } from '../../store/reducers/intentionSlice';
-import { fetchFee, fetchTradePairs } from '../../store/reducers/tradeSlice';
-import { useDispatch } from 'react-redux';
+import { fetchFee } from '../../store/reducers/tradeSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import Transfer from './Transfer';
 import CommonTx from './CommonTx';
 import Trade from './Trade';
 import AssetsProcess from './AssetsProcess';
 import Staking from './Staking';
 import toPrecision from '../../shared/toPrecision';
-import { useSelector } from 'react-redux';
 import {
   isPseduClaimSelector,
   isStakingClaimSelector,
@@ -23,6 +20,7 @@ import {
 } from '@chainx/extension-ui/store/reducers/txSlice';
 import {
   stakingMethodNames,
+  tradeMethodNames,
   xAssetsProcessCalls
 } from '@chainx/extension-ui/pages/RequestSign/constants';
 import PseduClaim from '@chainx/extension-ui/pages/RequestSign/PseduClaim';
@@ -75,104 +73,42 @@ function RequestSign(props: any) {
     return true;
   };
 
-  const fetchRelevantInfo = isTestNet => {
-    if (query.module === 'xStaking') {
-      dispatch(fetchIntentions());
-    }
-    if (query.module === 'xSpot') {
-      dispatch(fetchTradePairs(isTestNet));
-    }
-    if (query.module === 'xAssetsProcess') {
-      dispatch(fetchFee(isTestNet));
-    }
-  };
   const parseQuery = isTestNet => {
-    // const hex = '0xe90281ff3f53e37c21e24df9cacc2ec69d010d144fe4dace6b2f087f466ade8b6b72278fc116af6b699bdeb55d265d7fa1828111106f1bac0814ab2432765e029b31976e3991300d94d4a5ec8411cd49f5a61fda0cbd9aeed39501cbe1913e51f55b910e0000040803ff7684c16db0c321ee15a297e20bab33279632dd7e288c6d66f16d73e185a4f9fc0c504358010000000000000094756e6973776170313536393733353332303134323832322e36303438363133363738323639'
-    if (!query.module) {
-      try {
-        const [method, args, argsWithName] = parseData(query.data);
-        query.method = method;
-        query.argsWithName = argsWithName;
-        query.args = args;
-        let module = '';
-        const contractMethods = [
-          'putCode',
-          'call',
-          'instantiate',
-          'claimSurcharge',
-          'convertToXrc20',
-          'convertToAsset',
-          'setTokenXrc20',
-          'setXrc20Selector',
-          'removeTokenXrc20',
-          'forceIssueXrc20',
-          'setGasPrice',
-          'setPrintln'
-        ];
-        if (
-          [
-            'nominate',
-            'renominate',
-            'unnominate',
-            'unfreeze',
-            'claim',
-            'register'
-          ].includes(method)
-        ) {
-          module = 'xStaking';
-          if (args.length === 1 && args[0].length < 6) {
-            module = 'xTokens';
-          }
-        } else if (['withdraw', 'revokeWithdraw'].includes(method)) {
-          module = 'xAssetsProcess';
-        } else if (['putOrder', 'cancelOrder'].includes(method)) {
-          module = 'xSpot';
-        } else if (['transfer'].includes(method)) {
-          module = 'xAssets';
-        } else if (contractMethods.includes(method)) {
-          module = 'xContracts';
-        } else {
-          module = '';
-        }
-        query.module = module;
-        updateTxPanel();
-        fetchRelevantInfo(isTestNet);
-      } catch (error) {
-        console.log('parse error ', error);
-        props.history.push('/nodeError');
+    updateTxPanel();
+    try {
+      if (xAssetsProcessCalls.includes(toSignMethodName)) {
+        dispatch(fetchFee(isTestNet));
       }
+    } catch (error) {
+      console.log('parse error ', error);
+      props.history.push('/nodeError');
     }
   };
 
-  const updateTxPanel = () => {
+  const updateTxPanel = useCallback(() => {
     if (toSignMethodName === 'transfer') {
       // @ts-ignore
       return setTxPanel(<Transfer />);
-    }
-
-    if (xAssetsProcessCalls.includes(toSignMethodName)) {
+    } else if (xAssetsProcessCalls.includes(toSignMethodName)) {
       // @ts-ignore
       return setTxPanel(<AssetsProcess />);
-    }
-
-    if (stakingMethodNames.includes(toSignMethodName) || isStakingClaim) {
+    } else if (
+      stakingMethodNames.includes(toSignMethodName) ||
+      isStakingClaim
+    ) {
       // @ts-ignore
       return setTxPanel(<Staking />);
-    }
-
-    if (isPseduClaim) {
+    } else if (isPseduClaim) {
       // @ts-ignore
       return setTxPanel(<PseduClaim />);
-    }
-
-    let _txPanel;
-    if (query.module === 'xSpot') {
-      _txPanel = <Trade query={query} />;
+    } else if (tradeMethodNames.includes(toSignMethodName)) {
+      // @ts-ignore
+      setTxPanel(<Trade />);
     } else {
-      _txPanel = <CommonTx query={query} />;
+      // @ts-ignore
+      setTxPanel(<CommonTx />);
     }
-    setTxPanel(_txPanel);
-  };
+  }, [toSignMethodName, dispatch, isPseduClaim, isStakingClaim]);
 
   const sign = async () => {
     setErrMsg('');
@@ -190,12 +126,7 @@ function RequestSign(props: any) {
 
     dispatch(setLoading(true));
     try {
-      const request = await getSignRequest(
-        isTestNet,
-        query,
-        pass,
-        acceleration
-      );
+      const request = await getSignRequest(isTestNet, pass, acceleration);
       await signTransaction(request);
       setErrMsg('');
       dispatch(setLoading(false));
@@ -220,29 +151,6 @@ function RequestSign(props: any) {
       props.history.push('/');
     }
   };
-
-  // xStaking
-  // 投票，切换投票，赎回，解冻，提息
-  // nominate, renominate, unnominate, unfreeze, claim, register
-  // 切换投票页面不一样
-  // this.api.tx.xStaking.nominate(target, value, memo);
-  // this.api.tx.xStaking.renominate(from, to, value, memo);
-  // this.api.tx.xStaking.unnominate(target, value, memo);
-  // this.api.tx.xStaking.unfreeze(target, revocationIndex);
-  // this.api.tx.xStaking.claim(target);
-  // this.api.tx.xStaking.register(name);
-
-  // xAssetsProcess(Asset.js)
-  // 提现，取消提现
-  // withdraw, revokeWithdraw
-  // this.api.tx.xAssetsProcess.withdraw(token, value, addr, ext);
-  // this.api.tx.xAssetsProcess.revokeWithdraw(id);
-
-  // xSpot(Trade.js)
-  // 挂单，撤单
-  // putOrder, cancelOrder
-  // this.api.tx.xSpot.putOrder(pairid, ordertype, direction, amount, price);
-  // this.api.tx.xSpot.cancelOrder(pairid, index);
 
   const marks = [
     {

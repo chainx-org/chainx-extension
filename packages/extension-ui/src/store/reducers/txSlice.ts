@@ -2,6 +2,7 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { Extrinsic } from '../../shared/extensionExtrinsic';
 import { stringCamelCase } from '@chainx/util';
 import { Token, Address } from '@chainx/types';
+import { getToSign } from '@chainx/extension-ui/messaging';
 
 const initialState = {
   version: 0,
@@ -23,6 +24,11 @@ const txSlice = createSlice({
 
 export const { setToSign, clearToSign } = txSlice.actions;
 
+export const fetchToSign = () => async dispatch => {
+  const toSign = await getToSign();
+  dispatch(setToSign(toSign));
+};
+
 export const toSignSelector = state => state.tx.toSign;
 export const toSignExtrinsicSelector = createSelector(
   toSignSelector,
@@ -31,6 +37,7 @@ export const toSignExtrinsicSelector = createSelector(
       return null;
     }
 
+    // @ts-ignore
     return new Extrinsic(toSign.data);
   }
 );

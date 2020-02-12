@@ -4,7 +4,7 @@ import { SubmittableExtrinsic } from 'chainx.js';
 import { store } from '../store';
 import { toSignSelector } from '@chainx/extension-ui/store/reducers/txSlice';
 
-export const getSignRequest = async (isTestNet, query, pass, acceleration) => {
+export const getSignRequest = async (isTestNet, pass, acceleration) => {
   const state = store.getState();
   const chainx = getChainx();
   const currentAccount = await getCurrentChainxAccount(isTestNet);
