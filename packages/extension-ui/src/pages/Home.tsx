@@ -11,6 +11,7 @@ import logo from '../assets/extension_logo.svg';
 import { fetchToSign, toSignSelector } from '../store/reducers/txSlice';
 import { fetchIntentions } from '@chainx/extension-ui/store/reducers/intentionSlice';
 import { fetchTradePairs } from '@chainx/extension-ui/store/reducers/tradeSlice';
+import { fetchAssetsInfo } from '@chainx/extension-ui/store/reducers/assetSlice';
 
 function Home(props: any) {
   const ref = useRef<HTMLInputElement>(null);
@@ -32,6 +33,7 @@ function Home(props: any) {
     dispatch(fetchToSign());
     dispatch(fetchIntentions());
     dispatch(fetchTradePairs(isTestNet));
+    dispatch(fetchAssetsInfo());
     getAccountInfo().then(() => console.log('Finished to get accounts info'));
   }, [isTestNet]);
 
