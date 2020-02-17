@@ -4,7 +4,7 @@ import { createAccount } from '../../messaging';
 import ErrorMessage from '../ErrorMessage';
 import WarningMessage from '../WarningMessage';
 import { useRedux } from '../../shared';
-import { TextInput } from '@chainx/ui';
+import { TextInput, PasswordInput } from '@chainx/ui';
 import styled from 'styled-components';
 
 const Wrap = styled.div`
@@ -14,7 +14,10 @@ const Wrap = styled.div`
 
 function NameAndPassword(props) {
   const { secret, onSuccess } = props;
-  const [obj, setObj] = useState({ name: '', pass: '', repass: '' });
+  const [name, setName] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmation, setConfirmation] = useState('')
+
   const [errMsg, setErrMsg] = useState('');
   const [{ accounts }] = useRedux('accounts');
   const [{ isTestNet }] = useRedux('isTestNet');
@@ -26,37 +29,37 @@ function NameAndPassword(props) {
   );
 
   const check = () => {
-    if (!obj.name || !obj.pass || !obj.repass) {
+    if (!name || !password || !confirmation) {
       setErrMsg('name and password are required');
       return false;
     }
-    if (obj.pass.length < 8) {
+    if (password.length < 8) {
       setErrMsg('password length must great than 8');
       return false;
     }
-    if (!/(?=.*[a-z])(?=.*[A-Z])/.test(obj.pass)) {
+    if (!/(?=.*[a-z])(?=.*[A-Z])/.test(password)) {
       setErrMsg('password must include lower and upper characters');
       return false;
     }
-    if (obj.pass !== obj.repass) {
+    if (password !== confirmation) {
       setErrMsg('password is not match');
       return false;
     }
-    if ((accounts || []).find(a => a.name === obj.name)) {
+    if ((accounts || []).find(a => a.name === name)) {
       setErrMsg('name already exist');
       return false;
     }
     return true;
   };
 
-  const create = async () => {
+  const create = () => {
     if (!check()) {
       return;
     }
 
-    const keystore = account.encrypt(obj.pass);
+    const keystore = account.encrypt(password);
 
-    createAccount(obj.name, account.address(), keystore, isTestNet)
+    createAccount(name, account.address(), keystore, isTestNet)
       .then(_ => {
         onSuccess();
       })
@@ -65,30 +68,34 @@ function NameAndPassword(props) {
       });
   };
 
-  const inputList = [
-    { name: 'name', type: 'text', placeholder: 'Name(12 characters max)' },
-    { name: 'pass', type: 'password', placeholder: 'Password' },
-    { name: 'repass', type: 'password', placeholder: 'Password confirmation' }
-  ];
-
   return (
     <Wrap>
-      {inputList.map((item, i) => (
-        <TextInput
-          showClear={false}
-          key={i}
-          className="fixed-width"
-          type={item.type}
-          value={obj[item.name]}
-          onChange={value => setObj({ ...obj, [item.name]: value })}
-          placeholder={item.placeholder}
-          onKeyPress={event => {
-            if (event.key === 'Enter' && i === 2) {
-              create();
-            }
-          }}
-        />
-      ))}
+      <TextInput
+        showClear={false}
+        className="fixed-width"
+        type="text"
+        value={name}
+        onChange={value => setName(value)}
+        placeholder="Name(12 characters max)"
+      />
+      <PasswordInput
+        className="fixed-width"
+        value={password}
+        onChange={value => setPassword(value)}
+        placeholder="Password"
+      />
+      <PasswordInput
+        className="fixed-width"
+        value={confirmation}
+        onChange={value => setConfirmation(value)}
+        placeholder="Password confirmation"
+        onKeyPress={event => {
+          if (event.key === 'Enter') {
+            create()
+          }
+        }}
+      />
+
       <button
         className="button button-yellow margin-top-40"
         onClick={() => {

@@ -3,7 +3,7 @@ import { rejectSign, signTransaction } from '../../messaging';
 import { getCurrentGas, getSignRequest, useRedux } from '../../shared';
 import ErrorMessage from '../../components/ErrorMessage';
 import './requestSign.scss';
-import { DefaultButton, PrimaryButton, Slider, TextInput } from '@chainx/ui';
+import { DefaultButton, PasswordInput, PrimaryButton, Slider } from '@chainx/ui';
 import { setLoading } from '../../store/reducers/statusSlice';
 import { fetchFee } from '../../store/reducers/tradeSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -184,17 +184,18 @@ function RequestSign(props: any) {
         <div className="title">
           <span>Input password</span>
         </div>
-        <TextInput
-          showClear={false}
+        <PasswordInput
           value={pass}
-          onChange={setPass}
+          onChange={value => {
+            setErrMsg('')
+            setPass(value)
+          }}
           onKeyPress={event => {
             if (event.key === 'Enter') {
-              sign();
+              sign()
             }
           }}
           className="fixed-width"
-          type="password"
           placeholder="Password"
         />
         <ErrorMessage msg={errMsg} />
