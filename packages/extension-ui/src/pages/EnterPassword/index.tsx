@@ -60,7 +60,7 @@ function EnterPassword(props: any) {
         onChange={setPass}
         onKeyPress={event => {
           if (event.key === 'Enter') {
-            enter()
+            enter();
           }
         }}
         placeholder="Password"

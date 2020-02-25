@@ -14,9 +14,9 @@ const Wrap = styled.div`
 
 function NameAndPassword(props) {
   const { secret, onSuccess } = props;
-  const [name, setName] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmation, setConfirmation] = useState('')
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmation, setConfirmation] = useState('');
 
   const [errMsg, setErrMsg] = useState('');
   const [{ accounts }] = useRedux('accounts');
@@ -91,7 +91,7 @@ function NameAndPassword(props) {
         placeholder="Password confirmation"
         onKeyPress={event => {
           if (event.key === 'Enter') {
-            create()
+            create();
           }
         }}
       />

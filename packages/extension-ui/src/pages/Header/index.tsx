@@ -1,24 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import ClipboardJS from 'clipboard';
-import ReactTooltip from 'react-tooltip';
 import {
-  updateNodeStatus,
-  useRedux,
-  useOutsideClick,
-  isCurrentNodeInit,
+  setChainx,
   sleep,
-  setChainx
+  updateNodeStatus,
+  useOutsideClick,
+  useRedux
 } from '../../shared';
-import {
-  setChainxCurrentAccount,
-  setChainxNode,
-  setNetwork
-} from '../../messaging';
+import { setChainxNode, setNetwork } from '../../messaging';
 import { NodeInfo } from '@chainx/extension-ui/types';
 import Icon from '../../components/Icon';
-import DotInCenterStr from '../../components/DotInCenterStr';
 import { setInitLoading } from '../../store/reducers/statusSlice';
 // @ts-ignore
 import logo from '../../assets/extension_logo.svg';
@@ -27,22 +19,21 @@ import testNetImg from '../../assets/testnet.svg';
 // @ts-ignore
 import switchImg from '../../assets/switch.svg';
 import './header.scss';
+import AccountsPanel from '@chainx/extension-ui/pages/Header/AccountsPanel';
+import Nodes from '@chainx/extension-ui/pages/Header/Nodes';
 
 function Header(props: any) {
   const refNodeList = useRef<HTMLInputElement>(null);
   const refAccountList = useRef<HTMLInputElement>(null);
   const [showNodeListArea, setShowNodeListArea] = useState(false);
   const [showAccountArea, setShowAccountArea] = useState(false);
-  const [copyText, setCopyText] = useState('Copy');
-  const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount');
-  const [{ accounts }] = useRedux('accounts');
   const [{ isTestNet }, setIsTestNet] = useRedux('isTestNet');
   const [{ currentNode }, setCurrentNode] = useRedux<NodeInfo>('currentNode', {
     name: '',
     url: '',
     delay: ''
   });
-  const [{ nodeList }, setNodeList] = useRedux<NodeInfo[]>('nodeList', []);
+  const [{}, setNodeList] = useRedux<NodeInfo[]>('nodeList', []);
   const [{ delayList }, setDelayList] = useRedux('delayList', []);
   const [{ testDelayList }, setTestDelayList] = useRedux('testDelayList', []);
   const [{ currentDelay }, setCurrentDelay] = useRedux('currentDelay', 0);
@@ -61,7 +52,6 @@ function Header(props: any) {
       isTestNet ? setTestDelayList : setDelayList,
       isTestNet
     );
-    setCopyEvent();
   }, [isTestNet]);
 
   useOutsideClick(refNodeList, () => {
@@ -78,21 +68,6 @@ function Header(props: any) {
     } else {
       return currentDelay;
     }
-  }
-
-  function getDelayList(_isTestNet) {
-    if (_isTestNet) {
-      return testDelayList;
-    } else {
-      return delayList;
-    }
-  }
-
-  function setCopyEvent() {
-    const clipboard = new ClipboardJS('.account-copy');
-    clipboard.on('success', function() {
-      setCopyText('Copied!');
-    });
   }
 
   async function setNode(url: string) {
@@ -135,10 +110,6 @@ function Header(props: any) {
     } else {
       return 'green';
     }
-  }
-
-  function getDelayText(delay: Number | string) {
-    return delay ? (delay === 'timeout' ? 'timeout' : delay + ' ms') : '';
   }
 
   function switchNet() {
@@ -201,65 +172,13 @@ function Header(props: any) {
         {
           <div className={(showNodeListArea ? '' : 'hide ') + 'node-list-area'}>
             <div className="node-list">
-              {currentNode &&
-                (nodeList || []).map((item, index) => (
-                  <div
-                    className={
-                      item.name === currentNode.name
-                        ? 'node-item active'
-                        : 'node-item'
-                    }
-                    key={item.name}
-                    onClick={() => {
-                      setNode(item.url);
-                    }}
-                  >
-                    <div className="node-item-active-flag" />
-                    <div className="node-item-detail">
-                      <div className="node-item-detail-url">
-                        <span className="url">
-                          {item.url.split('//')[1] || item.url}
-                        </span>
-                        <div
-                          className={
-                            isCurrentNodeInit(item, isTestNet)
-                              ? 'node-item-detail-edit'
-                              : 'node-item-detail-edit custom'
-                          }
-                          onClick={e => {
-                            e.stopPropagation();
-                            e.nativeEvent.stopImmediatePropagation();
-                            setShowNodeListArea(false);
-                            const query = {
-                              nodeInfo: item,
-                              type: 'remove'
-                            };
-                            props.history.push({
-                              pathname: '/addNode',
-                              query: query
-                            });
-                          }}
-                        >
-                          <Icon name="Edit" />
-                        </div>
-                      </div>
-                      <span
-                        className={
-                          'delay ' +
-                          getDelayClass(
-                            getDelayList(isTestNet) &&
-                              getDelayList(isTestNet)[index]
-                          )
-                        }
-                      >
-                        {getDelayText(
-                          getDelayList(isTestNet) &&
-                            getDelayList(isTestNet)[index]
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+              {currentNode && (
+                <Nodes
+                  history={props.history}
+                  setNode={setNode}
+                  setShowNodeListArea={setShowNodeListArea}
+                />
+              )}
             </div>
             <div
               className="add-node node-action-item"
@@ -286,81 +205,10 @@ function Header(props: any) {
           </div>
         }
         {showAccountArea && !showNodeListArea ? (
-          <div className="account-area">
-            <div className="action">
-              <div
-                onClick={() => {
-                  setShowAccountArea(false);
-                  props.history.push('/importAccount');
-                }}
-              >
-                <Icon name="Putin" className="account-area-icon" />
-                <span>Import</span>
-              </div>
-              <div
-                onClick={() => {
-                  setShowAccountArea(false);
-                  props.history.push('/createAccount');
-                }}
-              >
-                <Icon name="Add" className="account-area-icon" />
-                <span>New</span>
-              </div>
-            </div>
-            {accounts.length > 0 ? (
-              <div className="accounts">
-                {accounts.length > 0 &&
-                  accounts.map(item => (
-                    <div
-                      className={
-                        item.address === currentAccount.address
-                          ? 'account-item active'
-                          : 'account-item'
-                      }
-                      key={item.name}
-                      onClick={async () => {
-                        setChainxCurrentAccount(
-                          item.address,
-                          isTestNet
-                        ).then(d => console.log(d));
-                        await setCurrentAccount({ currentAccount: item });
-                        setShowAccountArea(false);
-                        props.history.push('/');
-                      }}
-                    >
-                      <div className="account-item-active-flag" />
-                      <div className="account-item-detail">
-                        <span className="name">{item.name}</span>
-                        <div className="address">
-                          <DotInCenterStr value={item.address} />
-                          <button
-                            className="account-copy"
-                            data-clipboard-text={item.address}
-                            onClick={e => {
-                              e.stopPropagation();
-                              e.nativeEvent.stopImmediatePropagation();
-                            }}
-                            data-tip
-                            data-for="copy-address-tooltip"
-                          >
-                            <Icon className="copy-icon" name="copy" />
-                          </button>
-                          <ReactTooltip
-                            id="copy-address-tooltip"
-                            effect="solid"
-                            globalEventOff="click"
-                            className="extension-tooltip"
-                            afterHide={() => setCopyText('Copy')}
-                          >
-                            <span>{copyText}</span>
-                          </ReactTooltip>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            ) : null}
-          </div>
+          <AccountsPanel
+            history={props.history}
+            setShowAccountArea={setShowAccountArea}
+          />
         ) : null}
       </div>
     </div>
