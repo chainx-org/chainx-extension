@@ -5,12 +5,15 @@ import DotInCenterStr from '@chainx/extension-ui/components/DotInCenterStr';
 import ReactTooltip from 'react-tooltip';
 import React, { useEffect, useState } from 'react';
 import ClipboardJS from 'clipboard';
+import { setShowAccountMenu } from '@chainx/extension-ui/store/reducers/statusSlice';
+import { useDispatch } from 'react-redux';
 
-export default function({ history, setShowAccountArea }) {
+export default function({ history }) {
   const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount');
   const [{ accounts }] = useRedux('accounts');
   const [{ isTestNet }] = useRedux('isTestNet');
   const [copyText, setCopyText] = useState('Copy');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const clipboard = new ClipboardJS('.account-copy');
@@ -24,7 +27,7 @@ export default function({ history, setShowAccountArea }) {
       <div className="action">
         <div
           onClick={() => {
-            setShowAccountArea(false);
+            dispatch(setShowAccountMenu(false));
             history.push('/importAccount');
           }}
         >
@@ -33,7 +36,7 @@ export default function({ history, setShowAccountArea }) {
         </div>
         <div
           onClick={() => {
-            setShowAccountArea(false);
+            dispatch(setShowAccountMenu(false));
             history.push('/createAccount');
           }}
         >
@@ -57,7 +60,7 @@ export default function({ history, setShowAccountArea }) {
                     console.log(d)
                   );
                   await setCurrentAccount({ currentAccount: item });
-                  setShowAccountArea(false);
+                  dispatch(setShowAccountMenu(false));
                   history.push('/');
                 }}
               >

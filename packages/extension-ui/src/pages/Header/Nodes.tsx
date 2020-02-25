@@ -6,8 +6,10 @@ import {
   getDelayClass,
   getDelayText
 } from '@chainx/extension-ui/pages/Header/utils';
+import { setShowNodeMenu } from '@chainx/extension-ui/store/reducers/statusSlice';
+import { useDispatch } from 'react-redux';
 
-export default function({ history, setNode, setShowNodeListArea }) {
+export default function({ history, setNode }) {
   const [{ nodeList }] = useRedux<NodeInfo[]>('nodeList', []);
   const [{ currentNode }] = useRedux<NodeInfo>('currentNode', {
     name: '',
@@ -17,6 +19,7 @@ export default function({ history, setNode, setShowNodeListArea }) {
   const [{ isTestNet }] = useRedux('isTestNet');
   const [{ testDelayList }] = useRedux('testDelayList', []);
   const [{ delayList }] = useRedux('delayList', []);
+  const dispatch = useDispatch();
 
   function getDelayList(_isTestNet) {
     if (_isTestNet) {
@@ -49,7 +52,7 @@ export default function({ history, setNode, setShowNodeListArea }) {
             onClick={e => {
               e.stopPropagation();
               e.nativeEvent.stopImmediatePropagation();
-              setShowNodeListArea(false);
+              dispatch(setShowNodeMenu(false));
               const query = {
                 nodeInfo: item,
                 type: 'remove'

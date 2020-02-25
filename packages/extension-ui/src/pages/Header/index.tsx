@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import {
   setChainx,
@@ -11,7 +11,13 @@ import {
 import { setChainxNode, setNetwork } from '../../messaging';
 import { NodeInfo } from '@chainx/extension-ui/types';
 import Icon from '../../components/Icon';
-import { setInitLoading } from '../../store/reducers/statusSlice';
+import {
+  setInitLoading,
+  setShowAccountMenu,
+  setShowNodeMenu,
+  showAccountMenuSelector,
+  showNodeMenuSelector
+} from '../../store/reducers/statusSlice';
 // @ts-ignore
 import logo from '../../assets/extension_logo.svg';
 // @ts-ignore
@@ -25,8 +31,6 @@ import Nodes from '@chainx/extension-ui/pages/Header/Nodes';
 function Header(props: any) {
   const refNodeList = useRef<HTMLInputElement>(null);
   const refAccountList = useRef<HTMLInputElement>(null);
-  const [showNodeListArea, setShowNodeListArea] = useState(false);
-  const [showAccountArea, setShowAccountArea] = useState(false);
   const [{ isTestNet }, setIsTestNet] = useRedux('isTestNet');
   const [{ currentNode }, setCurrentNode] = useRedux<NodeInfo>('currentNode', {
     name: '',
@@ -42,6 +46,8 @@ function Header(props: any) {
     0
   );
   const dispatch = useDispatch();
+  const showAccountMenu = useSelector(showAccountMenuSelector);
+  const showNodeMenu = useSelector(showNodeMenuSelector);
 
   useEffect(() => {
     updateNodeStatus(
@@ -55,11 +61,11 @@ function Header(props: any) {
   }, [isTestNet]);
 
   useOutsideClick(refNodeList, () => {
-    setShowNodeListArea(false);
+    dispatch(setShowNodeMenu(false));
   });
 
   useOutsideClick(refAccountList, () => {
-    setShowAccountArea(false);
+    dispatch(setShowAccountMenu(false));
   });
 
   function getCurrentDelay(_isTestNet) {
@@ -81,7 +87,7 @@ function Header(props: any) {
       isTestNet ? setTestDelayList : setDelayList,
       isTestNet
     );
-    setShowNodeListArea(false);
+    dispatch(setShowNodeMenu(false));
 
     Promise.race([setChainx(url), sleep(5000)])
       .then(chainx => {
@@ -115,7 +121,7 @@ function Header(props: any) {
   function switchNet() {
     setNetwork(!isTestNet);
     setIsTestNet({ isTestNet: !isTestNet });
-    setShowNodeListArea(false);
+    dispatch(setShowNodeMenu(false));
     props.history.push('/');
   }
 
@@ -146,8 +152,8 @@ function Header(props: any) {
               ref={refNodeList}
               className="current-node"
               onClick={() => {
-                setShowNodeListArea(!showNodeListArea);
-                setShowAccountArea(false);
+                dispatch(setShowNodeMenu(!showNodeMenu));
+                dispatch(setShowAccountMenu(false));
               }}
             >
               <span
@@ -161,8 +167,8 @@ function Header(props: any) {
               ref={refAccountList}
               className="setting"
               onClick={() => {
-                setShowAccountArea(!showAccountArea);
-                setShowNodeListArea(false);
+                dispatch(setShowAccountMenu(!showAccountMenu));
+                dispatch(setShowNodeMenu(false));
               }}
             >
               <Icon name="Menu" className="setting-icon" />
@@ -170,14 +176,10 @@ function Header(props: any) {
           </div>
         )}
         {
-          <div className={(showNodeListArea ? '' : 'hide ') + 'node-list-area'}>
+          <div className={(showNodeMenu ? '' : 'hide ') + 'node-list-area'}>
             <div className="node-list">
               {currentNode && (
-                <Nodes
-                  history={props.history}
-                  setNode={setNode}
-                  setShowNodeListArea={setShowNodeListArea}
-                />
+                <Nodes history={props.history} setNode={setNode} />
               )}
             </div>
             <div
@@ -204,11 +206,8 @@ function Header(props: any) {
             </div>
           </div>
         }
-        {showAccountArea && !showNodeListArea ? (
-          <AccountsPanel
-            history={props.history}
-            setShowAccountArea={setShowAccountArea}
-          />
+        {showAccountMenu && !showNodeMenu ? (
+          <AccountsPanel history={props.history} />
         ) : null}
       </div>
     </div>
