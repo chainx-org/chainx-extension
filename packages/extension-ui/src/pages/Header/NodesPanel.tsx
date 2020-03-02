@@ -1,25 +1,22 @@
-import Nodes from "@chainx/extension-ui/pages/Header/Nodes";
-import Icon from "@chainx/extension-ui/components/Icon";
+import Nodes from '@chainx/extension-ui/pages/Header/Nodes';
+import Icon from '@chainx/extension-ui/components/Icon';
 // @ts-ignore
 import switchImg from '../../assets/switch.svg';
-import React from "react";
-import { useRedux } from "@chainx/extension-ui/shared";
-import { NodeInfo } from "@chainx/extension-ui/types";
-import { showNodeMenuSelector } from "@chainx/extension-ui/store/reducers/statusSlice";
+import React from 'react';
+import { useRedux } from '@chainx/extension-ui/shared';
+import { NodeInfo } from '@chainx/extension-ui/types';
+import { showNodeMenuSelector } from '@chainx/extension-ui/store/reducers/statusSlice';
 import { useSelector } from 'react-redux';
 
 export default function({ history, setNode, switchNet }) {
   const [{ isTestNet }] = useRedux('isTestNet');
-  const [{ currentNode },] = useRedux<NodeInfo>('currentNode');
+  const [{ currentNode }] = useRedux<NodeInfo>('currentNode');
   const showNodeMenu = useSelector(showNodeMenuSelector);
-
 
   return (
     <div className={(showNodeMenu ? '' : 'hide ') + 'node-list-area'}>
       <div className="node-list">
-        {currentNode && (
-          <Nodes history={history} setNode={setNode} />
-        )}
+        {currentNode && <Nodes history={history} setNode={setNode} />}
       </div>
       <div
         className="add-node node-action-item"
@@ -36,13 +33,9 @@ export default function({ history, setNode, switchNet }) {
           switchNet();
         }}
       >
-        <img
-          className="node-action-item-img"
-          src={switchImg}
-          alt="switchImg"
-        />
+        <img className="node-action-item-img" src={switchImg} alt="switchImg" />
         <span>Switch to {isTestNet ? 'Mainnet' : 'Testnet'}</span>
       </div>
     </div>
-  )
+  );
 }

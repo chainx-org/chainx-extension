@@ -2,12 +2,10 @@ import { isCurrentNodeInit, useRedux } from '@chainx/extension-ui/shared';
 import Icon from '@chainx/extension-ui/components/Icon';
 import React from 'react';
 import { NodeInfo } from '@chainx/extension-ui/types';
-import {
-  getDelayClass,
-  getDelayText
-} from '@chainx/extension-ui/pages/Header/utils';
+import { getDelayClass } from '@chainx/extension-ui/pages/Header/utils';
 import { setShowNodeMenu } from '@chainx/extension-ui/store/reducers/statusSlice';
 import { useDispatch } from 'react-redux';
+import Delay from '@chainx/extension-ui/pages/Header/Delay';
 
 export default function({ history, setNode }) {
   const [{ nodeList }] = useRedux<NodeInfo[]>('nodeList', []);
@@ -23,8 +21,10 @@ export default function({ history, setNode }) {
 
   function getDelayList(_isTestNet) {
     if (_isTestNet) {
+      console.log('testDelayList', testDelayList);
       return testDelayList;
     } else {
+      console.log('delayList', delayList);
       return delayList;
     }
   }
@@ -74,9 +74,9 @@ export default function({ history, setNode }) {
             )
           }
         >
-          {getDelayText(
-            getDelayList(isTestNet) && getDelayList(isTestNet)[index]
-          )}
+          <Delay
+            delay={getDelayList(isTestNet) && getDelayList(isTestNet)[index]}
+          />
         </span>
       </div>
     </div>

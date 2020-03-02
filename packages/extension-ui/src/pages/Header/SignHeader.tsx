@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export default function({ history }) {
   return (
@@ -9,5 +9,5 @@ export default function({ history }) {
           .toLowerCase() || 'Sign Request'}
       </span>
     </div>
-  )
+  );
 }

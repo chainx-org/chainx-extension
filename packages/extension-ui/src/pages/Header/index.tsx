@@ -1,7 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { setChainx, sleep, updateNodeStatus, useOutsideClick, useRedux } from '../../shared';
+import {
+  setChainx,
+  sleep,
+  updateNodeStatus,
+  useOutsideClick,
+  useRedux
+} from '../../shared';
 import { setChainxNode, setNetwork } from '../../messaging';
 import { NodeInfo } from '@chainx/extension-ui/types';
 import {
@@ -15,11 +21,11 @@ import {
 // @ts-ignore
 import './header.scss';
 import AccountsPanel from '@chainx/extension-ui/pages/Header/AccountsPanel';
-import NodesPanel from "@chainx/extension-ui/pages/Header/NodesPanel";
-import AccountPanelSwitch from "@chainx/extension-ui/pages/Header/AccountPanelSwitch";
-import NodesPanelSwitch from "@chainx/extension-ui/pages/Header/NodesPanelSwitch";
-import SignHeader from "@chainx/extension-ui/pages/Header/SignHeader";
-import Logo from './Logo'
+import NodesPanel from '@chainx/extension-ui/pages/Header/NodesPanel';
+import AccountPanelSwitch from '@chainx/extension-ui/pages/Header/AccountPanelSwitch';
+import NodesPanelSwitch from '@chainx/extension-ui/pages/Header/NodesPanelSwitch';
+import SignHeader from '@chainx/extension-ui/pages/Header/SignHeader';
+import Logo from './Logo';
 
 function Header(props: any) {
   const refNodeList = useRef<HTMLInputElement>(null);
@@ -33,10 +39,7 @@ function Header(props: any) {
   const [{ delayList }, setDelayList] = useRedux('delayList', []);
   const [{ testDelayList }, setTestDelayList] = useRedux('testDelayList', []);
   const [{}, setCurrentDelay] = useRedux('currentDelay', 0);
-  const [{}, setCurrentTestDelay] = useRedux(
-    'currentTestDelay',
-    0
-  );
+  const [{}, setCurrentTestDelay] = useRedux('currentTestDelay', 0);
   const dispatch = useDispatch();
   const showAccountMenu = useSelector(showAccountMenuSelector);
   const showNodeMenu = useSelector(showNodeMenuSelector);
@@ -93,20 +96,25 @@ function Header(props: any) {
     props.history.push('/');
   }
 
-  const nowInSignPage = props.history.location.pathname.includes('requestSign')
+  const nowInSignPage = props.history.location.pathname.includes('requestSign');
 
   return (
     <div className="header">
       <div className="container container-header">
         <Logo />
         {nowInSignPage ? (
-          <SignHeader history={props.history} />) : (
+          <SignHeader history={props.history} />
+        ) : (
           <div className="right">
             <NodesPanelSwitch />
             <AccountPanelSwitch />
           </div>
         )}
-        <NodesPanel history={props.history} setNode={setNode} switchNet={switchNet} />
+        <NodesPanel
+          history={props.history}
+          setNode={setNode}
+          switchNet={switchNet}
+        />
         {showAccountMenu && !showNodeMenu ? (
           <AccountsPanel history={props.history} />
         ) : null}
