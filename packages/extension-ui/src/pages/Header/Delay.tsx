@@ -5,7 +5,7 @@ export default function({ delay }) {
   let text = '';
   if (delay === 'timeout') {
     text = delay;
-  } else {
+  } else if (delay) {
     text = `${delay} ms`;
   }
 

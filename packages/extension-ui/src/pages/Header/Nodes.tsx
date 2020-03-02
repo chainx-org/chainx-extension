@@ -4,11 +4,14 @@ import React from 'react';
 import { NodeInfo } from '@chainx/extension-ui/types';
 import { getDelayClass } from '@chainx/extension-ui/pages/Header/utils';
 import { setShowNodeMenu } from '@chainx/extension-ui/store/reducers/statusSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Delay from '@chainx/extension-ui/pages/Header/Delay';
+import {
+  mainNetNodesSelector,
+  testNetNodesSelector
+} from '@chainx/extension-ui/store/reducers/nodeSlice';
 
 export default function({ history, setNode }) {
-  const [{ nodeList }] = useRedux<NodeInfo[]>('nodeList', []);
   const [{ currentNode }] = useRedux<NodeInfo>('currentNode', {
     name: '',
     url: '',
@@ -21,13 +24,15 @@ export default function({ history, setNode }) {
 
   function getDelayList(_isTestNet) {
     if (_isTestNet) {
-      console.log('testDelayList', testDelayList);
       return testDelayList;
     } else {
-      console.log('delayList', delayList);
       return delayList;
     }
   }
+
+  let nodeList = useSelector(
+    isTestNet ? testNetNodesSelector : mainNetNodesSelector
+  );
 
   return (nodeList || []).map((item, index) => (
     <div
@@ -74,9 +79,7 @@ export default function({ history, setNode }) {
             )
           }
         >
-          <Delay
-            delay={getDelayList(isTestNet) && getDelayList(isTestNet)[index]}
-          />
+          <Delay delay={item.delay} />
         </span>
       </div>
     </div>

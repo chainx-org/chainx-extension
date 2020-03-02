@@ -1,8 +1,13 @@
 import { getCurrentChainxNode, getAllChainxNodes } from '../messaging';
 import { INIT_NODES, TESTNET_INIT_NODES } from '@chainx/extension-defaults';
 import fetchFromWs from './fetch';
+import store from '../store';
+import {
+  mainNetNodesSelector,
+  setNodeDelay
+} from '../store/reducers/nodeSlice';
 
-const TIMEOUT = 7000;
+export const TIMEOUT = 7000;
 
 export const getNodeList = async (setNodeList, isTestNet) => {
   const nodeListResult = await getAllChainxNodes(isTestNet);
@@ -32,6 +37,23 @@ export const isCurrentNodeInit = (node, isTestNet) => {
     });
   }
   return result;
+};
+
+export const updateDelay = async function() {
+  const state = store.getState();
+  const nodes = mainNetNodesSelector(state);
+  for (const node of nodes) {
+    try {
+      const result = await fetchFromWs({
+        url: node.url,
+        method: 'chain_getBlock',
+        timeOut: TIMEOUT
+      });
+      store.dispatch(setNodeDelay({ url: node.url, delay: result.wastTime }));
+    } catch (e) {
+      store.dispatch(setNodeDelay({ url: node.url, delay: 'timeout' }));
+    }
+  }
 };
 
 export const getDelay = async (
@@ -83,7 +105,12 @@ async function updateNodeStatus(
   isTestNet
 ) {
   const currentNode = await getCurrentNode(setCurrentNode, isTestNet);
+
   const nodeList = await getNodeList(setNodeList, isTestNet);
+  updateDelay()
+    .then(() => console.log('Node network status updated'))
+    .catch(() => console.error('Fail to update node network status'));
+
   getDelay(
     currentNode,
     setCurrentDelay,

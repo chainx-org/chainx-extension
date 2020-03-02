@@ -19,6 +19,7 @@ import spinner from '../assets/loading.gif';
 import './index.scss';
 import { useSelector } from 'react-redux';
 import { setInitLoading } from '../store/reducers/statusSlice';
+import initNodes, { updateDelay } from '@chainx/extension-ui/shared/nodeUtils';
 
 export default function App() {
   let redirectUrl: any = '/';
@@ -28,8 +29,25 @@ export default function App() {
   const loading = useSelector(state => state.status.loading);
   const initLoading = useSelector(state => state.status.initLoading);
   const homeLoading = useSelector(state => state.status.homeLoading);
+  const state = useSelector(state => state);
+
+  if (process.env.NODE_ENV === 'development') {
+    console.log('state', state);
+  }
+
   useEffect(() => {
     getSetting();
+  }, []);
+
+  useEffect(() => {
+    initNodes()
+      .then(() => {
+        console.log('Init ChainX nodes');
+        updateDelay()
+          .then(() => console.log('Node network status updated'))
+          .catch(() => console.error('Fail to update node network status'));
+      })
+      .catch(() => console.log('Fail to init ChainX nodes'));
   }, []);
 
   const getSetting = async () => {
