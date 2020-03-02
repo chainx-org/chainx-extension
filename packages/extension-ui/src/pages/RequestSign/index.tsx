@@ -3,13 +3,8 @@ import { rejectSign, signTransaction } from '../../messaging';
 import { getCurrentGas, getSignRequest, useRedux } from '../../shared';
 import ErrorMessage from '../../components/ErrorMessage';
 import './requestSign.scss';
-import {
-  DefaultButton,
-  PasswordInput,
-  PrimaryButton,
-  Slider
-} from '@chainx/ui';
-import { setLoading } from '../../store/reducers/statusSlice';
+import { DefaultButton, PasswordInput, PrimaryButton, Slider } from '@chainx/ui';
+import { setLoading, setShowAccountMenu, setShowNodeMenu } from '../../store/reducers/statusSlice';
 import { fetchFee } from '../../store/reducers/tradeSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Transfer from './Transfer';
@@ -47,6 +42,11 @@ function RequestSign(props: any) {
   const toSignMethodName = useSelector(toSignMethodNameSelector);
   const isStakingClaim = useSelector(isStakingClaimSelector);
   const isPseduClaim = useSelector(isPseduClaimSelector);
+
+  useEffect(() => {
+    dispatch(setShowAccountMenu(false))
+    dispatch(setShowNodeMenu(false))
+  }, [dispatch])
 
   const toSign = useSelector(toSignSelector);
 

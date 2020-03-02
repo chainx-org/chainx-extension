@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { setChainx, sleep, updateNodeStatus, useOutsideClick, useRedux } from '../../shared';
 import { setChainxNode, setNetwork } from '../../messaging';
 import { NodeInfo } from '@chainx/extension-ui/types';
@@ -11,9 +11,7 @@ import {
   showNodeMenuSelector
 } from '../../store/reducers/statusSlice';
 // @ts-ignore
-import logo from '../../assets/extension_logo.svg';
 // @ts-ignore
-import testNetImg from '../../assets/testnet.svg';
 // @ts-ignore
 import './header.scss';
 import AccountsPanel from '@chainx/extension-ui/pages/Header/AccountsPanel';
@@ -21,6 +19,7 @@ import NodesPanel from "@chainx/extension-ui/pages/Header/NodesPanel";
 import AccountPanelSwitch from "@chainx/extension-ui/pages/Header/AccountPanelSwitch";
 import NodesPanelSwitch from "@chainx/extension-ui/pages/Header/NodesPanelSwitch";
 import SignHeader from "@chainx/extension-ui/pages/Header/SignHeader";
+import Logo from './Logo'
 
 function Header(props: any) {
   const refNodeList = useRef<HTMLInputElement>(null);
@@ -99,12 +98,7 @@ function Header(props: any) {
   return (
     <div className="header">
       <div className="container container-header">
-        <Link to="/">
-          <img className="logo" src={logo} alt="logo" />
-          {isTestNet && (
-            <img className="testnet" src={testNetImg} alt="testNetImg" />
-          )}
-        </Link>
+        <Logo />
         {nowInSignPage ? (
           <SignHeader history={props.history} />) : (
           <div className="right">
