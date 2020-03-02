@@ -12,6 +12,7 @@ import { fetchToSign, toSignSelector } from '../store/reducers/txSlice';
 import { fetchIntentions } from '@chainx/extension-ui/store/reducers/intentionSlice';
 import { fetchTradePairs } from '@chainx/extension-ui/store/reducers/tradeSlice';
 import { fetchAssetsInfo } from '@chainx/extension-ui/store/reducers/assetSlice';
+import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 
 function Home(props: any) {
   const ref = useRef<HTMLInputElement>(null);
@@ -24,7 +25,7 @@ function Home(props: any) {
   const dispatch = useDispatch();
   const homeLoading = useSelector(state => state.status.homeLoading);
   const [{}, setAccounts] = useRedux('accounts');
-  const [{ isTestNet }] = useRedux('isTestNet');
+  const isTestNet = useSelector(isTestNetSelector);
   const [copySuccess, setCopySuccess] = useState('');
   const toSign = useSelector(toSignSelector);
 

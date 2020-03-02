@@ -26,10 +26,14 @@ import AccountPanelSwitch from '@chainx/extension-ui/pages/Header/AccountPanelSw
 import NodesPanelSwitch from '@chainx/extension-ui/pages/Header/NodesPanelSwitch';
 import SignHeader from '@chainx/extension-ui/pages/Header/SignHeader';
 import Logo from './Logo';
+import {
+  isTestNetSelector,
+  setIsTestNet as setStoreIsTestNet
+} from '../../store/reducers/networkSlice';
 
 function Header(props: any) {
   const refNodeList = useRef<HTMLInputElement>(null);
-  const [{ isTestNet }, setIsTestNet] = useRedux('isTestNet');
+  const isTestNet = useSelector(isTestNetSelector);
   const [{}, setCurrentNode] = useRedux<NodeInfo>('currentNode', {
     name: '',
     url: '',
@@ -91,7 +95,7 @@ function Header(props: any) {
 
   function switchNet() {
     setNetwork(!isTestNet);
-    setIsTestNet({ isTestNet: !isTestNet });
+    dispatch(setStoreIsTestNet(!isTestNet));
     dispatch(setShowNodeMenu(false));
     props.history.push('/');
   }

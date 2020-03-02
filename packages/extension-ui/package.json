@@ -23,6 +23,7 @@
     "redux-starter-kit": "^0.9.1"
   },
   "devDependencies": {
+    "@types/react-redux": "^7.1.7",
     "css-loader": "^3.2.0",
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.0",

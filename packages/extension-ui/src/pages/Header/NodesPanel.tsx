@@ -7,9 +7,10 @@ import { useRedux } from '@chainx/extension-ui/shared';
 import { NodeInfo } from '@chainx/extension-ui/types';
 import { showNodeMenuSelector } from '@chainx/extension-ui/store/reducers/statusSlice';
 import { useSelector } from 'react-redux';
+import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 
 export default function({ history, setNode, switchNet }) {
-  const [{ isTestNet }] = useRedux('isTestNet');
+  const isTestNet = useSelector(isTestNetSelector);
   const [{ currentNode }] = useRedux<NodeInfo>('currentNode');
   const showNodeMenu = useSelector(showNodeMenuSelector);
 

@@ -10,24 +10,26 @@ import ShowPrivateKey from './ShowPrivateKey/index';
 import EnterPassword from './EnterPassword';
 import NodeAction from './NodeAction';
 import NodeError from './NodeAction/NodeError';
-import { useRedux, setChainx, sleep } from '../shared';
-import { useDispatch } from 'react-redux';
+import { setChainx, sleep } from '../shared';
+import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentChainxNode } from '../messaging';
 import { getSettings } from '../messaging/index';
 // @ts-ignore
 import spinner from '../assets/loading.gif';
 import './index.scss';
-import { useSelector } from 'react-redux';
 import { setInitLoading } from '../store/reducers/statusSlice';
 import initNodes, { updateDelay } from '@chainx/extension-ui/shared/nodeUtils';
+import { setIsTestNet as setStoreIsTestNet } from '../store/reducers/networkSlice';
 
 export default function App() {
   let redirectUrl: any = '/';
 
   const dispatch = useDispatch();
-  const [{}, setIsTestNet] = useRedux('isTestNet', false);
+  // @ts-ignore
   const loading = useSelector(state => state.status.loading);
+  // @ts-ignore
   const initLoading = useSelector(state => state.status.initLoading);
+  // @ts-ignore
   const homeLoading = useSelector(state => state.status.homeLoading);
   const state = useSelector(state => state);
 
@@ -52,7 +54,7 @@ export default function App() {
 
   const getSetting = async () => {
     const settings = await getSettings();
-    setIsTestNet({ isTestNet: settings.isTestNet });
+    dispatch(setStoreIsTestNet(settings.isTestNet));
     const node = await getCurrentChainxNode(settings.isTestNet);
     Promise.race([setChainx(node.url), sleep(5000)])
       .catch(e => {

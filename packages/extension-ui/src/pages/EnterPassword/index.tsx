@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { Account } from 'chainx.js';
 import './enterPassword.scss';
 import { removeChainxAccount } from '../../messaging';
-import { useRedux } from '../../shared';
 import ErrorMessage from '../../components/ErrorMessage';
 import { PasswordInput } from '@chainx/ui';
+import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
+import { useSelector } from 'react-redux';
 
 function EnterPassword(props: any) {
   const [pass, setPass] = useState('');
   const [errMsg, setErrMsg] = useState('');
-  const [{ isTestNet }] = useRedux('isTestNet');
+  const isTestNet = useSelector(isTestNetSelector);
 
   async function exportPk(keystore: Object, password: string) {
     try {

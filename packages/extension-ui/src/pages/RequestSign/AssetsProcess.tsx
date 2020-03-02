@@ -7,12 +7,12 @@ import {
   toSignArgsSelector,
   toSignMethodNameSelector
 } from '../../store/reducers/txSlice';
-import { useRedux } from '@chainx/extension-ui/shared';
+import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 
 export default function() {
   const fee = useSelector(feeSelector);
   const dispatch = useDispatch();
-  const [{ isTestNet }] = useRedux('isTestNet');
+  const isTestNet = useSelector(isTestNetSelector);
 
   useEffect(() => {
     dispatch(fetchFee(isTestNet));

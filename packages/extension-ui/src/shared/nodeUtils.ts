@@ -33,7 +33,8 @@ export const updateDelay = async function() {
   const state = store.getState();
   const nodes = mainNetNodesSelector(state);
   const testnetNodes = testNetNodesSelector(state);
-  for (const node of [...nodes, ...testnetNodes]) {
+
+  async function updateNodeDelay(node) {
     try {
       const result = await fetchFromWs({
         url: node.url,
@@ -45,4 +46,8 @@ export const updateDelay = async function() {
       store.dispatch(setNodeDelay({ url: node.url, delay: 'timeout' }));
     }
   }
+
+  return Promise.all(
+    [...nodes, ...testnetNodes].map(node => updateNodeDelay(node))
+  );
 };

@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { addChainxNode, removeChainxNode } from '../../messaging';
 import ErrorMessage from '../../components/ErrorMessage';
-import { useRedux, updateNodeStatus } from '../../shared';
+import { updateNodeStatus, useRedux } from '../../shared';
 import { TextInput } from '@chainx/ui';
 import './nodeAction.scss';
+import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
+import { useSelector } from 'react-redux';
 
 function AddNode(props: any) {
   const [name, setName] = useState('');
   const [url, setUrl] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [{}, setCurrentNode] = useRedux('currentNode');
-  const [{ isTestNet }] = useRedux('isTestNet');
+  const isTestNet = useSelector(isTestNetSelector);
   const [{ nodeList }, setNodeList] = useRedux('nodeList', []);
   const [{ delayList }, setDelayList] = useRedux('delayList', []);
   const [{ testDelayList }, setTestDelayList] = useRedux('testDelayList', []);

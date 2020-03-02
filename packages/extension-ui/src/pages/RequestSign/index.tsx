@@ -34,6 +34,7 @@ import {
   xAssetsProcessCalls
 } from '@chainx/extension-ui/pages/RequestSign/constants';
 import PseduClaim from '@chainx/extension-ui/pages/RequestSign/PseduClaim';
+import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 
 function RequestSign(props: any) {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ function RequestSign(props: any) {
   const [currentGas, setCurrentGas] = useState(0);
   const [acceleration, setAcceleration] = useState(1);
   const [txPanel, setTxPanel] = useState(null);
-  const [{ isTestNet }] = useRedux('isTestNet');
+  const isTestNet = useSelector(isTestNetSelector);
   const [{ currentAccount }] = useRedux('currentAccount', {
     address: '',
     name: ''

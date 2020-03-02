@@ -10,6 +10,7 @@ import {
   mainNetNodesSelector,
   testNetNodesSelector
 } from '@chainx/extension-ui/store/reducers/nodeSlice';
+import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 
 export default function({ history, setNode }) {
   const [{ currentNode }] = useRedux<NodeInfo>('currentNode', {
@@ -17,18 +18,8 @@ export default function({ history, setNode }) {
     url: '',
     delay: ''
   });
-  const [{ isTestNet }] = useRedux('isTestNet');
-  const [{ testDelayList }] = useRedux('testDelayList', []);
-  const [{ delayList }] = useRedux('delayList', []);
+  const isTestNet = useSelector(isTestNetSelector);
   const dispatch = useDispatch();
-
-  function getDelayList(_isTestNet) {
-    if (_isTestNet) {
-      return testDelayList;
-    } else {
-      return delayList;
-    }
-  }
 
   let nodeList = useSelector(
     isTestNet ? testNetNodesSelector : mainNetNodesSelector
@@ -71,14 +62,7 @@ export default function({ history, setNode }) {
             <Icon name="Edit" />
           </div>
         </div>
-        <span
-          className={
-            'delay ' +
-            getDelayClass(
-              getDelayList(isTestNet) && getDelayList(isTestNet)[index]
-            )
-          }
-        >
+        <span className={`delay ${getDelayClass(item.delay)}`}>
           <Delay delay={item.delay} />
         </span>
       </div>

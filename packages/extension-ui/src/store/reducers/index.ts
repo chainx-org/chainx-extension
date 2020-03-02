@@ -5,6 +5,7 @@ import tradeSlice from './tradeSlice';
 import tx from './txSlice';
 import assetReducer from './assetSlice';
 import node from './nodeSlice';
+import network from './networkSlice';
 
 export default combineReducers({
   assets: assetReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
   intentions: intentionSlice,
   trade: tradeSlice,
   tx,
-  node
+  node,
+  network
 });

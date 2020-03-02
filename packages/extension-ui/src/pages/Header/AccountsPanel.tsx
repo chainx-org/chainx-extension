@@ -6,12 +6,13 @@ import ReactTooltip from 'react-tooltip';
 import React, { useEffect, useState } from 'react';
 import ClipboardJS from 'clipboard';
 import { setShowAccountMenu } from '@chainx/extension-ui/store/reducers/statusSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 
 export default function({ history }) {
   const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount');
   const [{ accounts }] = useRedux('accounts');
-  const [{ isTestNet }] = useRedux('isTestNet');
+  const isTestNet = useSelector(isTestNetSelector);
   const [copyText, setCopyText] = useState('Copy');
   const dispatch = useDispatch();
 

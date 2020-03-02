@@ -8,6 +8,7 @@ import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useOutsideClick, useRedux } from '../../shared';
 import { NodeInfo } from '@chainx/extension-ui/types';
+import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 
 export default function() {
   const refNodeList = useRef(null);
@@ -16,7 +17,7 @@ export default function() {
 
   const [{ currentTestDelay }] = useRedux('currentTestDelay', 0);
   const [{ currentDelay }] = useRedux('currentDelay', 0);
-  const [{ isTestNet }] = useRedux('isTestNet');
+  const isTestNet = useSelector(isTestNetSelector);
   const [{ currentNode }] = useRedux<NodeInfo>('currentNode', {
     name: '',
     url: '',

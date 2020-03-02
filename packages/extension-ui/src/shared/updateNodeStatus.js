@@ -1,11 +1,7 @@
-import { getCurrentChainxNode, getAllChainxNodes } from '../messaging';
+import { getAllChainxNodes, getCurrentChainxNode } from '../messaging';
 import { INIT_NODES, TESTNET_INIT_NODES } from '@chainx/extension-defaults';
 import fetchFromWs from './fetch';
-import store from '../store';
-import {
-  mainNetNodesSelector,
-  setNodeDelay
-} from '../store/reducers/nodeSlice';
+import { updateDelay } from './nodeUtils';
 
 export const TIMEOUT = 7000;
 
@@ -37,23 +33,6 @@ export const isCurrentNodeInit = (node, isTestNet) => {
     });
   }
   return result;
-};
-
-export const updateDelay = async function() {
-  const state = store.getState();
-  const nodes = mainNetNodesSelector(state);
-  for (const node of nodes) {
-    try {
-      const result = await fetchFromWs({
-        url: node.url,
-        method: 'chain_getBlock',
-        timeOut: TIMEOUT
-      });
-      store.dispatch(setNodeDelay({ url: node.url, delay: result.wastTime }));
-    } catch (e) {
-      store.dispatch(setNodeDelay({ url: node.url, delay: 'timeout' }));
-    }
-  }
 };
 
 export const getDelay = async (
