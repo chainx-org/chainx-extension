@@ -18,7 +18,7 @@ import { getSettings } from '../messaging/index';
 import spinner from '../assets/loading.gif';
 import './index.scss';
 import { setInitLoading } from '../store/reducers/statusSlice';
-import initNodes, { updateDelay } from '@chainx/extension-ui/shared/nodeUtils';
+import initNodes from '@chainx/extension-ui/shared/nodeUtils';
 import { setIsTestNet as setStoreIsTestNet } from '../store/reducers/networkSlice';
 
 export default function App() {
@@ -45,9 +45,6 @@ export default function App() {
     initNodes()
       .then(() => {
         console.log('Init ChainX nodes');
-        updateDelay()
-          .then(() => console.log('Node network status updated'))
-          .catch(() => console.error('Fail to update node network status'));
       })
       .catch(() => console.log('Fail to init ChainX nodes'));
   }, []);

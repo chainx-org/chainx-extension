@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
 import { addChainxNode, removeChainxNode } from '../../messaging';
 import ErrorMessage from '../../components/ErrorMessage';
-import { updateNodeStatus, useRedux } from '../../shared';
 import { TextInput } from '@chainx/ui';
 import './nodeAction.scss';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 import { useSelector } from 'react-redux';
+import initNodes from '@chainx/extension-ui/shared/nodeUtils';
+import {
+  mainNetNodesSelector,
+  testNetNodesSelector
+} from '@chainx/extension-ui/store/reducers/nodeSlice';
 
 function AddNode(props: any) {
   const [name, setName] = useState('');
   const [url, setUrl] = useState('');
   const [errMsg, setErrMsg] = useState('');
-  const [{}, setCurrentNode] = useRedux('currentNode');
   const isTestNet = useSelector(isTestNetSelector);
-  const [{ nodeList }, setNodeList] = useRedux('nodeList', []);
-  const [{ delayList }, setDelayList] = useRedux('delayList', []);
-  const [{ testDelayList }, setTestDelayList] = useRedux('testDelayList', []);
-  const [{}, setCurrentDelay] = useRedux('currentDelay', 0);
-  const [{}, setCurrentTestDelay] = useRedux('currentTestDelay', 0);
+  let nodeList = useSelector(
+    isTestNet ? testNetNodesSelector : mainNetNodesSelector
+  );
 
   const {
     location: { query }
@@ -47,16 +48,9 @@ function AddNode(props: any) {
     }
     try {
       await addChainxNode(name, url, isTestNet);
-      setErrMsg('');
-      await updateNodeStatus(
-        setCurrentNode,
-        isTestNet ? setCurrentTestDelay : setCurrentDelay,
-        setNodeList,
-        isTestNet ? testDelayList : delayList,
-        isTestNet ? setTestDelayList : setDelayList,
-        isTestNet
-      );
       props.history.push('/');
+      await initNodes();
+      setErrMsg('');
     } catch (error) {
       setErrMsg(error.message);
     }
@@ -69,16 +63,9 @@ function AddNode(props: any) {
     }
     try {
       await removeChainxNode(name, url, isTestNet);
-      setErrMsg('');
-      await updateNodeStatus(
-        setCurrentNode,
-        isTestNet ? setCurrentTestDelay : setCurrentDelay,
-        setNodeList,
-        isTestNet ? testDelayList : delayList,
-        isTestNet ? setTestDelayList : setDelayList,
-        isTestNet
-      );
       props.history.push('/');
+      await initNodes();
+      setErrMsg('');
     } catch (error) {
       setErrMsg(error.message);
     }

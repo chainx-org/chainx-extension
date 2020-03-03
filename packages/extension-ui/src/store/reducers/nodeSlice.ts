@@ -1,4 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { INIT_NODES, TESTNET_INIT_NODES } from '@chainx/extension-defaults';
 
 const nodeSlice = createSlice({
   name: 'node',
@@ -56,8 +57,28 @@ export const {
 } = nodeSlice.actions;
 
 const mainNetNode = state => state.node.currentChainXMainNetNode;
-export const mainNetNodesSelector = state => state.node.chainxMainNetNodes;
-export const testNetNodesSelector = state => state.node.chainxTestNetNodes;
+export const mainNetNodesSelector = state =>
+  state.node.chainxMainNetNodes.map(node => {
+    const isInit = [...INIT_NODES, ...TESTNET_INIT_NODES].some(
+      n => n.url === node.url
+    );
+
+    return {
+      ...node,
+      isInit
+    };
+  });
+export const testNetNodesSelector = state =>
+  state.node.chainxTestNetNodes.map(node => {
+    const isInit = [...INIT_NODES, ...TESTNET_INIT_NODES].some(
+      n => n.url === node.url
+    );
+
+    return {
+      ...node,
+      isInit
+    };
+  });
 const testNetNode = state => state.node.currentChainXTestNetNode;
 
 export const currentMainNetNodeSelector = createSelector(

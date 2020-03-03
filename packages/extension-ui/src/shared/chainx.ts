@@ -4,6 +4,7 @@ let chainx = null;
 
 export const setChainx = async nodeUrl => {
   chainx = new Chainx(nodeUrl);
+  // @ts-ignore
   await chainx.isRpcReady();
   return chainx;
 };

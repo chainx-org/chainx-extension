@@ -1,34 +1,34 @@
-import { isCurrentNodeInit, useRedux } from '@chainx/extension-ui/shared';
 import Icon from '@chainx/extension-ui/components/Icon';
 import React from 'react';
-import { NodeInfo } from '@chainx/extension-ui/types';
 import { getDelayClass } from '@chainx/extension-ui/pages/Header/utils';
 import { setShowNodeMenu } from '@chainx/extension-ui/store/reducers/statusSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Delay from '@chainx/extension-ui/pages/Header/Delay';
 import {
+  currentMainNetNodeSelector,
+  currentTestNetNodeSelector,
   mainNetNodesSelector,
   testNetNodesSelector
 } from '@chainx/extension-ui/store/reducers/nodeSlice';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 
 export default function({ history, setNode }) {
-  const [{ currentNode }] = useRedux<NodeInfo>('currentNode', {
-    name: '',
-    url: '',
-    delay: ''
-  });
   const isTestNet = useSelector(isTestNetSelector);
   const dispatch = useDispatch();
 
+  const currentNode = useSelector(
+    isTestNet ? currentTestNetNodeSelector : currentMainNetNodeSelector
+  );
   let nodeList = useSelector(
     isTestNet ? testNetNodesSelector : mainNetNodesSelector
   );
 
-  return (nodeList || []).map((item, index) => (
+  return (nodeList || []).map(item => (
     <div
       className={
-        item.name === currentNode.name ? 'node-item active' : 'node-item'
+        currentNode && item.name === currentNode.name
+          ? 'node-item active'
+          : 'node-item'
       }
       key={item.name}
       onClick={() => {
@@ -41,7 +41,7 @@ export default function({ history, setNode }) {
           <span className="url">{item.url.split('//')[1] || item.url}</span>
           <div
             className={
-              isCurrentNodeInit(item, isTestNet)
+              item.isInit
                 ? 'node-item-detail-edit'
                 : 'node-item-detail-edit custom'
             }

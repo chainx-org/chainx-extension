@@ -1,15 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import {
-  setChainx,
-  sleep,
-  updateNodeStatus,
-  useOutsideClick,
-  useRedux
-} from '../../shared';
+import { setChainx, sleep, useOutsideClick } from '../../shared';
 import { setChainxNode, setNetwork } from '../../messaging';
-import { NodeInfo } from '@chainx/extension-ui/types';
 import {
   setInitLoading,
   setShowNodeMenu,
@@ -30,33 +23,21 @@ import {
   isTestNetSelector,
   setIsTestNet as setStoreIsTestNet
 } from '../../store/reducers/networkSlice';
+import initNodes from '@chainx/extension-ui/shared/nodeUtils';
 
 function Header(props: any) {
   const refNodeList = useRef<HTMLInputElement>(null);
   const isTestNet = useSelector(isTestNetSelector);
-  const [{}, setCurrentNode] = useRedux<NodeInfo>('currentNode', {
-    name: '',
-    url: '',
-    delay: ''
-  });
-  const [{}, setNodeList] = useRedux<NodeInfo[]>('nodeList', []);
-  const [{ delayList }, setDelayList] = useRedux('delayList', []);
-  const [{ testDelayList }, setTestDelayList] = useRedux('testDelayList', []);
-  const [{}, setCurrentDelay] = useRedux('currentDelay', 0);
-  const [{}, setCurrentTestDelay] = useRedux('currentTestDelay', 0);
   const dispatch = useDispatch();
   const showAccountMenu = useSelector(showAccountMenuSelector);
   const showNodeMenu = useSelector(showNodeMenuSelector);
 
   useEffect(() => {
-    updateNodeStatus(
-      setCurrentNode,
-      isTestNet ? setCurrentTestDelay : setCurrentDelay,
-      setNodeList,
-      isTestNet ? testDelayList : delayList,
-      isTestNet ? setTestDelayList : setDelayList,
-      isTestNet
-    );
+    initNodes()
+      .then(() => {
+        console.log('Init ChainX nodes');
+      })
+      .catch(() => console.log('Fail to init ChainX nodes'));
   }, [isTestNet]);
 
   useOutsideClick(refNodeList, () => {
@@ -66,14 +47,11 @@ function Header(props: any) {
   async function setNode(url: string) {
     dispatch(setInitLoading(true));
     await Promise.race([setChainxNode(url, isTestNet), sleep(2000)]);
-    updateNodeStatus(
-      setCurrentNode,
-      isTestNet ? setCurrentTestDelay : setCurrentDelay,
-      setNodeList,
-      isTestNet ? testDelayList : delayList,
-      isTestNet ? setTestDelayList : setDelayList,
-      isTestNet
-    );
+    initNodes()
+      .then(() => {
+        console.log('Init ChainX nodes');
+      })
+      .catch(() => console.log('Fail to init ChainX nodes'));
     dispatch(setShowNodeMenu(false));
 
     Promise.race([setChainx(url), sleep(5000)])
