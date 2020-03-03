@@ -11,6 +11,7 @@ const fetchFromWs = ({ url, method, params = [], timeOut = 5000 }) => {
   const request = () =>
     new Promise((resolve, reject) => {
       const ws = new WebSocket(url);
+
       ws.onmessage = m => {
         try {
           const data = JSON.parse(m.data);
@@ -26,19 +27,22 @@ const fetchFromWs = ({ url, method, params = [], timeOut = 5000 }) => {
           reject(err);
         }
       };
+
       ws.onopen = () => {
         startTime = Date.now();
         ws.send(message);
       };
+
       ws.onerror = err => {
         ws.close();
         reject(err);
       };
     });
+
   if (timeOut) {
     return Promise.race([
       request(),
-      new Promise((resovle, reject) => {
+      new Promise((resole, reject) => {
         setTimeout(() => {
           reject('请求超时');
         }, timeOut);

@@ -34,7 +34,7 @@ export const updateDelay = async function() {
   // TODO: 判断下是测试网还是主网，然后决定测试那些节点
   const state = store.getState();
   const nodes = mainNetNodesSelector(state);
-  const testnetNodes = testNetNodesSelector(state);
+  const testNetNodes = testNetNodesSelector(state);
 
   async function updateNodeDelay(node) {
     try {
@@ -43,6 +43,7 @@ export const updateDelay = async function() {
         method: 'chain_getBlock',
         timeOut: TIMEOUT
       });
+      // @ts-ignore
       store.dispatch(setNodeDelay({ url: node.url, delay: result.wastTime }));
     } catch (e) {
       store.dispatch(setNodeDelay({ url: node.url, delay: 'timeout' }));
@@ -50,6 +51,6 @@ export const updateDelay = async function() {
   }
 
   return Promise.all(
-    [...nodes, ...testnetNodes].map(node => updateNodeDelay(node))
+    [...nodes, ...testNetNodes].map(node => updateNodeDelay(node))
   );
 };

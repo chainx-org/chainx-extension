@@ -10,7 +10,7 @@ import {
   mainNetNodesSelector,
   testNetNodesSelector
 } from '@chainx/extension-ui/store/reducers/nodeSlice';
-import { setShowNodeMenu } from "@chainx/extension-ui/store/reducers/statusSlice";
+import { setShowNodeMenu } from '@chainx/extension-ui/store/reducers/statusSlice';
 
 function AddNode(props: any) {
   const [name, setName] = useState('');
@@ -24,7 +24,7 @@ function AddNode(props: any) {
 
   useEffect(() => {
     dispatch(setShowNodeMenu(false));
-  }, [dispatch])
+  }, [dispatch]);
 
   const {
     location: { query }
