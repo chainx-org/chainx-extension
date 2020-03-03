@@ -23,6 +23,7 @@ function Home(props: any) {
     keystore: {}
   });
   const dispatch = useDispatch();
+  // @ts-ignore
   const homeLoading = useSelector(state => state.status.homeLoading);
   const [{}, setAccounts] = useRedux('accounts');
   const isTestNet = useSelector(isTestNetSelector);

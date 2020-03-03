@@ -25,7 +25,9 @@ export const { setInfo } = assetSlice.actions;
 
 export const fetchAssetsInfo = () => async dispatch => {
   const chainx = getChainx();
+  // @ts-ignore
   await chainx.isRpcReady();
+  // @ts-ignore
   const { asset } = chainx;
 
   const resp = await asset.getAssets(0, 100);

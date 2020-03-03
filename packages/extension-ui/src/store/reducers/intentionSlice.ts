@@ -17,6 +17,7 @@ export const { setIntentions } = intentionSlice.actions;
 
 async function getStake() {
   const chainx = getChainx();
+  // @ts-ignore
   const { stake } = chainx;
 
   return stake;

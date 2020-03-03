@@ -30,6 +30,7 @@ export default function() {
 
   const getPublicKey = address => {
     if (methodName && args && address) {
+      // @ts-ignore
       return chainx.account.decodeAddress(address);
     }
   };
