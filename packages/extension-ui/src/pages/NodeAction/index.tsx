@@ -5,12 +5,13 @@ import { TextInput } from '@chainx/ui';
 import './nodeAction.scss';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import initNodes from '@chainx/extension-ui/shared/nodeUtils';
+import initNodes, { TIMEOUT } from '@chainx/extension-ui/shared/nodeUtils';
 import {
   mainNetNodesSelector,
   testNetNodesSelector
 } from '@chainx/extension-ui/store/reducers/nodeSlice';
 import { setShowNodeMenu } from '@chainx/extension-ui/store/reducers/statusSlice';
+import { fetchFromWs } from "@chainx/extension-ui/shared";
 
 function AddNode(props: any) {
   const [name, setName] = useState('');
@@ -40,18 +41,23 @@ function AddNode(props: any) {
     title = 'Delete node';
   }
 
-  const check = () => {
+  const enter = async () => {
     if (!name || !url) {
       setErrMsg('name and url are required');
-      return false;
-    }
-    return true;
-  };
-
-  const enter = async () => {
-    if (!check()) {
       return;
     }
+
+    try {
+      await fetchFromWs({
+        url: url,
+        method: 'system_health',
+        timeOut: TIMEOUT
+      });
+    } catch (e) {
+      setErrMsg('Node not available');
+      return
+    }
+
     try {
       await addChainxNode(name, url, isTestNet);
       props.history.push('/');
