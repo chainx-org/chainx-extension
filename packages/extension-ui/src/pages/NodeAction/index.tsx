@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { addChainxNode, removeChainxNode } from '../../messaging';
 import ErrorMessage from '../../components/ErrorMessage';
 import { TextInput } from '@chainx/ui';
 import './nodeAction.scss';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import initNodes from '@chainx/extension-ui/shared/nodeUtils';
 import {
   mainNetNodesSelector,
   testNetNodesSelector
 } from '@chainx/extension-ui/store/reducers/nodeSlice';
+import { setShowNodeMenu } from "@chainx/extension-ui/store/reducers/statusSlice";
 
 function AddNode(props: any) {
   const [name, setName] = useState('');
@@ -19,6 +20,11 @@ function AddNode(props: any) {
   let nodeList = useSelector(
     isTestNet ? testNetNodesSelector : mainNetNodesSelector
   );
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setShowNodeMenu(false));
+  }, [dispatch])
 
   const {
     location: { query }
