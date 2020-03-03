@@ -23,7 +23,7 @@ import {
   isTestNetSelector,
   setIsTestNet as setStoreIsTestNet
 } from '../../store/reducers/networkSlice';
-import initNodes from '@chainx/extension-ui/shared/nodeUtils';
+import initNodes, { updateDelay } from '@chainx/extension-ui/shared/nodeUtils';
 
 function Header(props: any) {
   const refNodeList = useRef<HTMLInputElement>(null);
@@ -31,6 +31,16 @@ function Header(props: any) {
   const dispatch = useDispatch();
   const showAccountMenu = useSelector(showAccountMenuSelector);
   const showNodeMenu = useSelector(showNodeMenuSelector);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      updateDelay()
+        .then(() => console.log('Delay info updated'))
+        .catch(() => console.log('Failed to update delay info'));
+    }, 10000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     initNodes()

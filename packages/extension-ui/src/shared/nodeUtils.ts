@@ -40,7 +40,7 @@ export const updateDelay = async function() {
     try {
       const result = await fetchFromWs({
         url: node.url,
-        method: 'chain_getBlock',
+        method: 'system_health',
         timeOut: TIMEOUT
       });
       // @ts-ignore

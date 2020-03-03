@@ -11,7 +11,7 @@ import {
   testNetNodesSelector
 } from '@chainx/extension-ui/store/reducers/nodeSlice';
 import { setShowNodeMenu } from '@chainx/extension-ui/store/reducers/statusSlice';
-import { fetchFromWs } from "@chainx/extension-ui/shared";
+import { fetchFromWs } from '@chainx/extension-ui/shared';
 
 function AddNode(props: any) {
   const [name, setName] = useState('');
@@ -55,7 +55,7 @@ function AddNode(props: any) {
       });
     } catch (e) {
       setErrMsg('Node not available');
-      return
+      return;
     }
 
     try {
