@@ -5,7 +5,6 @@ import {
   intentionAccountNameMapSelector
 } from '../../store/reducers/intentionSlice';
 import toPrecision from '../../shared/toPrecision';
-import { pcxPrecision } from '../../shared/constants';
 import { getChainx } from '../../shared/chainx';
 import {
   toSignArgsSelector,
@@ -14,6 +13,7 @@ import {
 import { nominateMethodNames } from './constants';
 import DetailItem from './components/DetailItem';
 import DetailAmount from './components/DetailAmount';
+import { pcxPrecisionSelector } from '@chainx/extension-ui/store/reducers/assetSlice';
 
 export default function() {
   const intentionAccountNameMap = useSelector(intentionAccountNameMapSelector);
@@ -23,6 +23,7 @@ export default function() {
   const methodName = useSelector(toSignMethodNameSelector);
   const isNominateMethod = nominateMethodNames.includes(methodName);
   const args = useSelector(toSignArgsSelector);
+  const pcxPrecision = useSelector(pcxPrecisionSelector);
 
   useEffect(() => {
     dispatch(fetchIntentions());

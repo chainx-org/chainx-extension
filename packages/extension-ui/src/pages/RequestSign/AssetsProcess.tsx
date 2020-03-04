@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import toPrecision from '../../shared/toPrecision';
-import { pcxPrecision } from '../../shared/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { feeSelector, fetchFee } from '../../store/reducers/tradeSlice';
 import {
@@ -8,11 +7,13 @@ import {
   toSignMethodNameSelector
 } from '../../store/reducers/txSlice';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
+import { pcxPrecisionSelector } from '@chainx/extension-ui/store/reducers/assetSlice';
 
 export default function() {
   const fee = useSelector(feeSelector);
   const dispatch = useDispatch();
   const isTestNet = useSelector(isTestNetSelector);
+  const pcxPrecision = useSelector(pcxPrecisionSelector);
 
   useEffect(() => {
     dispatch(fetchFee(isTestNet));
