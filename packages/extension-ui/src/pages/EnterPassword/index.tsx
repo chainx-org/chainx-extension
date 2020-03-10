@@ -6,6 +6,8 @@ import ErrorMessage from '../../components/ErrorMessage';
 import { PasswordInput } from '@chainx/ui';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 import { useSelector } from 'react-redux';
+import { ButtonLine } from '../../components/styled';
+import { PrimaryButton } from '@chainx/ui';
 
 function EnterPassword(props: any) {
   const [pass, setPass] = useState('');
@@ -55,24 +57,24 @@ function EnterPassword(props: any) {
   return (
     <div className="enter-password">
       <span className="title">Input password</span>
-      <PasswordInput
-        className="fixed-width"
-        value={pass}
-        onChange={setPass}
-        onKeyPress={event => {
-          if (event.key === 'Enter') {
-            enter();
-          }
-        }}
-        placeholder="Password"
-      />
-
-      <button
-        className="button button-yellow margin-top-40"
-        onClick={() => enter()}
-      >
-        Confirm
-      </button>
+      <div>
+        <PasswordInput
+          className="fixed-width"
+          value={pass}
+          onChange={setPass}
+          onKeyPress={event => {
+            if (event.key === 'Enter') {
+              enter();
+            }
+          }}
+          placeholder="Password"
+        />
+      </div>
+      <ButtonLine>
+        <PrimaryButton size="large" onClick={() => enter()}>
+          Confirm
+        </PrimaryButton>
+      </ButtonLine>
       {errMsg ? <ErrorMessage msg={errMsg} /> : null}
     </div>
   );
