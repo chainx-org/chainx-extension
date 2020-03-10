@@ -6,7 +6,7 @@ import ErrorMessage from '../../components/ErrorMessage';
 import { PasswordInput } from '@chainx/ui';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 import { useSelector } from 'react-redux';
-import { ButtonLine } from '../../components/styled';
+import { ButtonLine, InputWrapper, Title } from '../../components/styled';
 import { PrimaryButton } from '@chainx/ui';
 
 function EnterPassword(props: any) {
@@ -56,8 +56,8 @@ function EnterPassword(props: any) {
 
   return (
     <div className="enter-password">
-      <span className="title">Input password</span>
-      <div>
+      <Title>Input password</Title>
+      <InputWrapper>
         <PasswordInput
           className="fixed-width"
           value={pass}
@@ -69,7 +69,7 @@ function EnterPassword(props: any) {
           }}
           placeholder="Password"
         />
-      </div>
+      </InputWrapper>
       <ButtonLine>
         <PrimaryButton size="large" onClick={() => enter()}>
           Confirm

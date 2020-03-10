@@ -31,6 +31,7 @@ import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSl
 import { ButtonLine, TxDetail } from './components/styled';
 import Fee from './Fee';
 import styled from 'styled-components';
+import { InputWrapper } from '@chainx/extension-ui/components/styled';
 
 const Wrapper = styled.div`
   display: flex;
@@ -172,7 +173,7 @@ function RequestSign(props: any) {
         acceleration={acceleration}
         setAcceleration={setAcceleration}
       />
-      <div>
+      <InputWrapper>
         <PasswordInput
           value={pass}
           onChange={value => {
@@ -184,19 +185,19 @@ function RequestSign(props: any) {
               sign();
             }
           }}
-          className="fixed-width"
+          style={{ width: '100%' }}
           placeholder="Password"
         />
-        <ErrorMessage msg={errMsg} />
-        <ButtonLine>
-          <DefaultButton size="large" onClick={() => removeCurrentSign()}>
-            Cancel
-          </DefaultButton>
-          <PrimaryButton size="large" onClick={() => sign()}>
-            Sign
-          </PrimaryButton>
-        </ButtonLine>
-      </div>
+      </InputWrapper>
+      <ErrorMessage msg={errMsg} />
+      <ButtonLine>
+        <DefaultButton size="large" onClick={() => removeCurrentSign()}>
+          Cancel
+        </DefaultButton>
+        <PrimaryButton size="large" onClick={() => sign()}>
+          Sign
+        </PrimaryButton>
+      </ButtonLine>
     </Wrapper>
   );
 }
