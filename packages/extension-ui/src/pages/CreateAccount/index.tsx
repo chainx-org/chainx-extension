@@ -6,6 +6,14 @@ import './createAccount.scss';
 import StaticWarning from '../../components/StaticWarning';
 import ErrorMessage from '../../components/ErrorMessage';
 import NameAndPassword from '../../components/NameAndPassword';
+import styled from 'styled-components'
+import { PrimaryButton } from '@chainx/ui'
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin-top: 40px;
+`
 
 function CreateAccount(props: any) {
   const titleList = [
@@ -109,34 +117,31 @@ function CreateAccount(props: any) {
             />
           )}
         </div>
-        {currentStep < 2 && (
-          <button
-            className="button button-yellow margin-top-40"
-            onClick={() => {
-              if (currentStep < 2) {
-                setCurrentStep(s => s + 1);
-              }
-            }}
-          >
-            {buttonTextList[currentStep]}
-          </button>
-        )}
-        {currentStep === 2 && (
-          <div className="container-spacebetween margin-top-40">
-            <button
-              className="button button-white-half"
-              onClick={() => clearErrMsg() && setCurrentStep(s => s - 1)}
+        <Wrapper>
+          {currentStep < 2 && (
+            <PrimaryButton
+              style={{ minWidth: 200 }}
+              size="large"
+              onClick={() => setCurrentStep(s => s + 1)}
             >
-              Pre
-            </button>
-            <button
-              className="button button-yellow-half"
-              onClick={() => checkMnemonic() && setCurrentStep(s => s + 1)}
-            >
-              Next
-            </button>
-          </div>
-        )}
+              {buttonTextList[currentStep]}
+            </PrimaryButton>
+          )}
+          {currentStep === 2 && (
+            <>
+              <PrimaryButton
+                size="large"
+                onClick={() => clearErrMsg() && setCurrentStep(s => s - 1)}>
+                Pre
+              </PrimaryButton>
+              <PrimaryButton
+                size="large"
+                onClick={() => checkMnemonic() && setCurrentStep(s => s + 1)}>
+                Next
+              </PrimaryButton>
+            </>
+          )}
+        </Wrapper>
         {currentStep > 1 ? <ErrorMessage msg={errMsg} /> : null}
       </div>
       {currentStep === 2 && (

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Redirect, Route, Switch } from 'react-router';
+import { Redirect, Route, Switch, useHistory } from 'react-router';
 import Home from './Home';
 import Header from './Header';
 import CreateAccount from './CreateAccount';
@@ -20,6 +19,7 @@ import './index.scss';
 import { setInitLoading } from '../store/reducers/statusSlice';
 import initNodes from '@chainx/extension-ui/shared/nodeUtils';
 import { setIsTestNet as setStoreIsTestNet } from '../store/reducers/networkSlice';
+import { toSignSelector } from "@chainx/extension-ui/store/reducers/txSlice";
 
 export default function App() {
   let redirectUrl: any = '/';
@@ -36,6 +36,21 @@ export default function App() {
   if (process.env.NODE_ENV === 'development') {
     console.log('state', state);
   }
+
+  const history = useHistory()
+  const toSign = useSelector(toSignSelector);
+
+  useEffect(() => {
+    try {
+      if (toSign) {
+        history.push({
+          pathname: '/requestSign'
+        })
+      }
+    } catch (error) {
+      console.log('sign request error occurs ', error)
+    }
+  }, [toSign, history])
 
   useEffect(() => {
     getSetting();
@@ -63,30 +78,28 @@ export default function App() {
   };
 
   return (
-    <Router>
-      <React.Fragment>
-        <Header props />
-        {(loading || initLoading || homeLoading) && (
-          <div className="spinner">
-            <img src={spinner} alt="spinner" />
-          </div>
-        )}
-        {!initLoading && (
-          <div className="content">
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route path="/createAccount" component={CreateAccount} />
-              <Route path="/importAccount" component={ImportAccount} />
-              <Route path="/requestSign" component={RequestSign} />
-              <Route path="/showPrivateKey" component={ShowPrivateKey} />
-              <Route path="/enterPassword" component={EnterPassword} />
-              <Route path="/addNode" component={NodeAction} />
-              <Route path="/nodeError" component={NodeError} />
-              <Redirect to={redirectUrl} />
-            </Switch>
-          </div>
-        )}
-      </React.Fragment>
-    </Router>
+    <React.Fragment>
+      <Header props />
+      {(loading || initLoading || homeLoading) && (
+        <div className="spinner">
+          <img src={spinner} alt="spinner" />
+        </div>
+      )}
+      {!initLoading && (
+        <div className="content">
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/createAccount" component={CreateAccount} />
+            <Route path="/importAccount" component={ImportAccount} />
+            <Route path="/requestSign" component={RequestSign} />
+            <Route path="/showPrivateKey" component={ShowPrivateKey} />
+            <Route path="/enterPassword" component={EnterPassword} />
+            <Route path="/addNode" component={NodeAction} />
+            <Route path="/nodeError" component={NodeError} />
+            <Redirect to={redirectUrl} />
+          </Switch>
+        </div>
+      )}
+    </React.Fragment>
   );
 }

@@ -8,7 +8,7 @@ import Icon from '../components/Icon';
 import './index.scss';
 // @ts-ignore
 import logo from '../assets/extension_logo.svg';
-import { fetchToSign, toSignSelector } from '../store/reducers/txSlice';
+import { fetchToSign } from '../store/reducers/txSlice';
 import { fetchIntentions } from '@chainx/extension-ui/store/reducers/intentionSlice';
 import { fetchTradePairs } from '@chainx/extension-ui/store/reducers/tradeSlice';
 import { fetchAssetsInfo } from '@chainx/extension-ui/store/reducers/assetSlice';
@@ -28,7 +28,6 @@ function Home(props: any) {
   const [{}, setAccounts] = useRedux('accounts');
   const isTestNet = useSelector(isTestNetSelector);
   const [copySuccess, setCopySuccess] = useState('');
-  const toSign = useSelector(toSignSelector);
 
   useEffect(() => {
     setCopyEvent();
@@ -42,12 +41,6 @@ function Home(props: any) {
   useOutsideClick(ref, () => {
     setShowAccountAction(false);
   });
-
-  useEffect(() => {
-    if (toSign) {
-      props.history.push({ pathname: '/requestSign' });
-    }
-  }, [toSign]);
 
   async function getAccountInfo() {
     await getCurrentAccount();
