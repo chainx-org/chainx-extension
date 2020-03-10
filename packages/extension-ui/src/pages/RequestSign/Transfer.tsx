@@ -12,13 +12,13 @@ export default function() {
   const pcxPrecision = useSelector(pcxPrecisionSelector);
 
   return (
-    <div className="detail">
+    <>
       <DetailAmount
         token={replaceBTC(token)}
         value={toPrecision(balance, pcxPrecision)}
       />
       <DetailItem label="Dest" value={dest} />
       <DetailItem label="Memo" value={memo} />
-    </div>
+    </>
   );
 }

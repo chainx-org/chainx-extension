@@ -6,14 +6,14 @@ import './createAccount.scss';
 import StaticWarning from '../../components/StaticWarning';
 import ErrorMessage from '../../components/ErrorMessage';
 import NameAndPassword from '../../components/NameAndPassword';
-import styled from 'styled-components'
-import { PrimaryButton } from '@chainx/ui'
+import styled from 'styled-components';
+import { PrimaryButton } from '@chainx/ui';
 
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-around;
   margin-top: 40px;
-`
+`;
 
 function CreateAccount(props: any) {
   const titleList = [
@@ -131,12 +131,14 @@ function CreateAccount(props: any) {
             <>
               <PrimaryButton
                 size="large"
-                onClick={() => clearErrMsg() && setCurrentStep(s => s - 1)}>
+                onClick={() => clearErrMsg() && setCurrentStep(s => s - 1)}
+              >
                 Pre
               </PrimaryButton>
               <PrimaryButton
                 size="large"
-                onClick={() => checkMnemonic() && setCurrentStep(s => s + 1)}>
+                onClick={() => checkMnemonic() && setCurrentStep(s => s + 1)}
+              >
                 Next
               </PrimaryButton>
             </>
@@ -146,9 +148,9 @@ function CreateAccount(props: any) {
       </div>
       {currentStep === 2 && (
         <p className="validate-mnemonic-area">
-          {validateMnemonicList.map((item, index) => (
-            item && <span key={index}>{item}</span>
-          ))}
+          {validateMnemonicList.map(
+            (item, index) => item && <span key={index}>{item}</span>
+          )}
         </p>
       )}
     </div>

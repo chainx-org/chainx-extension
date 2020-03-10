@@ -19,7 +19,7 @@ import './index.scss';
 import { setInitLoading } from '../store/reducers/statusSlice';
 import initNodes from '@chainx/extension-ui/shared/nodeUtils';
 import { setIsTestNet as setStoreIsTestNet } from '../store/reducers/networkSlice';
-import { toSignSelector } from "@chainx/extension-ui/store/reducers/txSlice";
+import { toSignSelector } from '@chainx/extension-ui/store/reducers/txSlice';
 
 export default function App() {
   let redirectUrl: any = '/';
@@ -37,7 +37,7 @@ export default function App() {
     console.log('state', state);
   }
 
-  const history = useHistory()
+  const history = useHistory();
   const toSign = useSelector(toSignSelector);
 
   useEffect(() => {
@@ -45,12 +45,12 @@ export default function App() {
       if (toSign) {
         history.push({
           pathname: '/requestSign'
-        })
+        });
       }
     } catch (error) {
-      console.log('sign request error occurs ', error)
+      console.log('sign request error occurs ', error);
     }
-  }, [toSign, history])
+  }, [toSign, history]);
 
   useEffect(() => {
     getSetting();

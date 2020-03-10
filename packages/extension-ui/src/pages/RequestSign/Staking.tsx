@@ -86,5 +86,5 @@ export default function() {
     element = unfreezeElement;
   }
 
-  return <div className="detail">{element}</div>;
+  return element;
 }

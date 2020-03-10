@@ -2,13 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { rejectSign, signTransaction } from '../../messaging';
 import { getCurrentGas, getSignRequest, useRedux } from '../../shared';
 import ErrorMessage from '../../components/ErrorMessage';
-import './requestSign.scss';
-import {
-  DefaultButton,
-  PasswordInput,
-  PrimaryButton,
-  Slider
-} from '@chainx/ui';
+import { DefaultButton, PasswordInput, PrimaryButton } from '@chainx/ui';
 import {
   setLoading,
   setShowAccountMenu,
@@ -21,7 +15,6 @@ import CommonTx from './CommonTx';
 import Trade from './Trade';
 import AssetsProcess from './AssetsProcess';
 import Staking from './Staking';
-import toPrecision from '../../shared/toPrecision';
 import {
   isPseduClaimSelector,
   isStakingClaimSelector,
@@ -35,6 +28,16 @@ import {
 } from '@chainx/extension-ui/pages/RequestSign/constants';
 import PseduClaim from '@chainx/extension-ui/pages/RequestSign/PseduClaim';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
+import { ButtonLine, TxDetail } from './components/styled';
+import Fee from './Fee';
+import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 20px;
+`;
 
 function RequestSign(props: any) {
   const dispatch = useDispatch();
@@ -161,44 +164,15 @@ function RequestSign(props: any) {
     }
   };
 
-  const marks = [
-    {
-      value: 1,
-      label: '1x'
-    },
-    {
-      value: 10,
-      label: '10x'
-    }
-  ];
-
   return (
-    <div className="container request-sign">
-      <div className="tx-panel">{txPanel}</div>
-      <div className="adjust-gas">
-        <div className="adjust-gas-desc">
-          <div>
-            <span>Fee</span>
-            <span className="yellow">{toPrecision(currentGas, 8)} PCX</span>
-          </div>
-          <span>More fee, faster speed</span>
-        </div>
-        <Slider
-          defaultValue={acceleration}
-          onChange={v => setAcceleration(v)}
-          // getAriaValueText={valuetext}
-          aria-labelledby="discrete-slider"
-          valueLabelDisplay="auto"
-          step={1}
-          marks={marks}
-          min={1}
-          max={10}
-        />
-      </div>
-      <div className="submit-area">
-        <div className="title">
-          <span>Input password</span>
-        </div>
+    <Wrapper>
+      <TxDetail>{txPanel}</TxDetail>
+      <Fee
+        currentGas={currentGas}
+        acceleration={acceleration}
+        setAcceleration={setAcceleration}
+      />
+      <div>
         <PasswordInput
           value={pass}
           onChange={value => {
@@ -214,16 +188,16 @@ function RequestSign(props: any) {
           placeholder="Password"
         />
         <ErrorMessage msg={errMsg} />
-        <div className="button-area margin-top-40">
+        <ButtonLine>
           <DefaultButton size="large" onClick={() => removeCurrentSign()}>
             Cancel
           </DefaultButton>
           <PrimaryButton size="large" onClick={() => sign()}>
             Sign
           </PrimaryButton>
-        </div>
+        </ButtonLine>
       </div>
-    </div>
+    </Wrapper>
   );
 }
 
