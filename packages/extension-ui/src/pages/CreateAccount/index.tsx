@@ -137,16 +137,14 @@ function CreateAccount(props: any) {
             </button>
           </div>
         )}
-        {currentStep > 1 ? errMsg ? <ErrorMessage msg={errMsg} /> : null : null}
+        {currentStep > 1 ? <ErrorMessage msg={errMsg} /> : null}
       </div>
       {currentStep === 2 && (
-        <div className="validate-mnemonic-area">
-          <div className="validate-mnemonic-area-container">
-            {validateMnemonicList.map((item, index) => (
-              <span key={index}>{item}</span>
-            ))}
-          </div>
-        </div>
+        <p className="validate-mnemonic-area">
+          {validateMnemonicList.map((item, index) => (
+            item && <span key={index}>{item}</span>
+          ))}
+        </p>
       )}
     </div>
   );

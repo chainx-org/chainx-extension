@@ -1,12 +1,23 @@
 @import '../assets/iconfont/iconfont.css';
 @import '../assets/variables.scss';
 
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+
 #root {
-  width: 358px;
-  height: 580px;
+  height: 100%;
+  min-width: 358px;
+  min-height: 580px;
   line-height: 1.25;
   display: flex;
   flex-direction: column;
+
   textarea, button, input {
     outline: none;
   }
@@ -45,6 +56,7 @@
   justify-content: center;
   background: rgba(0, 0, 0, 0.4);
   z-index: 999;
+
   img {
     width: 32px;
   }
@@ -55,6 +67,7 @@
   display: flex;
   justify-content: center;
   overflow-y: auto;
+  flex: 1;
 
   .container-account {
     display: flex;
@@ -167,7 +180,7 @@
 
   .container-no-account {
     align-items: center;
-    
+
     .home-logo {
       margin-top: 60px;
       width: 90px;
