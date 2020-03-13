@@ -24,8 +24,8 @@ function ImportAccount(props: any) {
   const checkStep1 = () => {
     if (currentTabIndex === 0) {
       if (
-        mnemonicList.some(item => item === '') ||
-        !Account.isMnemonicValid(mnemonicList.join(' '))
+        mnemonicList.some(item => (item || '').trim() === '') ||
+        !Account.isMnemonicValid(mnemonicList.map(m => (m || '').trim()).join(' '))
       ) {
         setErrMsg('Invalid mnemonic');
         return;
@@ -97,7 +97,7 @@ function ImportAccount(props: any) {
             <NameAndPassword
               type={currentTabIndex === 0 ? 'mnemonic' : 'pk'}
               secret={
-                currentTabIndex === 0 ? mnemonicList.join(' ') : pk.trim()
+                currentTabIndex === 0 ? mnemonicList.map(m => (m || '').trim()).join(' ') : pk.trim()
               }
               onSuccess={function() {
                 props.history.push('/');

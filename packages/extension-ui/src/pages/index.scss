@@ -30,9 +30,10 @@ body {
 }
 
 .container {
-  width: 318px;
+  width: 100%;
   display: flex;
   color: $fontgray;
+  padding: 0 20px;
 }
 
 .container-column {
