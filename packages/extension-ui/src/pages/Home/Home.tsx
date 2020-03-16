@@ -1,18 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useOutsideClick, useRedux } from '../shared';
+import { useOutsideClick, useRedux } from '../../shared';
 import { useDispatch, useSelector } from 'react-redux';
-import { setHomeLoading } from '../store/reducers/statusSlice';
+import { setHomeLoading } from '../../store/reducers/statusSlice';
 import ClipboardJS from 'clipboard';
-import { getAllAccounts, getCurrentChainxAccount } from '../messaging';
-import Icon from '../components/Icon';
-import './index.scss';
-// @ts-ignore
-import logo from '../assets/extension_logo.svg';
-import { fetchToSign } from '../store/reducers/txSlice';
+import { getAllAccounts, getCurrentChainxAccount } from '../../messaging';
+import Icon from '../../components/Icon';
+import '../index.scss';
+import { fetchToSign } from '../../store/reducers/txSlice';
 import { fetchIntentions } from '@chainx/extension-ui/store/reducers/intentionSlice';
 import { fetchTradePairs } from '@chainx/extension-ui/store/reducers/tradeSlice';
 import { fetchAssetsInfo } from '@chainx/extension-ui/store/reducers/assetSlice';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
+import CreateOrImportAccount from "@chainx/extension-ui/pages/Home/CreateOrImportAccount";
 
 function Home(props: any) {
   const ref = useRef<HTMLInputElement>(null);
@@ -122,23 +121,8 @@ function Home(props: any) {
           <span>{copySuccess}</span>
         </div>
       ) : (
-        <div className="container container-column container-no-account">
-          <div className="home-logo">
-            <img src={logo} alt="logo" />
-          </div>
-          <button
-            className="button button-white button-new-account"
-            onClick={() => props.history.push('/createAccount')}
-          >
-            New Account
-          </button>
-          <button
-            className="button button-white button-import-account"
-            onClick={() => props.history.push('/importAccount')}
-          >
-            Import Account
-          </button>
-        </div>
+        // @ts-ignore
+        <CreateOrImportAccount history={props.history} />
       )}
     </>
   );

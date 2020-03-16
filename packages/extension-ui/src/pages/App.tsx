@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Redirect, Route, Switch, useHistory } from 'react-router';
-import Home from './Home';
+import Home from './Home/Home';
 import Header from './Header';
 import CreateAccount from './CreateAccount';
 import ImportAccount from './ImportAccount';
