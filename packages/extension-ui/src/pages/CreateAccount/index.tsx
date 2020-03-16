@@ -8,6 +8,7 @@ import ErrorMessage from '../../components/ErrorMessage';
 import NameAndPassword from '../../components/NameAndPassword';
 import styled from 'styled-components';
 import { PrimaryButton } from '@chainx/ui';
+import { Container, SubTitle, Title } from "@chainx/extension-ui/components/styled";
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,19 +16,51 @@ const Wrapper = styled.div`
   margin-top: 40px;
 `;
 
+const MnemonicWordsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+`
+
+const WordItem = styled.div`
+  margin-top: 16px;
+  width: 30%;
+  height: 40px;
+  background: #ffffff;
+  border: 1px solid #dce0e2;
+  border-radius: 20px;
+  color: #3f3f3f;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const ValidatedWrapper = styled.p`
+  margin: 20px -20px 0;
+  background-color: #f2f3f4;
+  flex: 1;
+  justify-content: center;
+  padding: 8px 20px 0;
+  flex-wrap: wrap;
+  min-height: 60px;
+
+  span {
+    display: inline-block;
+
+    &:not(:last-of-type) {
+      margin-right: 10px;
+    }
+
+    word-break: break-all;
+    margin-top: 8px;
+    height: 15px;
+    font-size: 14px;
+    color: #3f3f3f;
+  }
+`
+
 function CreateAccount(props: any) {
-  const titleList = [
-    'New Account',
-    'Backup Mnemonic',
-    'Verify Mnemonic',
-    'Name and password setting'
-  ];
-  const subTitleList = [
-    '',
-    'Write down following mnemonic words, and will be used next step.',
-    'Mark the words one by one in the order last step shows.',
-    'Password contains at lease 8 characters, and at least one upper,lower and number case character.'
-  ];
   const buttonTextList = ['Begin', 'Next', 'Next', 'OK'];
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -60,6 +93,45 @@ function CreateAccount(props: any) {
     return false;
   };
 
+  const nextButton = (
+    <Wrapper>
+      <PrimaryButton
+        style={{ minWidth: 200 }}
+        size="large"
+        onClick={() => setCurrentStep(s => s + 1)}
+      >
+        {buttonTextList[currentStep]}
+      </PrimaryButton>
+    </Wrapper>
+  )
+
+  if (0 === currentStep) {
+    return (
+      <Container>
+        <Title>New Account</Title>
+        <StaticWarning title="Backup Mnemonic" />
+        {nextButton}
+      </Container>
+    )
+  }
+
+  if (1 === currentStep) {
+    return (
+      <Container>
+        <Title>Backup Mnemonic</Title>
+        <SubTitle>
+          Write down following mnemonic words, and will be used next step.
+        </SubTitle>
+        <MnemonicWordsWrapper>
+          {mnemonicWords.map(item => (
+            <WordItem key={item.index}>{item.value}</WordItem>
+          ))}
+        </MnemonicWordsWrapper>
+        {nextButton}
+      </Container>
+    )
+  }
+
   if (3 === currentStep) {
     return (
       <NameAndPassword
@@ -73,90 +145,65 @@ function CreateAccount(props: any) {
   }
 
   return (
-    <div className="container create-account">
-      <div className="create-account-title">
-        <span>{titleList[currentStep]}</span>
-        <span className="create-account-sub-title">
-          {subTitleList[currentStep]}
-        </span>
-      </div>
-      <div className="create-account-body">
-        <div className="create-account-body-content">
-          {currentStep === 0 && <StaticWarning title="Backup Mnemonic" />}
-          {currentStep === 1 &&
-            mnemonicWords.map((item: any) => (
-              <div className="word-item" key={item.index}>
-                {item.value}
-              </div>
-            ))}
-          {currentStep === 2 &&
-            shuffleMnemonicList.map((item: any, index: number) => (
-              <div
-                className={
-                  'word-item word-item-click ' +
-                  (wordSelectedList[index] ? 'word-item-selected' : '')
+    <Container>
+      <Title>Verify Mnemonic</Title>
+      <SubTitle>
+        Mark the words one by one in the order last step shows.
+      </SubTitle>
+      <div className="create-account-body-content">
+        {
+          shuffleMnemonicList.map((item: any, index: number) => (
+            <div
+              className={
+                'word-item word-item-click ' +
+                (wordSelectedList[index] ? 'word-item-selected' : '')
+              }
+              key={index}
+              onClick={() => {
+                const wordSelected = wordSelectedList[index];
+                let wordIndex = validateMnemonicList.indexOf('');
+                let replaceWord = item;
+                if (wordSelected) {
+                  // word has selected, remove last word
+                  wordIndex =
+                    11 -
+                    Array.from(validateMnemonicList)
+                      .reverse()
+                      .indexOf(item);
+                  replaceWord = '';
                 }
-                key={index}
-                onClick={() => {
-                  const wordSelected = wordSelectedList[index];
-                  let wordIndex = validateMnemonicList.indexOf('');
-                  let replaceWord = item;
-                  if (wordSelected) {
-                    // word has selected, remove last word
-                    wordIndex =
-                      11 -
-                      Array.from(validateMnemonicList)
-                        .reverse()
-                        .indexOf(item);
-                    replaceWord = '';
-                  }
-                  validateMnemonicList.splice(wordIndex, 1, replaceWord);
-                  setValidateMnemonicList(Array.from(validateMnemonicList));
-                  wordSelectedList.splice(index, 1, !wordSelected);
-                  setWordSelectedList(Array.from(wordSelectedList));
-                }}
-              >
-                {item}
-              </div>
-            ))}
-        </div>
-        <Wrapper>
-          {currentStep < 2 && (
-            <PrimaryButton
-              style={{ minWidth: 200 }}
-              size="large"
-              onClick={() => setCurrentStep(s => s + 1)}
+                validateMnemonicList.splice(wordIndex, 1, replaceWord);
+                setValidateMnemonicList(Array.from(validateMnemonicList));
+                wordSelectedList.splice(index, 1, !wordSelected);
+                setWordSelectedList(Array.from(wordSelectedList));
+              }}
             >
-              {buttonTextList[currentStep]}
-            </PrimaryButton>
-          )}
-          {currentStep === 2 && (
-            <>
-              <PrimaryButton
-                size="large"
-                onClick={() => clearErrMsg() && setCurrentStep(s => s - 1)}
-              >
-                Pre
-              </PrimaryButton>
-              <PrimaryButton
-                size="large"
-                onClick={() => checkMnemonic() && setCurrentStep(s => s + 1)}
-              >
-                Next
-              </PrimaryButton>
-            </>
-          )}
-        </Wrapper>
-        {currentStep > 1 ? <ErrorMessage msg={errMsg} /> : null}
+              {item}
+            </div>
+          ))
+        }
       </div>
-      {currentStep === 2 && (
-        <p className="validate-mnemonic-area">
-          {validateMnemonicList.map(
-            (item, index) => item && <span key={index}>{item}</span>
-          )}
-        </p>
-      )}
-    </div>
+      <Wrapper>
+        <PrimaryButton
+          size="large"
+          onClick={() => clearErrMsg() && setCurrentStep(s => s - 1)}
+        >
+          Pre
+        </PrimaryButton>
+        <PrimaryButton
+          size="large"
+          onClick={() => checkMnemonic() && setCurrentStep(s => s + 1)}
+        >
+          Next
+        </PrimaryButton>
+      </Wrapper>
+      <ErrorMessage msg={errMsg} />
+      <ValidatedWrapper>
+        {validateMnemonicList.map(
+          (item, index) => item && <span key={index}>{item}</span>
+        )}
+      </ValidatedWrapper>
+    </Container>
   );
 }
 
