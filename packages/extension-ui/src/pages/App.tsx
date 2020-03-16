@@ -11,15 +11,17 @@ import NodeAction from './NodeAction';
 import NodeError from './NodeAction/NodeError';
 import { setChainx, sleep } from '../shared';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentChainxNode } from '../messaging';
-import { getSettings } from '../messaging/index';
 // @ts-ignore
 import spinner from '../assets/loading.gif';
 import './index.scss';
 import { setInitLoading } from '../store/reducers/statusSlice';
 import initNodes from '@chainx/extension-ui/shared/nodeUtils';
-import { setIsTestNet as setStoreIsTestNet } from '../store/reducers/networkSlice';
+import {
+  fetchNetwork,
+  isTestNetSelector
+} from '../store/reducers/networkSlice';
 import { toSignSelector } from '@chainx/extension-ui/store/reducers/txSlice';
+import { currentNodeSelector } from '@chainx/extension-ui/store/reducers/nodeSlice';
 
 export default function App() {
   let redirectUrl: any = '/';
@@ -32,6 +34,8 @@ export default function App() {
   // @ts-ignore
   const homeLoading = useSelector(state => state.status.homeLoading);
   const state = useSelector(state => state);
+  const { url: currentNodeUrl } = useSelector(currentNodeSelector) || {};
+  const isTestNet = useSelector(isTestNetSelector);
 
   if (process.env.NODE_ENV === 'development') {
     console.log('state', state);
@@ -53,29 +57,38 @@ export default function App() {
   }, [toSign, history]);
 
   useEffect(() => {
-    getSetting();
-  }, []);
+    dispatch(fetchNetwork());
+  }, [dispatch]);
 
   useEffect(() => {
     initNodes()
       .then(() => {
-        console.log('Init ChainX nodes');
+        console.log('APP Init ChainX nodes');
       })
       .catch(() => console.log('Fail to init ChainX nodes'));
-  }, []);
+  }, [isTestNet]);
 
-  const getSetting = async () => {
-    const settings = await getSettings();
-    dispatch(setStoreIsTestNet(settings.isTestNet));
-    const node = await getCurrentChainxNode(settings.isTestNet);
-    Promise.race([setChainx(node.url), sleep(5000)])
+  useEffect(() => {
+    if (!currentNodeUrl) {
+      return;
+    }
+
+    Promise.race([setChainx(currentNodeUrl), sleep(5000)])
+      .then(chainx => {
+        if (!chainx) {
+          history.push('/nodeError');
+        } else {
+          history.push('/redirect');
+        }
+      })
       .catch(e => {
         console.log(`set Chainx catch error: ${e}`);
+        history.push('/nodeError');
       })
       .finally(() => {
         dispatch(setInitLoading(false));
       });
-  };
+  }, [currentNodeUrl, dispatch]);
 
   return (
     <React.Fragment>

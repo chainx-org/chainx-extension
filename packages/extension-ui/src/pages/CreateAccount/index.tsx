@@ -60,6 +60,18 @@ function CreateAccount(props: any) {
     return false;
   };
 
+  if (3 === currentStep) {
+    return (
+      <NameAndPassword
+        type="mnemonic"
+        secret={mnemonic}
+        onSuccess={function() {
+          props.history.push('/');
+        }}
+      />
+    );
+  }
+
   return (
     <div className="container create-account">
       <div className="create-account-title">
@@ -107,15 +119,6 @@ function CreateAccount(props: any) {
                 {item}
               </div>
             ))}
-          {currentStep === 3 && (
-            <NameAndPassword
-              type="mnemonic"
-              secret={mnemonic}
-              onSuccess={function() {
-                props.history.push('/');
-              }}
-            />
-          )}
         </div>
         <Wrapper>
           {currentStep < 2 && (

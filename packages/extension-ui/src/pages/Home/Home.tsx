@@ -11,7 +11,7 @@ import { fetchIntentions } from '@chainx/extension-ui/store/reducers/intentionSl
 import { fetchTradePairs } from '@chainx/extension-ui/store/reducers/tradeSlice';
 import { fetchAssetsInfo } from '@chainx/extension-ui/store/reducers/assetSlice';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
-import CreateOrImportAccount from "@chainx/extension-ui/pages/Home/CreateOrImportAccount";
+import CreateOrImportAccount from '@chainx/extension-ui/pages/Home/CreateOrImportAccount';
 
 function Home(props: any) {
   const ref = useRef<HTMLInputElement>(null);
@@ -42,9 +42,13 @@ function Home(props: any) {
   });
 
   async function getAccountInfo() {
-    await getCurrentAccount();
-    await getAccounts();
-    dispatch(setHomeLoading(false));
+    dispatch(setHomeLoading(true));
+    try {
+      await getCurrentAccount();
+      await getAccounts();
+    } finally {
+      dispatch(setHomeLoading(false));
+    }
   }
 
   async function getCurrentAccount() {

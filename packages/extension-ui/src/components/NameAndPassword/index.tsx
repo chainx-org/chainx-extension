@@ -8,10 +8,12 @@ import { PasswordInput, TextInput } from '@chainx/ui';
 import styled from 'styled-components';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 import { useSelector } from 'react-redux';
+import { SubTitle, Title } from '@chainx/extension-ui/components/styled';
 
-const Wrap = styled.div`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 0 20px;
 `;
 
 function NameAndPassword(props) {
@@ -71,9 +73,15 @@ function NameAndPassword(props) {
   };
 
   return (
-    <Wrap>
+    <Wrapper>
+      <Title>Name and password setting</Title>
+      <SubTitle>
+        Password contains at lease 8 characters, and at least one upper,lower
+        and number case character.
+      </SubTitle>
       <TextInput
         showClear={false}
+        style={{ flex: 'unset' }}
         className="fixed-width"
         type="text"
         value={name}
@@ -81,12 +89,14 @@ function NameAndPassword(props) {
         placeholder="Name(12 characters max)"
       />
       <PasswordInput
+        style={{ flex: 'unset' }}
         className="fixed-width"
         value={password}
         onChange={value => setPassword(value)}
         placeholder="Password"
       />
       <PasswordInput
+        style={{ flex: 'unset' }}
         className="fixed-width"
         value={confirmation}
         onChange={value => setConfirmation(value)}
@@ -112,7 +122,7 @@ function NameAndPassword(props) {
           msg={`Account ${sameAccount.name} has same address, and it will be overwritten by this account.`}
         />
       )}
-    </Wrap>
+    </Wrapper>
   );
 }
 

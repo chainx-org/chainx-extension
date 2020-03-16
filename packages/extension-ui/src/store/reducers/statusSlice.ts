@@ -5,7 +5,7 @@ const statusSlice = createSlice({
   initialState: {
     loading: false,
     initLoading: true,
-    homeLoading: true,
+    homeLoading: false,
     showAccountMenu: false,
     showNodeMenu: false
   },

@@ -1,8 +1,8 @@
 // @ts-ignore
-import logo from '../../assets/extension_logo.svg'
-import React from 'react'
-import styled from 'styled-components'
-import { WhiteButton } from '@chainx/ui'
+import logo from '../../assets/extension_logo.svg';
+import React from 'react';
+import styled from 'styled-components';
+import { WhiteButton } from '@chainx/ui';
 
 const Wrapper = styled.div`
   padding: 60px 20px 0;
@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 
 // @ts-ignore
 export default React.memo(function({ history }) {
@@ -32,5 +32,5 @@ export default React.memo(function({ history }) {
         Import Account
       </WhiteButton>
     </Wrapper>
-  )
-})
+  );
+});

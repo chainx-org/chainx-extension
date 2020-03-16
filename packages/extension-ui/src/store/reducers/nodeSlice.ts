@@ -1,5 +1,6 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { INIT_NODES, TESTNET_INIT_NODES } from '@chainx/extension-defaults';
+import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 
 const nodeSlice = createSlice({
   name: 'node',
@@ -94,6 +95,15 @@ export const currentTestNetNodeSelector = createSelector(
   testNetNode,
   (nodes, node) => {
     return nodes.find(n => n.url === node.url);
+  }
+);
+
+export const currentNodeSelector = createSelector(
+  isTestNetSelector,
+  currentMainNetNodeSelector,
+  currentTestNetNodeSelector,
+  (isTestNet, mainNetNode, testNetNode) => {
+    return isTestNet ? testNetNode : mainNetNode;
   }
 );
 

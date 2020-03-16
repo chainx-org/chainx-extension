@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { setChainx, sleep, useOutsideClick } from '../../shared';
+import { sleep, useOutsideClick } from '../../shared';
 import { setChainxNode, setNetwork } from '../../messaging';
 import {
   setInitLoading,
@@ -9,8 +9,6 @@ import {
   showAccountMenuSelector,
   showNodeMenuSelector
 } from '../../store/reducers/statusSlice';
-// @ts-ignore
-// @ts-ignore
 // @ts-ignore
 import './header.scss';
 import AccountsPanel from '@chainx/extension-ui/pages/Header/AccountsPanel';
@@ -42,20 +40,14 @@ function Header(props: any) {
     return () => clearInterval(intervalId);
   }, []);
 
-  useEffect(() => {
-    initNodes()
-      .then(() => {
-        console.log('Init ChainX nodes');
-      })
-      .catch(() => console.log('Fail to init ChainX nodes'));
-  }, [isTestNet]);
-
   useOutsideClick(refNodeList, () => {
     dispatch(setShowNodeMenu(false));
   });
 
   async function setNode(url: string) {
     dispatch(setInitLoading(true));
+
+    // TODO: 目前background和ui保存了两个ChainX实例，后边考虑下如何优化
     await Promise.race([setChainxNode(url, isTestNet), sleep(2000)]);
     initNodes()
       .then(() => {
@@ -63,26 +55,12 @@ function Header(props: any) {
       })
       .catch(() => console.log('Fail to init ChainX nodes'));
     dispatch(setShowNodeMenu(false));
-
-    Promise.race([setChainx(url), sleep(5000)])
-      .then(chainx => {
-        if (!chainx) {
-          props.history.push('/nodeError');
-        } else {
-          props.history.push('/redirect');
-        }
-      })
-      .catch(e => {
-        console.log('switch node error ', e);
-        props.history.push('/nodeError');
-      })
-      .finally(() => {
-        dispatch(setInitLoading(false));
-      });
   }
 
-  function switchNet() {
-    setNetwork(!isTestNet);
+  async function switchNet() {
+    dispatch(setInitLoading(true));
+
+    await setNetwork(!isTestNet);
     dispatch(setStoreIsTestNet(!isTestNet));
     dispatch(setShowNodeMenu(false));
     props.history.push('/');
