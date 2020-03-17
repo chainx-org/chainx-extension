@@ -6,6 +6,7 @@ import tx from './txSlice';
 import assetReducer from './assetSlice';
 import node from './nodeSlice';
 import network from './networkSlice';
+import account from './accountSlice';
 
 export default combineReducers({
   assets: assetReducer,
@@ -14,5 +15,6 @@ export default combineReducers({
   trade: tradeSlice,
   tx,
   node,
-  network
+  network,
+  account
 });

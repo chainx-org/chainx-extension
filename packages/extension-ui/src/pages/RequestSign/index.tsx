@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { rejectSign, signTransaction } from '../../messaging';
-import { getCurrentGas, getSignRequest, useRedux } from '../../shared';
+import { getCurrentGas, getSignRequest } from '../../shared';
 import ErrorMessage from '../../components/ErrorMessage';
 import { DefaultButton, PasswordInput, PrimaryButton } from '@chainx/ui';
 import {
@@ -32,6 +32,7 @@ import { ButtonLine, TxDetail } from './components/styled';
 import Fee from './Fee';
 import styled from 'styled-components';
 import { InputWrapper } from '@chainx/extension-ui/components/styled';
+import { currentAccountSelector } from '@chainx/extension-ui/store/reducers/accountSlice';
 
 const Wrapper = styled.div`
   display: flex;
@@ -48,10 +49,10 @@ function RequestSign(props: any) {
   const [acceleration, setAcceleration] = useState(1);
   const [txPanel, setTxPanel] = useState(null);
   const isTestNet = useSelector(isTestNetSelector);
-  const [{ currentAccount }] = useRedux('currentAccount', {
+  const currentAccount = useSelector(currentAccountSelector) || {
     address: '',
     name: ''
-  });
+  };
 
   const toSignMethodName = useSelector(toSignMethodNameSelector);
   const isStakingClaim = useSelector(isStakingClaimSelector);

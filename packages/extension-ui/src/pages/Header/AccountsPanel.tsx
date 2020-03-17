@@ -1,4 +1,3 @@
-import { useRedux } from '@chainx/extension-ui/shared';
 import Icon from '@chainx/extension-ui/components/Icon';
 import { setChainxCurrentAccount } from '@chainx/extension-ui/messaging';
 import DotInCenterStr from '@chainx/extension-ui/components/DotInCenterStr';
@@ -8,10 +7,15 @@ import ClipboardJS from 'clipboard';
 import { setShowAccountMenu } from '@chainx/extension-ui/store/reducers/statusSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
+import {
+  accountsSelector,
+  currentAccountSelector,
+  fetchCurrentChainXAccount
+} from '@chainx/extension-ui/store/reducers/accountSlice';
 
 export default function({ history }) {
-  const [{ currentAccount }, setCurrentAccount] = useRedux('currentAccount');
-  const [{ accounts }] = useRedux('accounts');
+  const currentAccount = useSelector(currentAccountSelector);
+  const accounts = useSelector(accountsSelector);
   const isTestNet = useSelector(isTestNetSelector);
   const [copyText, setCopyText] = useState('Copy');
   const dispatch = useDispatch();
@@ -57,10 +61,11 @@ export default function({ history }) {
                 }
                 key={item.name}
                 onClick={async () => {
-                  setChainxCurrentAccount(item.address, isTestNet).then(d =>
-                    console.log(d)
-                  );
-                  await setCurrentAccount({ currentAccount: item });
+                  await setChainxCurrentAccount(
+                    item.address,
+                    isTestNet
+                  ).then(d => console.log(d));
+                  dispatch(fetchCurrentChainXAccount(isTestNet));
                   dispatch(setShowAccountMenu(false));
                   history.push('/');
                 }}

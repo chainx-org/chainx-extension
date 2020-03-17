@@ -8,7 +8,11 @@ import ErrorMessage from '../../components/ErrorMessage';
 import NameAndPassword from '../../components/NameAndPassword';
 import styled from 'styled-components';
 import { PrimaryButton } from '@chainx/ui';
-import { Container, SubTitle, Title } from "@chainx/extension-ui/components/styled";
+import {
+  Container,
+  SubTitle,
+  Title
+} from '@chainx/extension-ui/components/styled';
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,7 +24,7 @@ const MnemonicWordsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-`
+`;
 
 const WordItem = styled.div`
   margin-top: 16px;
@@ -34,7 +38,7 @@ const WordItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const ValidatedWrapper = styled.p`
   margin: 20px -20px 0;
@@ -58,7 +62,7 @@ const ValidatedWrapper = styled.p`
     font-size: 14px;
     color: #3f3f3f;
   }
-`
+`;
 
 function CreateAccount(props: any) {
   const buttonTextList = ['Begin', 'Next', 'Next', 'OK'];
@@ -103,7 +107,7 @@ function CreateAccount(props: any) {
         {buttonTextList[currentStep]}
       </PrimaryButton>
     </Wrapper>
-  )
+  );
 
   if (0 === currentStep) {
     return (
@@ -112,7 +116,7 @@ function CreateAccount(props: any) {
         <StaticWarning title="Backup Mnemonic" />
         {nextButton}
       </Container>
-    )
+    );
   }
 
   if (1 === currentStep) {
@@ -129,7 +133,7 @@ function CreateAccount(props: any) {
         </MnemonicWordsWrapper>
         {nextButton}
       </Container>
-    )
+    );
   }
 
   if (3 === currentStep) {
@@ -151,37 +155,35 @@ function CreateAccount(props: any) {
         Mark the words one by one in the order last step shows.
       </SubTitle>
       <div className="create-account-body-content">
-        {
-          shuffleMnemonicList.map((item: any, index: number) => (
-            <div
-              className={
-                'word-item word-item-click ' +
-                (wordSelectedList[index] ? 'word-item-selected' : '')
+        {shuffleMnemonicList.map((item: any, index: number) => (
+          <div
+            className={
+              'word-item word-item-click ' +
+              (wordSelectedList[index] ? 'word-item-selected' : '')
+            }
+            key={index}
+            onClick={() => {
+              const wordSelected = wordSelectedList[index];
+              let wordIndex = validateMnemonicList.indexOf('');
+              let replaceWord = item;
+              if (wordSelected) {
+                // word has selected, remove last word
+                wordIndex =
+                  11 -
+                  Array.from(validateMnemonicList)
+                    .reverse()
+                    .indexOf(item);
+                replaceWord = '';
               }
-              key={index}
-              onClick={() => {
-                const wordSelected = wordSelectedList[index];
-                let wordIndex = validateMnemonicList.indexOf('');
-                let replaceWord = item;
-                if (wordSelected) {
-                  // word has selected, remove last word
-                  wordIndex =
-                    11 -
-                    Array.from(validateMnemonicList)
-                      .reverse()
-                      .indexOf(item);
-                  replaceWord = '';
-                }
-                validateMnemonicList.splice(wordIndex, 1, replaceWord);
-                setValidateMnemonicList(Array.from(validateMnemonicList));
-                wordSelectedList.splice(index, 1, !wordSelected);
-                setWordSelectedList(Array.from(wordSelectedList));
-              }}
-            >
-              {item}
-            </div>
-          ))
-        }
+              validateMnemonicList.splice(wordIndex, 1, replaceWord);
+              setValidateMnemonicList(Array.from(validateMnemonicList));
+              wordSelectedList.splice(index, 1, !wordSelected);
+              setWordSelectedList(Array.from(wordSelectedList));
+            }}
+          >
+            {item}
+          </div>
+        ))}
       </div>
       <Wrapper>
         <PrimaryButton

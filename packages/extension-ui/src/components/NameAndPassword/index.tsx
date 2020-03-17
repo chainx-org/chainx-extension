@@ -3,12 +3,12 @@ import { Account } from 'chainx.js';
 import { createAccount } from '../../messaging';
 import ErrorMessage from '../ErrorMessage';
 import WarningMessage from '../WarningMessage';
-import { useRedux } from '../../shared';
 import { PasswordInput, TextInput } from '@chainx/ui';
 import styled from 'styled-components';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 import { useSelector } from 'react-redux';
 import { SubTitle, Title } from '@chainx/extension-ui/components/styled';
+import { accountsSelector } from '@chainx/extension-ui/store/reducers/accountSlice';
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,7 +23,7 @@ function NameAndPassword(props) {
   const [confirmation, setConfirmation] = useState('');
 
   const [errMsg, setErrMsg] = useState('');
-  const [{ accounts }] = useRedux('accounts');
+  const accounts = useSelector(accountsSelector);
   const isTestNet = useSelector(isTestNetSelector);
   Account.setNet(isTestNet ? 'testnet' : 'mainnet');
   const account = Account.from(secret);
