@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 import {
   getAllAccounts,
   getCurrentChainxAccount,
@@ -49,5 +49,12 @@ export const refreshAccount = isTestNet => async dispatch => {
 
 export const accountsSelector = state => state.account.accounts;
 export const currentAccountSelector = state => state.account.currentAccount;
+
+export const currentAddressSelector = createSelector(
+  currentAccountSelector,
+  account => {
+    return account ? account.address : null;
+  }
+);
 
 export default accountSlice.reducer;

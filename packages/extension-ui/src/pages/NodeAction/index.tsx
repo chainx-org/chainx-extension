@@ -12,6 +12,8 @@ import {
 } from '@chainx/extension-ui/store/reducers/nodeSlice';
 import { setShowNodeMenu } from '@chainx/extension-ui/store/reducers/statusSlice';
 import { fetchFromWs } from '@chainx/extension-ui/shared';
+import { ButtonLine, Title } from '@chainx/extension-ui/components/styled';
+import { PrimaryButton } from '@chainx/ui/dist';
 
 function AddNode(props: any) {
   const [name, setName] = useState('');
@@ -85,7 +87,7 @@ function AddNode(props: any) {
 
   return (
     <div className="node-action">
-      <span className="title">{title}</span>
+      <Title>{title}</Title>
       {action !== 'remove' ? (
         <>
           <TextInput
@@ -116,14 +118,16 @@ function AddNode(props: any) {
           </button>
         </>
       ) : (
-        <button
-          className="button button-white margin-top-16"
-          onClick={() => {
-            deleteNode(query.nodeInfo.name, query.nodeInfo.url);
-          }}
-        >
-          Delete
-        </button>
+        <ButtonLine>
+          <PrimaryButton
+            size="large"
+            onClick={() => {
+              deleteNode(query.nodeInfo.name, query.nodeInfo.url);
+            }}
+          >
+            Delete
+          </PrimaryButton>
+        </ButtonLine>
       )}
       {errMsg ? <ErrorMessage msg={errMsg} /> : null}
     </div>

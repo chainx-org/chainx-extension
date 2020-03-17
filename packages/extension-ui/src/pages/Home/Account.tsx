@@ -1,11 +1,11 @@
-import { useSelector } from 'react-redux'
-import styled from 'styled-components'
-import React, { useEffect, useRef, useState } from 'react'
-import Address from './Address'
-import Icon from '../../components/Icon'
-import ReactTooltip from 'react-tooltip'
-import ClipboardJS from 'clipboard'
-import { currentAccountSelector } from "@chainx/extension-ui/store/reducers/accountSlice";
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import React, { useEffect, useRef, useState } from 'react';
+import Address from './Address';
+import Icon from '../../components/Icon';
+import ReactTooltip from 'react-tooltip';
+import ClipboardJS from 'clipboard';
+import { currentAccountSelector } from '@chainx/extension-ui/store/reducers/accountSlice';
 
 const Wrapper = styled.section`
   display: flex;
@@ -32,28 +32,28 @@ const Wrapper = styled.section`
       }
     }
   }
-`
+`;
 
 export default function() {
-  const { name, address } = useSelector(currentAccountSelector)
-  const [copyText, setCopyText] = useState('Copy')
+  const { name, address } = useSelector(currentAccountSelector);
+  const [copyText, setCopyText] = useState('Copy');
 
-  const mounted = useRef(false)
+  const mounted = useRef(false);
 
   useEffect(() => {
-    mounted.current = true
-    const clipBoard = new ClipboardJS('#current-account-copy')
+    mounted.current = true;
+    const clipBoard = new ClipboardJS('#current-account-copy');
     clipBoard.on('success', function() {
       if (mounted.current) {
-        setCopyText('Copied!')
+        setCopyText('Copied!');
       }
-    })
+    });
 
     return function() {
-      clipBoard.destroy()
-      mounted.current = false
-    }
-  }, [])
+      clipBoard.destroy();
+      mounted.current = false;
+    };
+  }, []);
 
   return (
     <Wrapper>
@@ -68,8 +68,8 @@ export default function() {
           data-tip
           data-for="account-copy-address-tooltip"
           onClick={e => {
-            e.stopPropagation()
-            e.nativeEvent.stopImmediatePropagation()
+            e.stopPropagation();
+            e.nativeEvent.stopImmediatePropagation();
           }}
           data-clipboard-text={address}
         >
@@ -85,5 +85,5 @@ export default function() {
         </ReactTooltip>
       </main>
     </Wrapper>
-  )
+  );
 }

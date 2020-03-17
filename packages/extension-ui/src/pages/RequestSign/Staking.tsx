@@ -3,7 +3,10 @@ import { useSelector } from 'react-redux';
 import { intentionAccountNameMapSelector } from '../../store/reducers/intentionSlice';
 import toPrecision from '../../shared/toPrecision';
 import { getChainx } from '../../shared/chainx';
-import { toSignArgsSelector, toSignMethodNameSelector } from '../../store/reducers/txSlice';
+import {
+  toSignArgsSelector,
+  toSignMethodNameSelector
+} from '../../store/reducers/txSlice';
 import { nominateMethodNames } from './constants';
 import DetailItem from './components/DetailItem';
 import DetailAmount from './components/DetailAmount';

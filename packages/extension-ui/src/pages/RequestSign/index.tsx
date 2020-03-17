@@ -37,7 +37,6 @@ import { currentAccountSelector } from '@chainx/extension-ui/store/reducers/acco
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   padding: 0 20px;
 `;
 

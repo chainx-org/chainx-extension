@@ -9,7 +9,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 20px;
-  width: 100%;
 `;
 
 export default function({ enter, errMsg }) {

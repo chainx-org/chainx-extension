@@ -1,14 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux'
-import React, { useRef } from 'react'
-import styled from 'styled-components'
-import Icon from '../../components/Icon'
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useRef } from 'react';
+import styled from 'styled-components';
+import Icon from '../../components/Icon';
 import {
   setShowAccountAction,
   showAccountActionSelector
-} from '../../store/reducers/statusSlice'
-import AccountActionPanel from './AccountActionPanel'
-import { useOutsideClick } from '../../shared'
-import Account from './Account'
+} from '../../store/reducers/statusSlice';
+import AccountActionPanel from './AccountActionPanel';
+import { useOutsideClick } from '../../shared';
+import Account from './Account';
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   justify-content: space-around;
 
   position: relative;
-`
+`;
 
 const ArrowWrapper = styled.div`
   display: flex;
@@ -34,16 +34,16 @@ const ArrowWrapper = styled.div`
     font-size: 8px;
     color: #6a6a6b;
   }
-`
+`;
 
 export default function() {
-  const ref = useRef(null)
-  const dispatch = useDispatch()
-  const showAccountAction = useSelector(showAccountActionSelector)
+  const ref = useRef(null);
+  const dispatch = useDispatch();
+  const showAccountAction = useSelector(showAccountActionSelector);
 
   useOutsideClick(ref, () => {
-    dispatch(setShowAccountAction(false))
-  })
+    dispatch(setShowAccountAction(false));
+  });
 
   return (
     <Wrapper>
@@ -51,12 +51,12 @@ export default function() {
       <ArrowWrapper
         ref={ref}
         onClick={() => {
-          dispatch(setShowAccountAction(!showAccountAction))
+          dispatch(setShowAccountAction(!showAccountAction));
         }}
       >
         <Icon className="arrow-icon" name="Arrowdown" />
       </ArrowWrapper>
       {showAccountAction && <AccountActionPanel />}
     </Wrapper>
-  )
+  );
 }

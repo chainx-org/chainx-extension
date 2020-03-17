@@ -30,7 +30,7 @@ import { fetchIntentions } from '@chainx/extension-ui/store/reducers/intentionSl
 import { fetchTradePairs } from '@chainx/extension-ui/store/reducers/tradeSlice';
 import { fetchAssetsInfo } from '@chainx/extension-ui/store/reducers/assetSlice';
 import RemoveAccount from '@chainx/extension-ui/pages/RemoveAccount';
-import { getChainx } from "@chainx/extension-ui/shared/chainx";
+import { getChainx } from '@chainx/extension-ui/shared/chainx';
 
 export default function App() {
   let redirectUrl: any = '/';
@@ -50,7 +50,7 @@ export default function App() {
 
   const history = useHistory();
   const toSign = useSelector(toSignSelector);
-  const chainx = getChainx()
+  const chainx = getChainx();
 
   useEffect(() => {
     try {
@@ -86,9 +86,9 @@ export default function App() {
         dispatch(fetchIntentions());
         dispatch(fetchTradePairs(isTestNet));
         dispatch(fetchAssetsInfo());
-      })
+      });
     }
-  }, [isTestNet, chainx])
+  }, [isTestNet, chainx]);
 
   useEffect(() => {
     if (!currentNodeUrl) {
