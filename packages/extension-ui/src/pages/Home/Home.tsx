@@ -1,26 +1,32 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useOutsideClick } from '../../shared';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ClipboardJS from 'clipboard';
 import Icon from '../../components/Icon';
 import '../index.scss';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 import CreateOrImportAccount from '@chainx/extension-ui/pages/Home/CreateOrImportAccount';
 import { currentAccountSelector } from '@chainx/extension-ui/store/reducers/accountSlice';
+import {
+  setShowAccountAction,
+  showAccountActionSelector
+} from '@chainx/extension-ui/store/reducers/statusSlice';
+import AccountActionPanel from '@chainx/extension-ui/pages/Home/AccountActionPanel';
 
 function Home(props: any) {
   const ref = useRef<HTMLInputElement>(null);
-  const [showAccountAction, setShowAccountAction] = useState(false);
+  const showAccountAction = useSelector(showAccountActionSelector);
   const currentAccount = useSelector(currentAccountSelector);
   const isTestNet = useSelector(isTestNetSelector);
   const [copySuccess, setCopySuccess] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setCopyEvent();
   }, [isTestNet]);
 
   useOutsideClick(ref, () => {
-    setShowAccountAction(false);
+    dispatch(setShowAccountAction(false));
   });
 
   function setCopyEvent() {
@@ -33,20 +39,6 @@ function Home(props: any) {
     });
   }
 
-  async function operateAccount(type: string) {
-    if (currentAccount.address) {
-      props.history.push({
-        pathname: '/enterPassword',
-        query: {
-          address: currentAccount.address,
-          keystore: currentAccount.keystore,
-          type: type
-        }
-      });
-    }
-    setShowAccountAction(false);
-  }
-
   return (
     <>
       {currentAccount ? (
@@ -57,21 +49,12 @@ function Home(props: any) {
               ref={ref}
               className="arrow"
               onClick={() => {
-                setShowAccountAction(!showAccountAction);
+                dispatch(setShowAccountAction(true));
               }}
             >
               <Icon className="arrow-icon" name="Arrowdown" />
             </div>
-            {showAccountAction ? (
-              <div className="account-action">
-                <span onClick={() => operateAccount('export')}>
-                  Export PrivateKey
-                </span>
-                <span onClick={() => operateAccount('remove')}>
-                  Forget Account
-                </span>
-              </div>
-            ) : null}
+            {showAccountAction && <AccountActionPanel />}
           </div>
           <div className="account-address">
             <span>{currentAccount.address}</span>

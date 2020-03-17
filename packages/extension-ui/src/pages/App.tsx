@@ -29,6 +29,7 @@ import { refreshAccount } from '@chainx/extension-ui/store/reducers/accountSlice
 import { fetchIntentions } from '@chainx/extension-ui/store/reducers/intentionSlice';
 import { fetchTradePairs } from '@chainx/extension-ui/store/reducers/tradeSlice';
 import { fetchAssetsInfo } from '@chainx/extension-ui/store/reducers/assetSlice';
+import RemoveAccount from '@chainx/extension-ui/pages/RemoveAccount';
 
 export default function App() {
   let redirectUrl: any = '/';
@@ -69,15 +70,14 @@ export default function App() {
     initNodes()
       .then(() => {
         console.log('APP Init ChainX nodes');
+        dispatch(fetchIntentions());
+        dispatch(fetchTradePairs(isTestNet));
+        dispatch(fetchAssetsInfo());
       })
       .catch(() => console.log('Fail to init ChainX nodes'));
 
-    dispatch(refreshAccount(isTestNet));
-
     dispatch(fetchToSign());
-    dispatch(fetchIntentions());
-    dispatch(fetchTradePairs(isTestNet));
-    dispatch(fetchAssetsInfo());
+    dispatch(refreshAccount(isTestNet));
   }, [isTestNet]);
 
   useEffect(() => {
@@ -118,6 +118,7 @@ export default function App() {
             <Route path="/importAccount" component={ImportAccount} />
             <Route path="/requestSign" component={RequestSign} />
             <Route path="/showPrivateKey" component={ShowPrivateKey} />
+            <Route path="/removeAccount" component={RemoveAccount} />
             <Route path="/enterPassword" component={EnterPassword} />
             <Route path="/addNode" component={NodeAction} />
             <Route path="/nodeError" component={NodeError} />

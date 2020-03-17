@@ -14,7 +14,7 @@ const Wrapper = styled.div`
 `;
 
 export default React.memo(function() {
-  const history = useHistory()
+  const history = useHistory();
 
   return (
     <Wrapper>

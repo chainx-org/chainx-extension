@@ -6,7 +6,8 @@ const statusSlice = createSlice({
     loading: false,
     initLoading: true,
     showAccountMenu: false,
-    showNodeMenu: false
+    showNodeMenu: false,
+    showAccountAction: false
   },
   reducers: {
     setLoading: (state, action) => {
@@ -20,6 +21,9 @@ const statusSlice = createSlice({
     },
     setShowNodeMenu: (state, action) => {
       state.showNodeMenu = action.payload;
+    },
+    setShowAccountAction: (state, action) => {
+      state.showAccountAction = action.payload;
     }
   }
 });
@@ -28,9 +32,12 @@ export const {
   setLoading,
   setInitLoading,
   setShowAccountMenu,
-  setShowNodeMenu
+  setShowNodeMenu,
+  setShowAccountAction
 } = statusSlice.actions;
 
 export default statusSlice.reducer;
 export const showAccountMenuSelector = state => state.status.showAccountMenu;
 export const showNodeMenuSelector = state => state.status.showNodeMenu;
+export const showAccountActionSelector = state =>
+  state.status.showAccountAction;
