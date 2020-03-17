@@ -5,7 +5,6 @@ const statusSlice = createSlice({
   initialState: {
     loading: false,
     initLoading: true,
-    homeLoading: false,
     showAccountMenu: false,
     showNodeMenu: false
   },
@@ -15,9 +14,6 @@ const statusSlice = createSlice({
     },
     setInitLoading: (state, action) => {
       state.initLoading = action.payload;
-    },
-    setHomeLoading: (state, action) => {
-      state.homeLoading = action.payload;
     },
     setShowAccountMenu: (state, action) => {
       state.showAccountMenu = action.payload;
@@ -31,7 +27,6 @@ const statusSlice = createSlice({
 export const {
   setLoading,
   setInitLoading,
-  setHomeLoading,
   setShowAccountMenu,
   setShowNodeMenu
 } = statusSlice.actions;

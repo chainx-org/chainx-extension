@@ -20,8 +20,15 @@ import {
   fetchNetwork,
   isTestNetSelector
 } from '../store/reducers/networkSlice';
-import { toSignSelector } from '@chainx/extension-ui/store/reducers/txSlice';
+import {
+  fetchToSign,
+  toSignSelector
+} from '@chainx/extension-ui/store/reducers/txSlice';
 import { currentNodeSelector } from '@chainx/extension-ui/store/reducers/nodeSlice';
+import { refreshAccount } from '@chainx/extension-ui/store/reducers/accountSlice';
+import { fetchIntentions } from '@chainx/extension-ui/store/reducers/intentionSlice';
+import { fetchTradePairs } from '@chainx/extension-ui/store/reducers/tradeSlice';
+import { fetchAssetsInfo } from '@chainx/extension-ui/store/reducers/assetSlice';
 
 export default function App() {
   let redirectUrl: any = '/';
@@ -31,8 +38,6 @@ export default function App() {
   const loading = useSelector(state => state.status.loading);
   // @ts-ignore
   const initLoading = useSelector(state => state.status.initLoading);
-  // @ts-ignore
-  const homeLoading = useSelector(state => state.status.homeLoading);
   const state = useSelector(state => state);
   const { url: currentNodeUrl } = useSelector(currentNodeSelector) || {};
   const isTestNet = useSelector(isTestNetSelector);
@@ -66,6 +71,13 @@ export default function App() {
         console.log('APP Init ChainX nodes');
       })
       .catch(() => console.log('Fail to init ChainX nodes'));
+
+    dispatch(refreshAccount(isTestNet));
+
+    dispatch(fetchToSign());
+    dispatch(fetchIntentions());
+    dispatch(fetchTradePairs(isTestNet));
+    dispatch(fetchAssetsInfo());
   }, [isTestNet]);
 
   useEffect(() => {
@@ -93,7 +105,7 @@ export default function App() {
   return (
     <React.Fragment>
       <Header props />
-      {(loading || initLoading || homeLoading) && (
+      {(loading || initLoading) && (
         <div className="spinner">
           <img src={spinner} alt="spinner" />
         </div>

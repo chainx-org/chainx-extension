@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Account } from 'chainx.js';
 import './enterPassword.scss';
-import { removeChainxAccount } from '../../messaging';
 import ErrorMessage from '../../components/ErrorMessage';
-import { PasswordInput } from '@chainx/ui';
+import { PasswordInput, PrimaryButton } from '@chainx/ui';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ButtonLine, InputWrapper, Title } from '../../components/styled';
-import { PrimaryButton } from '@chainx/ui';
+import { removeAndRefreshAccount } from '@chainx/extension-ui/store/reducers/accountSlice';
 
 function EnterPassword(props: any) {
   const [pass, setPass] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const isTestNet = useSelector(isTestNetSelector);
+  const dispatch = useDispatch();
 
   async function exportPk(keystore: Object, password: string) {
     try {
@@ -34,7 +34,7 @@ function EnterPassword(props: any) {
     try {
       Account.setNet(isTestNet ? 'testnet' : 'mainnet');
       Account.fromKeyStore(keystore, password);
-      await removeChainxAccount(address, isTestNet);
+      dispatch(removeAndRefreshAccount(address, isTestNet));
       props.history.push('/');
     } catch (error) {
       setErrMsg(error.message);

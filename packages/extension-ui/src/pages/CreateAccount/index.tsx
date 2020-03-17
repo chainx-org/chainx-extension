@@ -137,15 +137,7 @@ function CreateAccount(props: any) {
   }
 
   if (3 === currentStep) {
-    return (
-      <NameAndPassword
-        type="mnemonic"
-        secret={mnemonic}
-        onSuccess={function() {
-          props.history.push('/');
-        }}
-      />
-    );
+    return <NameAndPassword type="mnemonic" secret={mnemonic} />;
   }
 
   return (

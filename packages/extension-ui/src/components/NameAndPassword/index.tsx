@@ -6,9 +6,13 @@ import WarningMessage from '../WarningMessage';
 import { PasswordInput, TextInput } from '@chainx/ui';
 import styled from 'styled-components';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { SubTitle, Title } from '@chainx/extension-ui/components/styled';
-import { accountsSelector } from '@chainx/extension-ui/store/reducers/accountSlice';
+import {
+  accountsSelector,
+  refreshAccount
+} from '@chainx/extension-ui/store/reducers/accountSlice';
+import { useHistory } from 'react-router';
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,7 +21,7 @@ const Wrapper = styled.div`
 `;
 
 function NameAndPassword(props) {
-  const { secret, onSuccess } = props;
+  const { secret } = props;
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
@@ -31,6 +35,8 @@ function NameAndPassword(props) {
   const sameAccount = (accounts || []).find(
     account => account.address === address
   );
+
+  const dispatch = useDispatch();
 
   const check = () => {
     if (!name || !password || !confirmation) {
@@ -56,6 +62,8 @@ function NameAndPassword(props) {
     return true;
   };
 
+  const history = useHistory();
+
   const create = () => {
     if (!check()) {
       return;
@@ -65,7 +73,8 @@ function NameAndPassword(props) {
 
     createAccount(name, account.address(), keystore, isTestNet)
       .then(_ => {
-        onSuccess();
+        dispatch(refreshAccount(isTestNet));
+        history.push('/');
       })
       .catch(err => {
         setErrMsg(err.message);

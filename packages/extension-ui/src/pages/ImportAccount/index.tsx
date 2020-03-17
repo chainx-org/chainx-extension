@@ -47,9 +47,6 @@ function ImportAccount(props) {
             ? mnemonicList.map(m => (m || '').trim()).join(' ')
             : pk.trim()
         }
-        onSuccess={function() {
-          props.history.push('/');
-        }}
       />
     );
   }

@@ -1,54 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useOutsideClick } from '../../shared';
-import { useDispatch, useSelector } from 'react-redux';
-import { setHomeLoading } from '../../store/reducers/statusSlice';
+import { useSelector } from 'react-redux';
 import ClipboardJS from 'clipboard';
 import Icon from '../../components/Icon';
 import '../index.scss';
-import { fetchToSign } from '../../store/reducers/txSlice';
-import { fetchIntentions } from '@chainx/extension-ui/store/reducers/intentionSlice';
-import { fetchTradePairs } from '@chainx/extension-ui/store/reducers/tradeSlice';
-import { fetchAssetsInfo } from '@chainx/extension-ui/store/reducers/assetSlice';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 import CreateOrImportAccount from '@chainx/extension-ui/pages/Home/CreateOrImportAccount';
-import {
-  currentAccountSelector,
-  fetchAllAccounts,
-  fetchCurrentChainXAccount
-} from '@chainx/extension-ui/store/reducers/accountSlice';
+import { currentAccountSelector } from '@chainx/extension-ui/store/reducers/accountSlice';
 
 function Home(props: any) {
   const ref = useRef<HTMLInputElement>(null);
   const [showAccountAction, setShowAccountAction] = useState(false);
   const currentAccount = useSelector(currentAccountSelector);
-  const dispatch = useDispatch();
-  // @ts-ignore
-  const homeLoading = useSelector(state => state.status.homeLoading);
   const isTestNet = useSelector(isTestNetSelector);
   const [copySuccess, setCopySuccess] = useState('');
 
   useEffect(() => {
     setCopyEvent();
-    dispatch(fetchToSign());
-    dispatch(fetchIntentions());
-    dispatch(fetchTradePairs(isTestNet));
-    dispatch(fetchAssetsInfo());
-    getAccountInfo().then(() => console.log('Finished to get accounts info'));
   }, [isTestNet]);
 
   useOutsideClick(ref, () => {
     setShowAccountAction(false);
   });
-
-  async function getAccountInfo() {
-    dispatch(setHomeLoading(true));
-    try {
-      await dispatch(fetchCurrentChainXAccount(isTestNet));
-      await dispatch(fetchAllAccounts(isTestNet));
-    } finally {
-      dispatch(setHomeLoading(false));
-    }
-  }
 
   function setCopyEvent() {
     const clipboard = new ClipboardJS('.copy');
@@ -72,10 +45,6 @@ function Home(props: any) {
       });
     }
     setShowAccountAction(false);
-  }
-
-  if (homeLoading) {
-    return <></>;
   }
 
   return (

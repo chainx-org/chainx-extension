@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
   getAllAccounts,
-  getCurrentChainxAccount
+  getCurrentChainxAccount,
+  removeChainxAccount
 } from '@chainx/extension-ui/messaging';
 
 const accountSlice = createSlice({
@@ -30,6 +31,20 @@ export const fetchAllAccounts = isTestNet => async dispatch => {
 export const fetchCurrentChainXAccount = isTestNet => async dispatch => {
   const account = await getCurrentChainxAccount(isTestNet);
   dispatch(setCurrentAccount(account));
+};
+
+export const removeAndRefreshAccount = (
+  address,
+  isTestNet
+) => async dispatch => {
+  await removeChainxAccount(address, isTestNet);
+  dispatch(fetchAllAccounts(isTestNet));
+  dispatch(fetchCurrentChainXAccount(isTestNet));
+};
+
+export const refreshAccount = isTestNet => async dispatch => {
+  dispatch(fetchAllAccounts(isTestNet));
+  dispatch(fetchCurrentChainXAccount(isTestNet));
 };
 
 export const accountsSelector = state => state.account.accounts;
