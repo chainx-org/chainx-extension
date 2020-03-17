@@ -1,15 +1,9 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  fetchIntentions,
-  intentionAccountNameMapSelector
-} from '../../store/reducers/intentionSlice';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { intentionAccountNameMapSelector } from '../../store/reducers/intentionSlice';
 import toPrecision from '../../shared/toPrecision';
 import { getChainx } from '../../shared/chainx';
-import {
-  toSignArgsSelector,
-  toSignMethodNameSelector
-} from '../../store/reducers/txSlice';
+import { toSignArgsSelector, toSignMethodNameSelector } from '../../store/reducers/txSlice';
 import { nominateMethodNames } from './constants';
 import DetailItem from './components/DetailItem';
 import DetailAmount from './components/DetailAmount';
@@ -18,16 +12,11 @@ import { pcxPrecisionSelector } from '@chainx/extension-ui/store/reducers/assetS
 export default function() {
   const intentionAccountNameMap = useSelector(intentionAccountNameMapSelector);
   const chainx = getChainx();
-  const dispatch = useDispatch();
 
   const methodName = useSelector(toSignMethodNameSelector);
   const isNominateMethod = nominateMethodNames.includes(methodName);
   const args = useSelector(toSignArgsSelector);
   const pcxPrecision = useSelector(pcxPrecisionSelector);
-
-  useEffect(() => {
-    dispatch(fetchIntentions());
-  }, [dispatch]);
 
   const getPublicKey = address => {
     if (methodName && args && address) {

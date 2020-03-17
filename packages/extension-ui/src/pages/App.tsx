@@ -30,6 +30,7 @@ import { fetchIntentions } from '@chainx/extension-ui/store/reducers/intentionSl
 import { fetchTradePairs } from '@chainx/extension-ui/store/reducers/tradeSlice';
 import { fetchAssetsInfo } from '@chainx/extension-ui/store/reducers/assetSlice';
 import RemoveAccount from '@chainx/extension-ui/pages/RemoveAccount';
+import { getChainx } from "@chainx/extension-ui/shared/chainx";
 
 export default function App() {
   let redirectUrl: any = '/';
@@ -49,6 +50,7 @@ export default function App() {
 
   const history = useHistory();
   const toSign = useSelector(toSignSelector);
+  const chainx = getChainx()
 
   useEffect(() => {
     try {
@@ -70,15 +72,23 @@ export default function App() {
     initNodes()
       .then(() => {
         console.log('APP Init ChainX nodes');
+      })
+      .catch(() => console.log('Fail to init ChainX nodes'));
+
+    dispatch(refreshAccount(isTestNet));
+  }, [isTestNet]);
+
+  useEffect(() => {
+    if (chainx) {
+      // @ts-ignore
+      chainx.isRpcReady().then(() => {
+        dispatch(fetchToSign());
         dispatch(fetchIntentions());
         dispatch(fetchTradePairs(isTestNet));
         dispatch(fetchAssetsInfo());
       })
-      .catch(() => console.log('Fail to init ChainX nodes'));
-
-    dispatch(fetchToSign());
-    dispatch(refreshAccount(isTestNet));
-  }, [isTestNet]);
+    }
+  }, [isTestNet, chainx])
 
   useEffect(() => {
     if (!currentNodeUrl) {
