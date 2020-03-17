@@ -83,8 +83,7 @@ function Home(props: any) {
           <span>{copySuccess}</span>
         </div>
       ) : (
-        // @ts-ignore
-        <CreateOrImportAccount history={props.history} />
+        <CreateOrImportAccount />
       )}
     </>
   );
