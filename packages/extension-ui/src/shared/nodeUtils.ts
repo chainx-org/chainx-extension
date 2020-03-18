@@ -17,6 +17,11 @@ import { fetchFromWs } from './index';
 export const TIMEOUT = 10000;
 
 export default async function initNodes() {
+  await getNodes();
+  await updateDelay();
+}
+
+export async function getNodes() {
   const mainNetNodes = await getAllChainxNodes(false);
   store.dispatch(setChainxMainNetNodes(mainNetNodes));
   const testNetNodes = await getAllChainxNodes(true);
@@ -26,8 +31,6 @@ export default async function initNodes() {
   store.dispatch(setCurrentChainXMainNetNode(currentMainNetNode));
   const currentTestNetNode = await getCurrentChainxNode(true);
   store.dispatch(setCurrentChainXTestNetNode(currentTestNetNode));
-
-  await updateDelay();
 }
 
 export const updateDelay = async function() {

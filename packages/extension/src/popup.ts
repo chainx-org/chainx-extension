@@ -1,3 +1,3 @@
-import { createView, Popup } from '@chainx/extension-ui';
+import { createView } from '@chainx/extension-ui';
 
-createView(Popup);
+createView().then(() => console.log('create view'));
