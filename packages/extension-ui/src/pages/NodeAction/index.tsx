@@ -14,6 +14,7 @@ import { setShowNodeMenu } from '@chainx/extension-ui/store/reducers/statusSlice
 import { fetchFromWs } from '@chainx/extension-ui/shared';
 import { ButtonLine, Title } from '@chainx/extension-ui/components/styled';
 import { PrimaryButton } from '@chainx/ui/dist';
+import { removeInstance } from '@chainx/extension-ui/shared/chainxInstances';
 
 function AddNode(props: any) {
   const [name, setName] = useState('');
@@ -77,6 +78,7 @@ function AddNode(props: any) {
     }
     try {
       await removeChainxNode(name, url, isTestNet);
+      removeInstance(url);
       props.history.push('/');
       await initNodes();
       setErrMsg('');

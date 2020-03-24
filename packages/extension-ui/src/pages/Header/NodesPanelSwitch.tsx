@@ -1,10 +1,17 @@
-import { setShowAccountMenu, setShowNodeMenu, showNodeMenuSelector } from '../../store/reducers/statusSlice';
+import {
+  setShowAccountMenu,
+  setShowNodeMenu,
+  showNodeMenuSelector
+} from '../../store/reducers/statusSlice';
 import { getDelayClass } from './utils';
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useOutsideClick } from '../../shared';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
-import { currentMainNetNodeSelector, currentTestNetNodeSelector } from '@chainx/extension-ui/store/reducers/nodeSlice';
+import {
+  currentMainNetNodeSelector,
+  currentTestNetNodeSelector
+} from '@chainx/extension-ui/store/reducers/nodeSlice';
 
 export default function() {
   const refNodeList = useRef(null);
@@ -19,8 +26,6 @@ export default function() {
     dispatch(setShowNodeMenu(false));
   });
 
-  console.log('currentNode', currentNode)
-
   return (
     <div
       ref={refNodeList}
@@ -30,9 +35,7 @@ export default function() {
         dispatch(setShowAccountMenu(false));
       }}
     >
-      <span
-        className={'dot ' + getDelayClass(currentNode.delay) + '-bg'}
-      />
+      <span className={'dot ' + getDelayClass(currentNode.delay) + '-bg'} />
       <span>{currentNode && currentNode.name}</span>
     </div>
   );

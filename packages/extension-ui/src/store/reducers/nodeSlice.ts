@@ -1,6 +1,7 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { INIT_NODES, TESTNET_INIT_NODES } from '@chainx/extension-defaults';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
+import { setInstances } from '@chainx/extension-ui/shared/chainxInstances';
 
 const nodeSlice = createSlice({
   name: 'node',
@@ -21,9 +22,13 @@ const nodeSlice = createSlice({
   reducers: {
     setChainxMainNetNodes(state, action) {
       state.chainxMainNetNodes = action.payload;
+      // @ts-ignore
+      setInstances(state.chainxMainNetNodes.map(node => node.url));
     },
     setChainxTestNetNodes(state, action) {
       state.chainxTestNetNodes = action.payload;
+      // @ts-ignore
+      setInstances(state.chainxTestNetNodes.map(node => node.url));
     },
     setCurrentChainXMainNetNode(state, action) {
       state.currentChainXMainNetNode = action.payload;

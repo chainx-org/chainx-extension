@@ -12,7 +12,8 @@ import {
   setNodeDelay,
   testNetNodesSelector
 } from '../store/reducers/nodeSlice';
-import { fetchFromWs } from './index';
+import { instances } from '@chainx/extension-ui/shared/chainxInstances';
+import { sleep } from '@chainx/extension-ui/shared/chainx';
 
 export const TIMEOUT = 10000;
 
@@ -40,20 +41,38 @@ export const updateDelay = async function() {
   const testNetNodes = testNetNodesSelector(state);
 
   async function updateNodeDelay(node) {
-    try {
-      const result = await fetchFromWs({
-        url: node.url,
-        method: 'system_health',
-        timeOut: TIMEOUT
-      });
-      // @ts-ignore
-      store.dispatch(setNodeDelay({ url: node.url, delay: result.wastTime }));
-    } catch (e) {
-      store.dispatch(setNodeDelay({ url: node.url, delay: 'timeout' }));
+    const instance = instances.get(node.url);
+    if (!instance) {
+      return;
     }
+
+    let delay;
+    try {
+      delay = await testNet(instance);
+    } catch (e) {
+      console.log('e', e);
+      delay = 'timeout';
+    }
+    store.dispatch(setNodeDelay({ url: node.url, delay }));
   }
 
   return Promise.all(
     [...nodes, ...testNetNodes].map(node => updateNodeDelay(node))
   );
+};
+
+const fetchInstanceTime = async instance => {
+  const startTime = Date.now();
+  await instance.chain.api.rpc.system.chain();
+  const endTime = Date.now();
+
+  return endTime - startTime;
+};
+
+const testNet = async instance => {
+  const result = await Promise.race([
+    fetchInstanceTime(instance),
+    sleep(TIMEOUT)
+  ]);
+  return typeof result === 'number' ? result : 'timeout';
 };

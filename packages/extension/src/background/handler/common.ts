@@ -121,7 +121,9 @@ export async function setChainxCurrentNode(
   const pre = nodes.getCurrentNode(isTestNet);
   await nodes.setCurrentNode(url, isTestNet);
   const now = nodes.getCurrentNode(isTestNet);
-  await setChainx(url);
+  setChainx(url).then(() =>
+    console.log(`background chainx instance updated, ${url}`)
+  );
   sendToContent(CHAINX_NODE_CURRENT_CHANGE, { from: pre, to: now });
 }
 

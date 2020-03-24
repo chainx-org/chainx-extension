@@ -1,9 +1,13 @@
-import Chainx from 'chainx.js';
+import { instances } from '@chainx/extension-ui/shared/chainxInstances';
 
 let chainx = null;
 
 export const setChainx = async nodeUrl => {
-  chainx = new Chainx(nodeUrl);
+  chainx = instances.get(nodeUrl);
+  if (!chainx) {
+    throw new Error(`Not found chainx instance for ${nodeUrl}`);
+  }
+
   // @ts-ignore
   await chainx.isRpcReady();
   return chainx;
