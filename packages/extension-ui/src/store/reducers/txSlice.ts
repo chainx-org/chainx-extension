@@ -3,6 +3,8 @@ import { Extrinsic } from '../../shared/extensionExtrinsic';
 import { stringCamelCase } from '@chainx/util';
 import { Token, Address } from '@chainx/types';
 import { getToSign } from '@chainx/extension-ui/messaging';
+import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
+import { Account } from 'chainx.js';
 
 const initialState = {
   version: 0,
@@ -32,11 +34,13 @@ export const fetchToSign = () => async dispatch => {
 export const toSignSelector = state => state.tx.toSign;
 export const toSignExtrinsicSelector = createSelector(
   toSignSelector,
-  toSign => {
+  isTestNetSelector,
+  (toSign, isTestNet) => {
     if (!toSign) {
       return null;
     }
 
+    Account.setNet(isTestNet ? 'testnet' : 'mainnet');
     // @ts-ignore
     return new Extrinsic(toSign.data);
   }
