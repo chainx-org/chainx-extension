@@ -22,7 +22,7 @@ export default function() {
   const pcxPrecision = useSelector(pcxPrecisionSelector);
 
   if (methodName === 'register') {
-    return <DetailItem label="Name" value={args[0]} />
+    return <DetailItem label="Name" value={args[0]} />;
   }
 
   const getPublicKey = address => {

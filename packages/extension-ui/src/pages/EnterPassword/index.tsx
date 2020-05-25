@@ -4,7 +4,12 @@ import ErrorMessage from '../../components/ErrorMessage';
 import { PasswordInput, PrimaryButton } from '@chainx/ui';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { ButtonLine, Container, InputWrapper, Title } from '../../components/styled';
+import {
+  ButtonLine,
+  Container,
+  InputWrapper,
+  Title
+} from '../../components/styled';
 import { removeAndRefreshAccount } from '@chainx/extension-ui/store/reducers/accountSlice';
 
 function EnterPassword(props: any) {

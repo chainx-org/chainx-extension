@@ -31,6 +31,7 @@ import { fetchTradePairs } from '@chainx/extension-ui/store/reducers/tradeSlice'
 import { fetchAssetsInfo } from '@chainx/extension-ui/store/reducers/assetSlice';
 import RemoveAccount from '@chainx/extension-ui/pages/RemoveAccount';
 import { getChainx } from '@chainx/extension-ui/shared/chainx';
+import { NewAccountDrawer } from '@chainx/extension-ui/pages/Drawers/NewAccountDrawer';
 
 export default function App() {
   let redirectUrl: any = '/';
@@ -136,6 +137,7 @@ export default function App() {
           </Switch>
         </div>
       )}
+      <NewAccountDrawer />
     </React.Fragment>
   );
 }

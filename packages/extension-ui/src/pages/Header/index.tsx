@@ -17,9 +17,15 @@ import AccountPanelSwitch from '@chainx/extension-ui/pages/Header/AccountPanelSw
 import NodesPanelSwitch from '@chainx/extension-ui/pages/Header/NodesPanelSwitch';
 import SignHeader from '@chainx/extension-ui/pages/Header/SignHeader';
 import Logo from './Logo';
-import { isTestNetSelector, setIsTestNet as setStoreIsTestNet } from '../../store/reducers/networkSlice';
+import {
+  isTestNetSelector,
+  setIsTestNet as setStoreIsTestNet
+} from '../../store/reducers/networkSlice';
 import initNodes, { updateDelay } from '@chainx/extension-ui/shared/nodeUtils';
-import { currentMainNetNodeSelector, currentTestNetNodeSelector } from "@chainx/extension-ui/store/reducers/nodeSlice";
+import {
+  currentMainNetNodeSelector,
+  currentTestNetNodeSelector
+} from '@chainx/extension-ui/store/reducers/nodeSlice';
 
 function Header(props: any) {
   const refNodeList = useRef<HTMLInputElement>(null);
@@ -47,7 +53,7 @@ function Header(props: any) {
 
   async function setNode(url: string) {
     if (url === currentNode.url) {
-      return
+      return;
     }
 
     dispatch(setInitLoading(true));

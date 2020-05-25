@@ -6,7 +6,7 @@ import { PrimaryButton, TextInput } from '@chainx/ui';
 import { Account } from 'chainx.js';
 import { ButtonLine, Container, SubTitle } from '../../components/styled';
 
-function ImportAccount(props) {
+function ImportAccount() {
   const [currentStep, setCurrentStep] = useState(0);
   const [currentTabIndex, setCurrentTabIndex] = useState(0);
   const [pk, setPk] = useState('');
