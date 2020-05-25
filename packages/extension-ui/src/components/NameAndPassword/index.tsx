@@ -145,8 +145,8 @@ function NameAndPassword(props) {
       {errMsg && <ErrorMessage msg={errMsg} />}
       {sameAccount && (
         <WarningMessage
-          // @ts-ignore
           msg={`Account ${sameAccount &&
+            // @ts-ignore
             sameAccount.name} has same address, and it will be overwritten by this account.`}
         />
       )}
