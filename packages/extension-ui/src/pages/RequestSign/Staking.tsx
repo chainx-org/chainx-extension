@@ -21,6 +21,10 @@ export default function() {
   const args = useSelector(toSignArgsSelector);
   const pcxPrecision = useSelector(pcxPrecisionSelector);
 
+  if (methodName === 'register') {
+    return <DetailItem label="Name" value={args[0]} />
+  }
+
   const getPublicKey = address => {
     if (methodName && args && address) {
       // @ts-ignore
