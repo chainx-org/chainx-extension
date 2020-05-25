@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Account } from 'chainx.js';
 import { createAccount } from '../../messaging';
 import ErrorMessage from '../ErrorMessage';
@@ -30,15 +30,31 @@ function NameAndPassword(props) {
   const accounts = useSelector(accountsSelector);
   const isTestNet = useSelector(isTestNetSelector);
   Account.setNet(isTestNet ? 'testnet' : 'mainnet');
-  const account = Account.from(secret);
-  const address = account.address();
-  const sameAccount = (accounts || []).find(
-    account => account.address === address
-  );
+  const [sameAccount, setSameAccount] = useState(null);
+
+  useEffect(() => {
+    try {
+      const account = Account.from(secret);
+      const address = account.address();
+      const same = (accounts || []).find(
+        account => account.address === address
+      );
+      setSameAccount(same);
+    } catch (e) {
+      setErrMsg('Invalid private key or mnemonic');
+    }
+  }, [secret]);
 
   const dispatch = useDispatch();
 
   const check = () => {
+    try {
+      Account.from(secret);
+    } catch (e) {
+      setErrMsg('Invalid private key or mnemonic');
+      return false;
+    }
+
     if (!name || !password || !confirmation) {
       setErrMsg('name and password are required');
       return false;
@@ -69,6 +85,7 @@ function NameAndPassword(props) {
       return;
     }
 
+    const account = Account.from(secret);
     const keystore = account.encrypt(password);
 
     createAccount(name, account.address(), keystore, isTestNet)
@@ -128,7 +145,9 @@ function NameAndPassword(props) {
       {errMsg && <ErrorMessage msg={errMsg} />}
       {sameAccount && (
         <WarningMessage
-          msg={`Account ${sameAccount.name} has same address, and it will be overwritten by this account.`}
+          // @ts-ignore
+          msg={`Account ${sameAccount &&
+            sameAccount.name} has same address, and it will be overwritten by this account.`}
         />
       )}
     </Wrapper>

@@ -10,6 +10,7 @@ import {
   setImportedKeystore
 } from '../../store/reducers/statusSlice';
 import ErrorMessage from '../../components/ErrorMessage';
+import { isKeystoreKeysRight } from '../../utils';
 
 const Wrapper = styled.div`
   padding: 20px;

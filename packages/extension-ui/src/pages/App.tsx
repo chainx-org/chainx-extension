@@ -3,7 +3,9 @@ import { Redirect, Route, Switch, useHistory } from 'react-router';
 import Home from './Home/Home';
 import Header from './Header';
 import CreateAccount from './CreateAccount';
-import ImportAccount from './ImportAccount';
+import ImportMnemonic from './ImportAccount/Mnemonic';
+import ImportPrivateKey from './ImportAccount/PrivateKey';
+import ImportKeystore from './ImportAccount/Keystore';
 import RequestSign from './RequestSign';
 import ShowPrivateKey from './ShowPrivateKey/index';
 import EnterPassword from './EnterPassword';
@@ -126,7 +128,9 @@ export default function App() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/createAccount" component={CreateAccount} />
-            <Route path="/importAccount" component={ImportAccount} />
+            <Route path="/importMnemonic" component={ImportMnemonic} />
+            <Route path="/importPrivateKey" component={ImportPrivateKey} />
+            <Route path="/importKeystore" component={ImportKeystore} />
             <Route path="/requestSign" component={RequestSign} />
             <Route path="/showPrivateKey" component={ShowPrivateKey} />
             <Route path="/removeAccount" component={RemoveAccount} />
