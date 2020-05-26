@@ -1,6 +1,5 @@
 import Icon from '@chainx/extension-ui/components/Icon';
 import React from 'react';
-import { getDelayClass } from '@chainx/extension-ui/pages/Header/utils';
 import { setShowNodeMenu } from '@chainx/extension-ui/store/reducers/statusSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Delay from '@chainx/extension-ui/pages/Header/Delay';
@@ -62,9 +61,7 @@ export default function({ history, setNode }) {
             <Icon name="Edit" />
           </div>
         </div>
-        <span className={`delay ${getDelayClass(item.delay)}`}>
-          <Delay delay={item.delay} />
-        </span>
+        <Delay delay={item.delay} />
       </div>
     </div>
   ));

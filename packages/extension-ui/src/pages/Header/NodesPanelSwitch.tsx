@@ -3,7 +3,6 @@ import {
   setShowNodeMenu,
   showNodeMenuSelector
 } from '../../store/reducers/statusSlice';
-import { getDelayClass } from './utils';
 import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useOutsideClick } from '../../shared';
@@ -12,6 +11,22 @@ import {
   currentMainNetNodeSelector,
   currentTestNetNodeSelector
 } from '@chainx/extension-ui/store/reducers/nodeSlice';
+import styled from 'styled-components'
+
+const Dot = styled.span`
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  margin-right: 6px;
+  background-color: ${props =>
+  // @ts-ignore
+  props.delay === 'timeout'
+    ? '#DE071C'
+    // @ts-ignore
+    : props.delay > 300
+    ? '#ECB417'
+    : '#2CAA84'};
+`
 
 export default function() {
   const refNodeList = useRef(null);
@@ -35,7 +50,10 @@ export default function() {
         dispatch(setShowAccountMenu(false));
       }}
     >
-      <span className={'dot ' + getDelayClass(currentNode.delay) + '-bg'} />
+      {
+        // @ts-ignore
+        <Dot delay={currentNode.delay} />
+      }
       <span>{currentNode && currentNode.name}</span>
     </div>
   );
