@@ -34,7 +34,7 @@ import { fetchAssetsInfo } from '@chainx/extension-ui/store/reducers/assetSlice'
 import RemoveAccount from '@chainx/extension-ui/pages/RemoveAccount';
 import { getChainx } from '@chainx/extension-ui/shared/chainx';
 import { NewAccountDrawer } from '@chainx/extension-ui/pages/Drawers/NewAccountDrawer';
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -42,7 +42,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   overflow-y: auto;
   flex: 1;
-`
+`;
 
 export default function App() {
   let redirectUrl: any = '/';

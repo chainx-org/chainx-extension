@@ -11,7 +11,7 @@ import {
   currentMainNetNodeSelector,
   currentTestNetNodeSelector
 } from '@chainx/extension-ui/store/reducers/nodeSlice';
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const Dot = styled.span`
   width: 6px;
@@ -19,14 +19,15 @@ const Dot = styled.span`
   border-radius: 3px;
   margin-right: 6px;
   background-color: ${props =>
-  // @ts-ignore
-  props.delay === 'timeout'
-    ? '#DE071C'
     // @ts-ignore
-    : props.delay > 300
-    ? '#ECB417'
-    : '#2CAA84'};
-`
+    props.delay === 'timeout'
+      ? '#DE071C'
+      : 
+      // @ts-ignore
+      props.delay > 300
+      ? '#ECB417'
+      : '#2CAA84'};
+`;
 
 export default function() {
   const refNodeList = useRef(null);
@@ -34,9 +35,10 @@ export default function() {
   const showNodeMenu = useSelector(showNodeMenuSelector);
 
   const isTestNet = useSelector(isTestNetSelector);
-  const currentNode = useSelector(
-    isTestNet ? currentTestNetNodeSelector : currentMainNetNodeSelector
-  );
+  const currentNode =
+    useSelector(
+      isTestNet ? currentTestNetNodeSelector : currentMainNetNodeSelector
+    ) || {};
   useOutsideClick(refNodeList, () => {
     dispatch(setShowNodeMenu(false));
   });
