@@ -34,6 +34,15 @@ import { fetchAssetsInfo } from '@chainx/extension-ui/store/reducers/assetSlice'
 import RemoveAccount from '@chainx/extension-ui/pages/RemoveAccount';
 import { getChainx } from '@chainx/extension-ui/shared/chainx';
 import { NewAccountDrawer } from '@chainx/extension-ui/pages/Drawers/NewAccountDrawer';
+import styled from 'styled-components'
+
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  flex: 1;
+`
 
 export default function App() {
   let redirectUrl: any = '/';
@@ -124,7 +133,7 @@ export default function App() {
         </div>
       )}
       {!initLoading && (
-        <div className="content">
+        <Wrapper>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/createAccount" component={CreateAccount} />
@@ -139,7 +148,7 @@ export default function App() {
             <Route path="/nodeError" component={NodeError} />
             <Redirect to={redirectUrl} />
           </Switch>
-        </div>
+        </Wrapper>
       )}
       <NewAccountDrawer />
     </React.Fragment>

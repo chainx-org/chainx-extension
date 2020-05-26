@@ -85,7 +85,7 @@ function Header(props: any) {
         {nowInSignPage ? (
           <SignHeader history={props.history} />
         ) : (
-          <div className="right">
+          <div style={{ display: 'flex' }}>
             <NodesPanelSwitch />
             <AccountPanelSwitch />
           </div>
