@@ -4,7 +4,7 @@ import DotInCenterStr from '@chainx/extension-ui/components/DotInCenterStr';
 import ReactTooltip from 'react-tooltip';
 import React, { useEffect, useState } from 'react';
 import ClipboardJS from 'clipboard';
-import { setShowAccountMenu } from '@chainx/extension-ui/store/reducers/statusSlice';
+import { setShowAccountMenu, setShowImportMenu } from '@chainx/extension-ui/store/reducers/statusSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { isTestNetSelector } from '@chainx/extension-ui/store/reducers/networkSlice';
 import {
@@ -33,7 +33,7 @@ export default function({ history }) {
         <div
           onClick={() => {
             dispatch(setShowAccountMenu(false));
-            history.push('/importAccount');
+            dispatch(setShowImportMenu(true))
           }}
         >
           <Icon name="Putin" className="account-area-icon" />
