@@ -19,7 +19,6 @@ export default function({ enter, errMsg }) {
       <Title>Input password</Title>
       <InputWrapper>
         <PasswordInput
-          className="fixed-width"
           value={pass}
           onChange={setPass}
           style={{ width: '100%' }}

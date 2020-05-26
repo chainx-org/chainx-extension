@@ -8,7 +8,6 @@ import ImportPrivateKey from './ImportAccount/PrivateKey';
 import ImportKeystore from './ImportAccount/Keystore';
 import RequestSign from './RequestSign';
 import ShowPrivateKey from './ShowPrivateKey/index';
-import EnterPassword from './EnterPassword';
 import NodeAction from './NodeAction';
 import NodeError from './NodeAction/NodeError';
 import { setChainx, sleep } from '../shared';
@@ -18,14 +17,8 @@ import spinner from '../assets/loading.gif';
 import './index.scss';
 import { setInitLoading } from '../store/reducers/statusSlice';
 import initNodes from '@chainx/extension-ui/shared/nodeUtils';
-import {
-  fetchNetwork,
-  isTestNetSelector
-} from '../store/reducers/networkSlice';
-import {
-  fetchToSign,
-  toSignSelector
-} from '@chainx/extension-ui/store/reducers/txSlice';
+import { fetchNetwork, isTestNetSelector } from '../store/reducers/networkSlice';
+import { fetchToSign, toSignSelector } from '@chainx/extension-ui/store/reducers/txSlice';
 import { currentNodeSelector } from '@chainx/extension-ui/store/reducers/nodeSlice';
 import { refreshAccount } from '@chainx/extension-ui/store/reducers/accountSlice';
 import { fetchIntentions } from '@chainx/extension-ui/store/reducers/intentionSlice';
@@ -143,7 +136,6 @@ export default function App() {
             <Route path="/requestSign" component={RequestSign} />
             <Route path="/showPrivateKey" component={ShowPrivateKey} />
             <Route path="/removeAccount" component={RemoveAccount} />
-            <Route path="/enterPassword" component={EnterPassword} />
             <Route path="/addNode" component={NodeAction} />
             <Route path="/nodeError" component={NodeError} />
             <Redirect to={redirectUrl} />

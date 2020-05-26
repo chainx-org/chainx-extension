@@ -108,22 +108,19 @@ function NameAndPassword(props) {
       <TextInput
         showClear={false}
         style={{ flex: 'unset' }}
-        className="fixed-width"
         type="text"
         value={name}
         onChange={value => setName(value)}
         placeholder="Name(12 characters max)"
       />
       <PasswordInput
-        style={{ flex: 'unset' }}
-        className="fixed-width"
+        style={{ flex: 'unset', marginTop: 16 }}
         value={password}
         onChange={value => setPassword(value)}
         placeholder="Password"
       />
       <PasswordInput
-        style={{ flex: 'unset' }}
-        className="fixed-width"
+        style={{ flex: 'unset', marginTop: 16 }}
         value={confirmation}
         onChange={value => setConfirmation(value)}
         placeholder="Password confirmation"
@@ -146,8 +143,8 @@ function NameAndPassword(props) {
       {sameAccount && (
         <WarningMessage
           msg={`Account ${sameAccount &&
-            // @ts-ignore
-            sameAccount.name} has same address, and it will be overwritten by this account.`}
+          // @ts-ignore
+          sameAccount.name} has same address, and it will be overwritten by this account.`}
         />
       )}
     </Wrapper>

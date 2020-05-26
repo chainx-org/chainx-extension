@@ -94,7 +94,6 @@ function AddNode(props: any) {
         <>
           <TextInput
             showClear={false}
-            className="fixed-width"
             value={name}
             onChange={setName}
             placeholder="Name(12 characters max)"
@@ -102,7 +101,6 @@ function AddNode(props: any) {
           <span className="node-url">Node address</span>
           <TextInput
             showClear={false}
-            className="fixed-width"
             value={url}
             onChange={setUrl}
             onKeyPress={event => {
